@@ -99,6 +99,9 @@ Short aliases are available as `tool l`, `tool c`, `tool f`, and `tool r`. The `
 
 ## How to use this?
 
+For a Windows setup using MSYS2 and PowerShell helper scripts, see
+[Windows development](windows.md).
+
 ### Dependencies
 
 Any `make` command depends on GNU make (`gmake`) and is expected to be run using it. This usually means using `make` on most GNU/Linux distros, or `gmake` on other non-GNU systems.
