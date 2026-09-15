@@ -1,0 +1,5 @@
+# Keep POSIX build inputs usable from WSL and MSYS2 after Windows checkouts.
+GNUmakefile text eol=lf
+**/GNUmakefile text eol=lf
+**/get-deps text eol=lf
+*.sh text eol=lf

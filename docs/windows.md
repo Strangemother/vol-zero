@@ -84,8 +84,9 @@ Useful alternatives:
 .\tools\windows\clean.ps1 -Hard
 ```
 
-The wrappers default to `C:\msys64`. Override it when MSYS2 is installed in a
-different location:
+The wrappers invoke MSYS2's Bash directly and add the UCRT64 tool directories
+to `PATH`. They default to `C:\msys64`. Override that path when MSYS2 is
+installed in a different location:
 
 ```powershell
 .\tools\windows\build.ps1 -MsysRoot D:\msys64

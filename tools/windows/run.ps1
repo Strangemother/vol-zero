@@ -7,13 +7,14 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$msysLauncher = Join-Path $MsysRoot "ucrt64.exe"
-if (-not (Test-Path $msysLauncher)) {
-    throw "MSYS2 UCRT64 was not found at '$msysLauncher'. Install MSYS2 or pass -MsysRoot."
+$bash = Join-Path $MsysRoot "usr\bin\bash.exe"
+if (-not (Test-Path $bash)) {
+    throw "MSYS2 Bash was not found at '$bash'. Install MSYS2 or pass -MsysRoot."
 }
 
 $projectRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..\")).Path
-$projectPath = & $msysLauncher -lc "cygpath -u '$projectRoot'"
+$msysPath = "/ucrt64/bin:/usr/bin"
+$projectPath = (& $bash -lc "export PATH='$msysPath'; cygpath -u -- '$projectRoot'").Trim()
 if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($projectPath)) {
     throw "Could not convert the project path for MSYS2: $projectRoot"
 }
@@ -24,5 +25,5 @@ if (-not $Display) {
 }
 
 Write-Host "+ make -C $projectPath run QEMUFLAGS=$qemuFlags"
-& $msysLauncher -lc "cd '$projectPath' && make run QEMUFLAGS='$qemuFlags'"
+& $bash -lc "export PATH='$msysPath'; cd '$projectPath' && make run QEMUFLAGS='$qemuFlags'"
 exit $LASTEXITCODE
