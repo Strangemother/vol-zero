@@ -15,6 +15,7 @@ from tools.compile import main as compile_main
 from tools.compile_hosted import main as compile_hosted_main
 from tools.first_time import main as first_time_main
 from tools.run_compiled_no_display import main as run_no_display_main
+from tools.run_oraclebox import main as run_oraclebox_main
 from tools.run_hosted import main as run_hosted_main
 
 
@@ -51,9 +52,9 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument(
         "target",
         nargs="?",
-        choices=["os", "app"],
+        choices=["os", "app", "oraclebox", "vbox"],
         default="os",
-        help="run the OS image or hosted app (default: os)",
+        help="run the OS image, hosted app, or VirtualBox VM (default: os)",
     )
     run_mode = run.add_mutually_exclusive_group()
     run_mode.add_argument(
@@ -101,6 +102,8 @@ def compile_target(target: str) -> int:
 def run_target(target: str, display: bool = False) -> int:
     if target == "app":
         return run_hosted_main()
+    if target in {"oraclebox", "vbox"}:
+        return run_oraclebox_main([])
     return run_command(display)
 
 

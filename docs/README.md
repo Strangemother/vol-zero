@@ -90,6 +90,7 @@ tool compile
 tool first_time
 tool run
 tool run --no-display
+tool run oraclebox
 tool lcr
 tool cr
 ```
@@ -99,8 +100,9 @@ Short aliases are available as `tool l`, `tool c`, `tool f`, and `tool r`. The `
 
 ## How to use this?
 
-For a Windows setup using MSYS2 and PowerShell helper scripts, see
-[Windows development](windows.md).
+For a Windows setup using WSL2 and Ubuntu, see
+[Windows Subsystem for Linux](windows-wsl.md). For a native Windows setup
+using MSYS2 and PowerShell helper scripts, see [Windows development](windows.md).
 
 ### Dependencies
 
@@ -179,6 +181,25 @@ Running `make run` will build the kernel and a bootable ISO (equivalent to make 
 Running `make run-hdd` will build the kernel and a raw HDD image (equivalent to make all-hdd) and then run it using `qemu` (if installed).
 
 The `run-uefi` and `run-hdd-uefi` targets are equivalent to their non `-uefi` counterparts except that they boot `qemu` using a UEFI-compatible firmware.
+
+### VirtualBox
+
+After compiling an ISO, run `tool run oraclebox` to create or update a
+VirtualBox VM named `VOL Zero`, attach the current ISO, and start it in the
+VirtualBox GUI. Repeating the command updates the existing VM instead of
+creating another one. `tool run vbox` is a shorter alias.
+
+This command is intended for WSL with Windows VirtualBox installed. It uses
+`VBoxManage.exe` and converts the WSL ISO path for Windows automatically. If
+VirtualBox is installed in a non-standard location, add its directory to the
+WSL `PATH`.
+
+For a headless launch or VM customization, use the standalone script:
+
+```sh
+python tools/run_oraclebox.py --headless
+python tools/run_oraclebox.py --name "VOL Debug" --memory 4096 --cpus 4
+```
 
 Run `python3 tools/cleanup.py` to remove local build outputs while preserving downloaded dependencies and tools. Use `python3 tools/cleanup.py --hard` to remove those downloaded assets as well.
 
