@@ -95,6 +95,14 @@ tool lcr
 tool cr
 ```
 
+Typically you'll want to compile and run the display version of the kernel.
+
+```bash
+tool c 
+tool r vbox # Oracle virtualbox handles a display output
+tool run --no-display # QEMU default; headless mode.
+```
+
 Short aliases are available as `tool l`, `tool c`, `tool f`, and `tool r`. The `--display` run mode is reserved for a future graphical runner.
 
 
