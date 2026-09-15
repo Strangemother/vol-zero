@@ -50,6 +50,6 @@ task buildKernel, "Build the freestanding VOL kernel module":
 # Compile the hosted development entry point with Nim's normal runtime.
 task buildHosted, "Build the hosted VOL development program":
   let nim = getEnv("NIM", "nim")
-  let output = getEnv("HOSTED_OUTPUT", "bin/vol-hosted")
+  let output = getEnv("HOSTED_OUTPUT", "../dist/vol-hosted")
   exec nim & " c --mm:orc --define:kernelVersion=" & kernelVersion &
     " --out:" & quoteShell(output) & " src/hosted_main.nim"

@@ -7,3 +7,5 @@
 tools/app/*.egg-info/
 *.iso
 *.hdd
+tools/__pycache__/
+*.pyc

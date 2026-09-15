@@ -1,8 +1,101 @@
-# Limine C Template
+# VOL Zero.
 
-This repository will demonstrate how to set up a basic x86-64 kernel in C using Limine.
++ [the Limine Bare Bones](https://osdev.wiki/wiki/Limine_Bare_Bones) OSDev wiki page.
++ [limine-c-template-x86-64 GitHub repository](https://github.com/Limine-Bootloader/limine-c-template-x86-64)
 
-It is recommended to cross reference the contents of this repository with [the Limine Bare Bones](https://osdev.wiki/wiki/Limine_Bare_Bones) OSDev wiki page.
+
+## High Level Overview
+
+This presents a minimal setup for a x86-64 VOL kernel using the Limine bootloader and demonstrates how to structure the project for both hosted and freestanding development.
+
+It produces:
+
+1. A minimal x86-64 VOL kernel image
+2. An app; standard like.
+
+Making the kernel looks like this:
+
+```sh
+$ tool c
+make: Entering directory '/workspaces/limine-c-template-x86-64'
+make -C kernel
+...
+# dist/vol-kernel-0.1.0-26-09-15-03-34-15.iso
+```
+
+This can be ran using QEMU or VirtualBox. Compiling the 'hdd' version allows booting from a hard disk or USB drive.
+
+### Kernel: QEMU
+
+To run the kernel using QEMU:
+
+```sh
+tool run
+```
+
+To run the kernel without a display (headless mode) (default on terminal):
+
+```sh
+$ tool run --no-display
+# Kernel version: 0.1.0
+```
+
+This version prints the kernel output and version to the terminal.
+
+### Kernel: VirtualBox
+
+1. Open VirtualBox and create a new virtual machine.
+2. Set the type to "Linux" or "Other" and the version to "Other/Unknown (64-bit)".
+3. Allocate memory and create a virtual hard disk as needed: e.g. 40mb
+4. Go to the "Storage" section and attach the generated ISO file under the "Controller: IDE".
+5. Start the virtual machine.
+
+This version loads the _display_ output (a pretty gradient).
+
+
+### Hosted Version
+
+VOL also compiled to 'an app', allowing the standard execution of the runtime in a hosted environment.
+
+Ensure to compile the `app` version before running it.
+
+```sh
+$ tool compile app
+```
+
+```sh
+$ ./dist/vol-hosted 
+VOL hosted test
+Kernel version: 0.1.0
+Memory routines: OK
+Hosted halt called
+```
+
+This is hoping to be the same experience as running the kernel, but in a hosted environment.
+
+### Tool command
+
+Install the project tools from the repository root:
+
+```
+pip install -e tools/app
+```
+
+The installed `tool` command provides shortcuts for the common workflows:
+
+```
+tool cleanup
+tool cleanup --hard
+tool compile
+tool first_time
+tool run
+tool run --no-display
+tool lcr
+tool cr
+```
+
+Short aliases are available as `tool l`, `tool c`, `tool f`, and `tool r`. The `--display` run mode is reserved for a future graphical runner.
+
 
 ## How to use this?
 
@@ -42,6 +135,19 @@ nimble buildHosted
 This uses `src/hosted_main.nim` with Nim's normal runtime and exercises the
 shared modules without requiring Limine or the freestanding linker.
 
+From the repository root, the hosted workflow is also available through the
+`tool` command:
+
+```sh
+tool compile app
+tool run app
+tool arc
+tool alcr
+```
+
+The existing commands continue to target the OS build by default. Use `tool
+compile`, `tool run`, `tool cr`, or `tool lcr` for the freestanding OS image.
+
 Assembly files with the `*.S` extension are built using the same toolchain as the C sources. Only `*.asm` files, of which the template ships none, require `nasm`. The `run` targets require `qemu`.
 
 ### Toolchain selection
@@ -73,25 +179,3 @@ The `run-uefi` and `run-hdd-uefi` targets are equivalent to their non `-uefi` co
 
 Run `python3 tools/cleanup.py` to remove local build outputs while preserving downloaded dependencies and tools. Use `python3 tools/cleanup.py --hard` to remove those downloaded assets as well.
 
-### Tool command
-
-Install the project tools from the repository root:
-
-```
-pip install -e tools/app
-```
-
-The installed `tool` command provides shortcuts for the common workflows:
-
-```
-tool cleanup
-tool cleanup --hard
-tool compile
-tool first_time
-tool run
-tool run --no-display
-tool lcr
-tool cr
-```
-
-Short aliases are available as `tool l`, `tool c`, `tool f`, and `tool r`. The `--display` run mode is reserved for a future graphical runner.
