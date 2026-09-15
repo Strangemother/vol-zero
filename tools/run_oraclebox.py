@@ -19,6 +19,10 @@ from tools.build_cache import load_cache
 
 
 DEFAULT_VM_NAME = "VOL Zero"
+DEFAULT_OS_TYPE = "Other_64"
+DEFAULT_MEMORY = 1024
+DEFAULT_VIDEO_MEMORY = 50
+DEFAULT_GRAPHICS_CONTROLLER = "vmsvga"
 
 
 def find_vboxmanage() -> str:
@@ -70,7 +74,17 @@ def vm_state(vboxmanage: str, vm_name: str) -> str:
 
 def configure_vm(vboxmanage: str, vm_name: str, memory: int, cpus: int, iso_path: str) -> None:
     if not vm_exists(vboxmanage, vm_name):
-        run([vboxmanage, "createvm", "--name", vm_name, "--ostype", "Other", "--register"])
+        run(
+            [
+                vboxmanage,
+                "createvm",
+                "--name",
+                vm_name,
+                "--ostype",
+                DEFAULT_OS_TYPE,
+                "--register",
+            ]
+        )
         run(
             [
                 vboxmanage,
@@ -96,6 +110,12 @@ def configure_vm(vboxmanage: str, vm_name: str, memory: int, cpus: int, iso_path
             vm_name,
             "--memory",
             str(memory),
+            "--ostype",
+            DEFAULT_OS_TYPE,
+            "--vram",
+            str(DEFAULT_VIDEO_MEMORY),
+            "--graphicscontroller",
+            DEFAULT_GRAPHICS_CONTROLLER,
             "--cpus",
             str(cpus),
             "--boot1",
@@ -132,7 +152,7 @@ def configure_vm(vboxmanage: str, vm_name: str, memory: int, cpus: int, iso_path
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--name", default=DEFAULT_VM_NAME, help="VirtualBox VM name")
-    parser.add_argument("--memory", type=int, default=2048, help="VM memory in MiB")
+    parser.add_argument("--memory", type=int, default=DEFAULT_MEMORY, help="VM memory in MiB")
     parser.add_argument("--cpus", type=int, default=2, help="Number of virtual CPUs")
     parser.add_argument("--headless", action="store_true", help="start without a VirtualBox window")
     return parser
