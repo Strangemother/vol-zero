@@ -23,6 +23,7 @@ DEFAULT_OS_TYPE = "Other_64"
 DEFAULT_MEMORY = 1024
 DEFAULT_VIDEO_MEMORY = 50
 DEFAULT_GRAPHICS_CONTROLLER = "vmsvga"
+DEFAULT_IOAPIC = "on"
 
 
 def find_vboxmanage() -> str:
@@ -116,6 +117,8 @@ def configure_vm(vboxmanage: str, vm_name: str, memory: int, cpus: int, iso_path
             str(DEFAULT_VIDEO_MEMORY),
             "--graphicscontroller",
             DEFAULT_GRAPHICS_CONTROLLER,
+            "--ioapic",
+            DEFAULT_IOAPIC,
             "--cpus",
             str(cpus),
             "--boot1",
