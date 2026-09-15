@@ -42,19 +42,6 @@ nimble buildHosted
 This uses `src/hosted_main.nim` with Nim's normal runtime and exercises the
 shared modules without requiring Limine or the freestanding linker.
 
-From the repository root, the hosted workflow is also available through the
-`tool` command:
-
-```sh
-tool compile app
-tool run app
-tool arc
-tool alcr
-```
-
-The existing commands continue to target the OS build by default. Use `tool
-compile`, `tool run`, `tool cr`, or `tool lcr` for the freestanding OS image.
-
 Assembly files with the `*.S` extension are built using the same toolchain as the C sources. Only `*.asm` files, of which the template ships none, require `nasm`. The `run` targets require `qemu`.
 
 ### Toolchain selection

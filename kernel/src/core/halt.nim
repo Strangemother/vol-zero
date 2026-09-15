@@ -13,6 +13,12 @@
   Example:
     halt()
 ]#
-proc halt*() {.noreturn.} =
-  while true:
-    asm "hlt"
+
+when defined(freestanding):
+    proc halt*() {.noreturn.} =
+        while true:
+            asm "hlt"
+else:
+    # In hosted mode, we simply call app exit.
+    proc halt*() =
+        quit "Hosted halt called"

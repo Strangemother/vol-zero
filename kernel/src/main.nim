@@ -16,10 +16,10 @@ import core/version as kernelVersion
 
 # VOL through Limine enters the kernel through the C-compatible symbol kmain.
 proc kmain() {.exportc: "kmain", noreturn.} =
-  serial.init()
-  serial.write("Kernel version: ")
-  serial.write(kernelVersion.get_version())
-  serial.write("\r\n")
-  if not framebuffer.renderAll():
+    serial.init()
+    serial.write("Kernel version: ")
+    serial.write(kernelVersion.get_version())
+    serial.write("\r\n")
+    if not framebuffer.renderAll():
+        kernelHalt.halt()
     kernelHalt.halt()
-  kernelHalt.halt()

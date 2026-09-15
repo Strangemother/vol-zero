@@ -6,6 +6,11 @@
   
 ]#
 
+when defined(freestanding):
+  {.pragma: memoryExport, exportc.}
+else:
+  {.pragma: memoryExport.}
+
 
 #[
   Sugar for converting pointers to unsigned integers.
@@ -61,7 +66,7 @@ template copy_bytes_backward(
      var destination: array[4, uint8]
      discard memcpy(destination.addr, source.addr, csize_t(source.len))
 ]#
-proc memcpy*(destination: pointer, source: pointer, size: csize_t): pointer {.exportc.} =
+proc memcpy*(destination: pointer, source: pointer, size: csize_t): pointer {.memoryExport.} =
     let destinationBytes = pointer_to_byte_array(destination)
     let sourceBytes = pointer_to_byte_array(source)
     copy_bytes_forward(sourceBytes, destinationBytes, size)
@@ -81,7 +86,7 @@ proc memcpy*(destination: pointer, source: pointer, size: csize_t): pointer {.ex
      var buffer: array[8, uint8]
      discard memset(buffer.addr, 0, csize_t(buffer.len))
 ]#
-proc memset*(destination: pointer, value: cint, size: csize_t): pointer {.exportc.} =
+proc memset*(destination: pointer, value: cint, size: csize_t): pointer {.memoryExport.} =
     let destinationBytes = pointer_to_byte_array(destination)
     for index in 0 ..< int(size):
         destinationBytes[index] = uint8(value)
@@ -103,7 +108,7 @@ proc memset*(destination: pointer, value: cint, size: csize_t): pointer {.export
      var destination: array[4, uint8]
      discard memmove(destination.addr, source.addr, csize_t(source.len))
 ]#
-proc memmove*(destination: pointer, source: pointer, size: csize_t): pointer {.exportc.} =
+proc memmove*(destination: pointer, source: pointer, size: csize_t): pointer {.memoryExport.} =
     # destination is a raw pointer, so Nim does not know what data it points to.
     let destinationAddress = pointer_to_uint(destination)
     let sourceAddress = pointer_to_uint(source)
@@ -135,7 +140,7 @@ proc memmove*(destination: pointer, source: pointer, size: csize_t): pointer {.e
      let comparison = memcmp(left.addr, right.addr, csize_t(left.len))
      # comparison is negative because 3 is less than 4.
 ]#
-proc memcmp*(first: pointer, second: pointer, size: csize_t): cint {.exportc.} =
+proc memcmp*(first: pointer, second: pointer, size: csize_t): cint {.memoryExport.} =
     let firstBytes = pointer_to_byte_array(first)
     let secondBytes = pointer_to_byte_array(second)
     for index in 0 ..< int(size):

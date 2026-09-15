@@ -32,7 +32,7 @@ task buildKernel, "Build the freestanding VOL kernel module":
 
   # Avoid linking stale objects after modules are moved or renamed.
   exec "rm -rf " & quoteShell(nimcache)
-  exec nim & " " & nimFlags & " --define:kernelVersion=" & kernelVersion &
+  exec nim & " " & nimFlags & " --define:freestanding --define:kernelVersion=" & kernelVersion &
     " --nimcache:\"" & nimcache & "\" " & source
 
   # Nim emits one C object per module. Collect every generated object so new
@@ -46,3 +46,10 @@ task buildKernel, "Build the freestanding VOL kernel module":
   if objects.len == 0:
     quit "No Nim object files were generated in " & nimcache
   exec "ld -r -o " & quoteShell(output) & " " & objects
+
+# Compile the hosted development entry point with Nim's normal runtime.
+task buildHosted, "Build the hosted VOL development program":
+  let nim = getEnv("NIM", "nim")
+  let output = getEnv("HOSTED_OUTPUT", "bin/vol-hosted")
+  exec nim & " c --mm:orc --define:kernelVersion=" & kernelVersion &
+    " --out:" & quoteShell(output) & " src/hosted_main.nim"

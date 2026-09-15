@@ -12,8 +12,10 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from tools.cleanup import main as cleanup_main
 from tools.compile import main as compile_main
+from tools.compile_hosted import main as compile_hosted_main
 from tools.first_time import main as first_time_main
 from tools.run_compiled_no_display import main as run_no_display_main
+from tools.run_hosted import main as run_hosted_main
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -46,6 +48,13 @@ def build_parser() -> argparse.ArgumentParser:
     run = subparsers.add_parser(
         "run", aliases=["r"], help="run the compiled ISO"
     )
+    run.add_argument(
+        "target",
+        nargs="?",
+        choices=["os", "app"],
+        default="os",
+        help="run the OS image or hosted app (default: os)",
+    )
     run_mode = run.add_mutually_exclusive_group()
     run_mode.add_argument(
         "--no-display",
@@ -58,8 +67,21 @@ def build_parser() -> argparse.ArgumentParser:
         help="run with a graphical display (not implemented yet)",
     )
 
-    subparsers.add_parser("lcr", help="cleanup, compile, then run")
-    subparsers.add_parser("cr", help="compile, then run")
+    for command, help_text in (("lcr", "cleanup, compile, then run"), ("cr", "compile, then run")):
+        parser_for_command = subparsers.add_parser(command, help=help_text)
+        parser_for_command.add_argument(
+            "target",
+            nargs="?",
+            choices=["os", "app"],
+            default="os",
+            help="build the OS image or hosted app (default: os)",
+        )
+    subparsers.add_parser("alcr", help="cleanup, compile hosted app, then run")
+    subparsers.add_parser(
+        "arc",
+        aliases=["acr", "car"],
+        help="compile hosted app, then run",
+    )
     return parser
 
 
@@ -70,9 +92,23 @@ def run_command(display: bool) -> int:
     return run_no_display_main()
 
 
+def compile_target(target: str) -> int:
+    if target == "app":
+        return compile_hosted_main()
+    return compile_main([])
+
+
+def run_target(target: str, display: bool = False) -> int:
+    if target == "app":
+        return run_hosted_main()
+    return run_command(display)
+
+
 def main(arguments: list[str] | None = None) -> int:
     arguments = sys.argv[1:] if arguments is None else arguments
     if arguments and arguments[0] in {"compile", "c"}:
+        if len(arguments) > 1 and arguments[1] == "app":
+            return compile_hosted_main()
         return compile_main(arguments[1:])
 
     parser = build_parser()
@@ -88,18 +124,24 @@ def main(arguments: list[str] | None = None) -> int:
     if parsed.command in {"first_time", "first-time", "f"}:
         return first_time_main()
     if parsed.command in {"run", "r"}:
-        return run_command(parsed.display)
-    if parsed.command == "lcr":
+        return run_target(parsed.target, parsed.display)
+    if parsed.command in {"lcr", "cr"}:
+        target = parsed.target
+    elif parsed.command in {"alcr", "arc", "acr", "car"}:
+        target = "app"
+    else:
+        target = "os"
+    if parsed.command in {"lcr", "alcr"}:
         status = cleanup_main([])
         if status == 0:
-            status = compile_main([])
+            status = compile_target(target)
         if status == 0:
-            status = run_command(False)
+            status = run_target(target)
         return status
-    if parsed.command == "cr":
-        status = compile_main([])
+    if parsed.command in {"cr", "arc", "acr", "car"}:
+        status = compile_target(target)
         if status == 0:
-            status = run_command(False)
+            status = run_target(target)
         return status
     parser.error(f"unknown command: {parsed.command}")
     return 2

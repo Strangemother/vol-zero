@@ -152,7 +152,7 @@ obj/%.c.o: %.c GNUmakefile
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 # Compilation rules for *.nim files.
-obj/%.nim.o: %.nim GNUmakefile limine_kernel.nimble VERSION
+obj/%.nim.o: %.nim GNUmakefile vol_kernel.nimble VERSION
 	mkdir -p "$(dir $@)"
 	PATH="$(HOME)/.local/opt/nim-2.2.12/bin:$${PATH}" NIM="$(HOME)/.local/opt/nim-2.2.12/bin/nim" NIM_SOURCE="$<" NIMCACHE="$(CURDIR)/obj/nimcache/$*" NIM_OUTPUT="$@" $(NIMBLE) buildKernel
 
