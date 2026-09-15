@@ -13,7 +13,12 @@ override QEMU_MACHINE_FLAGS := \
 override QEMU_UEFI_FLAGS := \
     -drive if=pflash,unit=0,format=raw,file=edk2-ovmf-bins/ovmf-code-x86_64.fd,readonly=on
 
-override IMAGE_NAME := template
+override DIST_DIR := dist
+override KERNEL_VERSION := $(shell tr -d '\r\n' < kernel/VERSION)
+override ISO_FILENAME := $(shell python3 tools/dist_iso_filename.py)
+override HDD_FILENAME := $(shell python3 tools/dist_hdd_filename.py)
+override ISO_IMAGE := $(DIST_DIR)/$(ISO_FILENAME)
+override HDD_IMAGE := $(DIST_DIR)/$(HDD_FILENAME)
 
 # User controllable size of the HDD image, in MiB.
 HDD_SIZE := 64
@@ -40,41 +45,41 @@ HOST_LDFLAGS :=
 HOST_LIBS :=
 
 .PHONY: all
-all: $(IMAGE_NAME).iso
+all: $(ISO_IMAGE)
 
 .PHONY: all-hdd
-all-hdd: $(IMAGE_NAME).hdd
+all-hdd: $(HDD_IMAGE)
 
 .PHONY: run
-run: $(IMAGE_NAME).iso
+run: $(ISO_IMAGE)
 	qemu-system-x86_64 \
 		$(QEMU_MACHINE_FLAGS) \
-		-cdrom $(IMAGE_NAME).iso \
+		-cdrom $(ISO_IMAGE) \
 		-boot d \
 		$(QEMUFLAGS)
 
 .PHONY: run-uefi
-run-uefi: edk2-ovmf-bins $(IMAGE_NAME).iso
+run-uefi: edk2-ovmf-bins $(ISO_IMAGE)
 	qemu-system-x86_64 \
 		$(QEMU_MACHINE_FLAGS) \
 		$(QEMU_UEFI_FLAGS) \
-		-cdrom $(IMAGE_NAME).iso \
+		-cdrom $(ISO_IMAGE) \
 		-boot d \
 		$(QEMUFLAGS)
 
 .PHONY: run-hdd
-run-hdd: $(IMAGE_NAME).hdd
+run-hdd: $(HDD_IMAGE)
 	qemu-system-x86_64 \
 		$(QEMU_MACHINE_FLAGS) \
-		-hda $(IMAGE_NAME).hdd \
+		-hda $(HDD_IMAGE) \
 		$(QEMUFLAGS)
 
 .PHONY: run-hdd-uefi
-run-hdd-uefi: edk2-ovmf-bins $(IMAGE_NAME).hdd
+run-hdd-uefi: edk2-ovmf-bins $(HDD_IMAGE)
 	qemu-system-x86_64 \
 		$(QEMU_MACHINE_FLAGS) \
 		$(QEMU_UEFI_FLAGS) \
-		-hda $(IMAGE_NAME).hdd \
+		-hda $(HDD_IMAGE) \
 		$(QEMUFLAGS)
 
 .INTERMEDIATE: edk2-ovmf-bins.tar.gz
@@ -106,12 +111,14 @@ kernel/.deps-obtained:
 kernel: kernel/.deps-obtained
 	$(MAKE) -C kernel
 
-$(IMAGE_NAME).iso: limine-binary/limine kernel
+$(ISO_IMAGE): limine-binary/limine kernel kernel/VERSION limine.conf
+	mkdir -p $(DIST_DIR)
 	rm -rf iso_root
 	mkdir -p iso_root/boot
 	cp -v kernel/bin/kernel iso_root/boot/
 	mkdir -p iso_root/boot/limine
-	cp -v limine.conf limine-binary/limine-bios.sys limine-binary/limine-bios-cd.bin limine-binary/limine-uefi-cd.bin iso_root/boot/limine/
+	sed 's/@VERSION@/$(KERNEL_VERSION)/g' limine.conf > iso_root/boot/limine/limine.conf
+	cp -v limine-binary/limine-bios.sys limine-binary/limine-bios-cd.bin limine-binary/limine-uefi-cd.bin iso_root/boot/limine/
 	mkdir -p iso_root/EFI/BOOT
 	cp -v limine-binary/BOOTX64.EFI iso_root/EFI/BOOT/
 	cp -v limine-binary/BOOTIA32.EFI iso_root/EFI/BOOT/
@@ -119,26 +126,29 @@ $(IMAGE_NAME).iso: limine-binary/limine kernel
 		-no-emul-boot -boot-load-size 4 -boot-info-table -hfsplus \
 		-apm-block-size 2048 --efi-boot boot/limine/limine-uefi-cd.bin \
 		-efi-boot-part --efi-boot-image --protective-msdos-label \
-		iso_root -o $(IMAGE_NAME).iso
-	./limine-binary/limine bios-install $(IMAGE_NAME).iso
+		iso_root -o $(ISO_IMAGE)
+	./limine-binary/limine bios-install $(ISO_IMAGE)
 	rm -rf iso_root
 
-$(IMAGE_NAME).hdd: limine-binary/limine kernel
-	rm -f $(IMAGE_NAME).hdd
-	dd if=/dev/zero bs=1024k count=0 seek=$(HDD_SIZE) of=$(IMAGE_NAME).hdd
-	PATH=$$PATH:/usr/sbin:/sbin sgdisk $(IMAGE_NAME).hdd -n 1:$(HDD_PART_START):$(HDD_PART_END) -t 1:ef00 -m 1
-	./limine-binary/limine bios-install $(IMAGE_NAME).hdd
-	mformat -i $(IMAGE_NAME).hdd@@$(HDD_PART_OFFSET) -T $(HDD_PART_SECTORS) -h $(HDD_HEADS) -s $(HDD_SECTORS_PER_TRACK) ::
-	mmd -i $(IMAGE_NAME).hdd@@$(HDD_PART_OFFSET) ::/EFI ::/EFI/BOOT ::/boot ::/boot/limine
-	mcopy -i $(IMAGE_NAME).hdd@@$(HDD_PART_OFFSET) kernel/bin/kernel ::/boot
-	mcopy -i $(IMAGE_NAME).hdd@@$(HDD_PART_OFFSET) limine.conf limine-binary/limine-bios.sys ::/boot/limine
-	mcopy -i $(IMAGE_NAME).hdd@@$(HDD_PART_OFFSET) limine-binary/BOOTX64.EFI ::/EFI/BOOT
-	mcopy -i $(IMAGE_NAME).hdd@@$(HDD_PART_OFFSET) limine-binary/BOOTIA32.EFI ::/EFI/BOOT
+$(HDD_IMAGE): limine-binary/limine kernel kernel/VERSION limine.conf
+	mkdir -p $(DIST_DIR)
+	rm -f $(HDD_IMAGE)
+	dd if=/dev/zero bs=1024k count=0 seek=$(HDD_SIZE) of=$(HDD_IMAGE)
+	PATH=$$PATH:/usr/sbin:/sbin sgdisk $(HDD_IMAGE) -n 1:$(HDD_PART_START):$(HDD_PART_END) -t 1:ef00 -m 1
+	./limine-binary/limine bios-install $(HDD_IMAGE)
+	mformat -i $(HDD_IMAGE)@@$(HDD_PART_OFFSET) -T $(HDD_PART_SECTORS) -h $(HDD_HEADS) -s $(HDD_SECTORS_PER_TRACK) ::
+	mmd -i $(HDD_IMAGE)@@$(HDD_PART_OFFSET) ::/EFI ::/EFI/BOOT ::/boot ::/boot/limine
+	mcopy -i $(HDD_IMAGE)@@$(HDD_PART_OFFSET) kernel/bin/kernel ::/boot
+	sed 's/@VERSION@/$(KERNEL_VERSION)/g' limine.conf > /tmp/limine.conf
+	mcopy -i $(HDD_IMAGE)@@$(HDD_PART_OFFSET) /tmp/limine.conf limine-binary/limine-bios.sys ::/boot/limine
+	rm -f /tmp/limine.conf
+	mcopy -i $(HDD_IMAGE)@@$(HDD_PART_OFFSET) limine-binary/BOOTX64.EFI ::/EFI/BOOT
+	mcopy -i $(HDD_IMAGE)@@$(HDD_PART_OFFSET) limine-binary/BOOTIA32.EFI ::/EFI/BOOT
 
 .PHONY: clean
 clean:
 	$(MAKE) -C kernel clean
-	rm -rf iso_root $(IMAGE_NAME).iso $(IMAGE_NAME).hdd
+	rm -rf iso_root $(DIST_DIR)
 
 .PHONY: distclean
 distclean: clean

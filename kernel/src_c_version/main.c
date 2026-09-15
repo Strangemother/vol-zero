@@ -30,6 +30,34 @@ static volatile uint64_t limine_requests_start_marker[] = LIMINE_REQUESTS_START_
 __attribute__((used, section(".limine_requests_end")))
 static volatile uint64_t limine_requests_end_marker[] = LIMINE_REQUESTS_END_MARKER;
 
+static inline void serial_out(uint16_t port, uint8_t value) {
+    asm volatile ("outb %0, %1" : : "a"(value), "Nd"(port));
+}
+
+static inline uint8_t serial_in(uint16_t port) {
+    uint8_t value;
+    asm volatile ("inb %1, %0" : "=a"(value) : "Nd"(port));
+    return value;
+}
+
+static void serial_init(void) {
+    serial_out(0x3f8 + 1, 0x00);
+    serial_out(0x3f8 + 3, 0x80);
+    serial_out(0x3f8 + 0, 0x03);
+    serial_out(0x3f8 + 1, 0x00);
+    serial_out(0x3f8 + 3, 0x03);
+    serial_out(0x3f8 + 2, 0xc7);
+    serial_out(0x3f8 + 4, 0x0b);
+}
+
+static void serial_write(const char *message) {
+    while (*message != '\0') {
+        while ((serial_in(0x3f8 + 5) & 0x20) == 0) {
+        }
+        serial_out(0x3f8, (uint8_t)*message++);
+    }
+}
+
 // Halt and catch fire function.
 static void hcf(void) {
     for (;;) {
@@ -68,6 +96,9 @@ static void fb_pattern(struct limine_framebuffer *fb) {
 // If renaming kmain() to something else, make sure to change the
 // linker script accordingly.
 void kmain(void) {
+    serial_init();
+    serial_write("Hello, world!\r\n");
+
     // Ensure the bootloader actually understands our base revision (see spec).
     if (LIMINE_BASE_REVISION_SUPPORTED(limine_base_revision) == false) {
         hcf();

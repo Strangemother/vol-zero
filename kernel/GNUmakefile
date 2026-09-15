@@ -30,6 +30,9 @@ endif
 # User controllable linker command.
 LD := $(TOOLCHAIN_PREFIX)ld
 
+# Nimble task runner used for the freestanding kernel sources.
+NIMBLE := $(HOME)/.local/opt/nim-2.2.12/bin/nimble
+
 # Defaults overrides for variables if using "llvm" as toolchain.
 ifeq ($(TOOLCHAIN),llvm)
     CC := clang
@@ -125,9 +128,10 @@ endif
 # object and header dependency file names.
 override SRCFILES := $(shell find -L src cc-runtime/src -type f 2>/dev/null | LC_ALL=C sort)
 override CFILES := $(filter %.c,$(SRCFILES))
+override NIMFILES := $(filter src/main.nim,$(filter %.nim,$(SRCFILES)))
 override ASFILES := $(filter %.S,$(SRCFILES))
 override NASMFILES := $(filter %.asm,$(SRCFILES))
-override OBJ := $(addprefix obj/,$(CFILES:.c=.c.o) $(ASFILES:.S=.S.o) $(NASMFILES:.asm=.asm.o))
+override OBJ := $(addprefix obj/,$(CFILES:.c=.c.o) $(NIMFILES:.nim=.nim.o) $(ASFILES:.S=.S.o) $(NASMFILES:.asm=.asm.o))
 override HEADER_DEPS := $(addprefix obj/,$(CFILES:.c=.c.d) $(ASFILES:.S=.S.d) $(NASMFILES:.asm=.asm.d))
 
 # Default target. This must come first, before header dependencies.
@@ -146,6 +150,11 @@ bin/$(OUTPUT): GNUmakefile linker-scripts/x86_64.lds $(OBJ)
 obj/%.c.o: %.c GNUmakefile
 	mkdir -p "$(dir $@)"
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+# Compilation rules for *.nim files.
+obj/%.nim.o: %.nim GNUmakefile limine_kernel.nimble VERSION
+	mkdir -p "$(dir $@)"
+	PATH="$(HOME)/.local/opt/nim-2.2.12/bin:$${PATH}" NIM="$(HOME)/.local/opt/nim-2.2.12/bin/nim" NIM_SOURCE="$<" NIMCACHE="$(CURDIR)/obj/nimcache/$*" NIM_OUTPUT="$@" $(NIMBLE) buildKernel
 
 # Compilation rules for *.S files.
 obj/%.S.o: %.S GNUmakefile

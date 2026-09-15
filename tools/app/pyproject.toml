@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "limine-template-tools"
+version = "0.1.0"
+description = "Command-line tools for the Limine kernel template"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+tool = "tool_app.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]

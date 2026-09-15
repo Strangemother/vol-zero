@@ -3,5 +3,7 @@
 /edk2-ovmf-bins
 /edk2-ovmf-bins.tar.gz
 /iso_root
+/dist
+tools/app/*.egg-info/
 *.iso
 *.hdd
