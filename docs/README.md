@@ -185,9 +185,11 @@ The `run-uefi` and `run-hdd-uefi` targets are equivalent to their non `-uefi` co
 ### VirtualBox
 
 After compiling an ISO, run `tool run oraclebox` to create or update a
-VirtualBox VM named `VOL Zero`, attach the current ISO, and start it in the
-VirtualBox GUI. Repeating the command updates the existing VM instead of
-creating another one. `tool run vbox` is a shorter alias.
+VirtualBox VM named from the kernel version, such as `VOL 0.1.0`, attach the
+current ISO, and start it in the VirtualBox GUI. Repeating the command updates
+the existing VM instead of creating another one. When `kernel/VERSION` changes,
+the runner migrates a single prior `VOL <version>` entry to the new name.
+`tool run vbox` is a shorter alias.
 
 This command is intended for WSL with Windows VirtualBox installed. It uses
 `VBoxManage.exe` and converts the WSL ISO path for Windows automatically. If

@@ -154,10 +154,12 @@ building the ISO:
 tool run oraclebox
 ```
 
-The command uses `VBoxManage.exe` to create a VM named `VOL Zero` if needed,
-attach the current ISO, update its memory and CPU settings, and start it in the
-VirtualBox GUI. Running it again after a new build updates the same VM instead
-of creating a duplicate. Use `tool run vbox` as a shorter alias.
+The command uses `VBoxManage.exe` to create a VM named from the kernel version,
+such as `VOL 0.1.0`, if needed, attach the current ISO, update its memory and
+CPU settings, and start it in the VirtualBox GUI. Running it again after a new
+build updates the same VM instead of creating a duplicate. When `kernel/VERSION`
+changes, the runner migrates a single prior `VOL <version>` entry to the new
+name. Use `tool run vbox` as a shorter alias.
 
 For a headless launch or custom VM settings:
 
