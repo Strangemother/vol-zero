@@ -4,11 +4,9 @@
 
 #include <stddef.h>
 
-#ifndef NIM_INTBITS
-void *memcpy(void *restrict destination, const void *restrict source, size_t size);
+void *memcpy(void *destination, void *source, size_t size);
 void *memset(void *destination, int value, size_t size);
-void *memmove(void *destination, const void *source, size_t size);
-int memcmp(const void *first, const void *second, size_t size);
-#endif
+void *memmove(void *destination, void *source, size_t size);
+int memcmp(void *first, void *second, size_t size);
 
 #endif
