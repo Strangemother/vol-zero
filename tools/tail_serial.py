@@ -32,6 +32,7 @@ def main() -> int:
         while True:
             try:
                 with socket.create_connection((host, SERIAL_PORT), timeout=1) as connection:
+                    connection.settimeout(None)
                     print("Connected.", file=sys.stderr)
                     while data := connection.recv(4096):
                         sys.stdout.buffer.write(data)
