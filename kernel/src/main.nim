@@ -32,7 +32,7 @@ proc kmain() {.exportc: "kmain", noreturn.} =
     serial.write("\r\n")
 
     serial.write("Usable memory: ")
-    # serial.writeUInt64(mem_info.usableMemoryBytes())
+    serial.writeUInt64(mem_info.usableMemoryBytes())
 
     serial.write(human_bytes.human_bytes(mem_info.usableMemoryBytes()))
     serial.write("\r\n")
