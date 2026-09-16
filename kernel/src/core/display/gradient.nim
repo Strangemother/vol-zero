@@ -13,34 +13,34 @@ const LimineFramebufferRgb = 1'u8
   where each color channel belongs inside a pixel.
 ]#
 type
-  LimineFramebuffer = object
-    address: pointer
-    width: uint64
-    height: uint64
-    pitch: uint64
-    bpp: uint16
-    memoryModel: uint8
-    redMaskSize: uint8
-    redMaskShift: uint8
-    greenMaskSize: uint8
-    greenMaskShift: uint8
-    blueMaskSize: uint8
-    blueMaskShift: uint8
-    unused: array[7, uint8]
-    edidSize: uint64
-    edid: pointer
-    modeCount: uint64
-    modes: pointer
+    LimineFramebuffer = object
+        address: pointer
+        width: uint64
+        height: uint64
+        pitch: uint64
+        bpp: uint16
+        memoryModel: uint8
+        redMaskSize: uint8
+        redMaskShift: uint8
+        greenMaskSize: uint8
+        greenMaskShift: uint8
+        blueMaskSize: uint8
+        blueMaskShift: uint8
+        unused: array[7, uint8]
+        edidSize: uint64
+        edid: pointer
+        modeCount: uint64
+        modes: pointer
 
-  LimineFramebufferResponse = object
-    revision: uint64
-    framebufferCount: uint64
-    framebuffers: ptr ptr LimineFramebuffer
+    LimineFramebufferResponse = object
+        revision: uint64
+        framebufferCount: uint64
+        framebuffers: ptr ptr LimineFramebuffer
 
-  LimineFramebufferRequest = object
-    id: array[4, uint64]
-    revision: uint64
-    response: ptr LimineFramebufferResponse
+    LimineFramebufferRequest = object
+        id: array[4, uint64]
+        revision: uint64
+        response: ptr LimineFramebufferResponse
 
 #[
   The request objects themselves are declared in `limine_requests.c`.
@@ -62,8 +62,8 @@ var limineBaseRevision {.importc: "limineBaseRevision", volatile.}: array[3, uin
   left shift places the result in the packed pixel.
 ]#
 proc framebufferChannel(value: uint8, maskSize: uint8, maskShift: uint8): uint32 =
-  let maximum = (uint64(1) shl maskSize) - 1
-  uint32((uint64(value) * maximum div 255) shl maskShift)
+    let maximum = (uint64(1) shl maskSize) - 1
+    uint32((uint64(value) * maximum div 255) shl maskShift)
 
 #[
   Packs red, green, and blue channel values into one framebuffer pixel.
@@ -73,9 +73,9 @@ proc framebufferChannel(value: uint8, maskSize: uint8, maskShift: uint8): uint32
   RGB layouts instead of assuming that every framebuffer uses the same bits.
 ]#
 proc framebufferPixel(framebuffer: ptr LimineFramebuffer, red: uint8, green: uint8, blue: uint8): uint32 =
-  framebufferChannel(red, framebuffer.redMaskSize, framebuffer.redMaskShift) or
-    framebufferChannel(green, framebuffer.greenMaskSize, framebuffer.greenMaskShift) or
-    framebufferChannel(blue, framebuffer.blueMaskSize, framebuffer.blueMaskShift)
+    framebufferChannel(red, framebuffer.redMaskSize, framebuffer.redMaskShift) or
+      framebufferChannel(green, framebuffer.greenMaskSize, framebuffer.greenMaskShift) or
+      framebufferChannel(blue, framebuffer.blueMaskSize, framebuffer.blueMaskShift)
 
 #[
   Fills one framebuffer with a blue-to-green gradient.
@@ -86,13 +86,13 @@ proc framebufferPixel(framebuffer: ptr LimineFramebuffer, red: uint8, green: uin
   visible width because padding may exist at the end of a framebuffer row.
 ]#
 proc render(framebuffer: ptr LimineFramebuffer) =
-  let pixels = cast[ptr UncheckedArray[uint32]](framebuffer.address)
-  let pitchPixels = framebuffer.pitch div 4
-  for y in 0'u64 ..< framebuffer.height:
-    for x in 0'u64 ..< framebuffer.width:
-      let nx = uint8(x * 255 div framebuffer.width)
-      let ny = uint8(y * 255 div framebuffer.height)
-      pixels[y * pitchPixels + x] = framebufferPixel(framebuffer, 0, ny, nx)
+    let pixels = cast[ptr UncheckedArray[uint32]](framebuffer.address)
+    let pitchPixels = framebuffer.pitch div 4
+    for y in 0'u64 ..< framebuffer.height:
+        for x in 0'u64 ..< framebuffer.width:
+            let nx = uint8(x * 255 div framebuffer.width)
+            let ny = uint8(y * 255 div framebuffer.height)
+            pixels[y * pitchPixels + x] = framebufferPixel(framebuffer, 0, ny, nx)
 
 #[
   Validates Limine's framebuffer response and renders the demo pattern.
@@ -108,16 +108,16 @@ proc render(framebuffer: ptr LimineFramebuffer) =
       halt()
 ]#
 proc renderAll*(): bool =
-  if limineBaseRevision[2] != 0 or framebufferRequest.response == nil or
-      framebufferRequest.response.framebufferCount < 1:
-    return false
+    if limineBaseRevision[2] != 0 or framebufferRequest.response == nil or
+          framebufferRequest.response.framebufferCount < 1:
+        return false
 
-  for index in 0'u64 ..< framebufferRequest.response.framebufferCount:
-    let framebuffers = cast[ptr UncheckedArray[ptr LimineFramebuffer]](framebufferRequest.response.framebuffers)
-    let framebuffer = framebuffers[index]
-    # This renderer only understands 32-bit RGB pixel memory.
-    if framebuffer.memoryModel != LimineFramebufferRgb or framebuffer.bpp != 32:
-      return false
-    render(framebuffer)
+    for index in 0'u64 ..< framebufferRequest.response.framebufferCount:
+        let framebuffers = cast[ptr UncheckedArray[ptr LimineFramebuffer]](framebufferRequest.response.framebuffers)
+        let framebuffer = framebuffers[index]
+        # This renderer only understands 32-bit RGB pixel memory.
+        if framebuffer.memoryModel != LimineFramebufferRgb or framebuffer.bpp != 32:
+            return false
+        render(framebuffer)
 
-  true
+    return true

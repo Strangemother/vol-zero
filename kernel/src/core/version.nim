@@ -12,4 +12,4 @@ const kernelVersion* {.strdefine.} = "unknown"
   compiled into the kernel; callers must not modify it.
 ]#
 proc get_version*(): cstring =
-  kernelVersion.cstring
+    kernelVersion.cstring

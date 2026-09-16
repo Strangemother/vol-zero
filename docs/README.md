@@ -122,7 +122,7 @@ Building also requires `git`, used to fetch the kernel's dependencies (see `kern
 
 Additionally, building an ISO with `make all` requires `xorriso`, and building a HDD/USB image with `make all-hdd` requires `sgdisk` (usually from `gdisk` or `gptfdisk` packages) and `mtools`.
 
-The kernel sources are written in Nim and require the upstream Nim 2.2.12 binary at `$HOME/.local/opt/nim-2.2.12/bin/nim`. Download and unpack `nim-2.2.12-linux_x64.tar.xz` from [nim-lang.org](https://nim-lang.org/download/nim-2.2.12-linux_x64.tar.xz) into that directory before running `make`.
+The kernel sources are written in Nim and require the upstream Nim 2.2.12 binary at `$HOME/.local/opt/nim-2.2.12/bin/nim`. `tool c` and `tool c app` download and unpack `nim-2.2.12-linux_x64.tar.xz` from [nim-lang.org](https://nim-lang.org/download/nim-2.2.12-linux_x64.tar.xz) into that directory when it is missing.
 
 ### Kernel version
 

@@ -11,6 +11,9 @@ from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from tools.nim import ensure_nim
 
 
 PACKAGES = [
@@ -67,6 +70,7 @@ def main() -> int:
 
     print("Checking the configured toolchain...", flush=True)
     verify_commands()
+    ensure_nim()
 
     environment = os.environ.copy()
     environment.setdefault("HOST_CC", "cc")

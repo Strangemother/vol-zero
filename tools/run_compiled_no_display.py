@@ -33,6 +33,7 @@ def main() -> int:
         "stdio",
     ]
     os.chdir(PROJECT_ROOT)
+    print("Launching QEMU with ISO:", iso_path)
     os.execvp(command[0], command)
     return 0
 

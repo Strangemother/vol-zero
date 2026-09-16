@@ -7,9 +7,9 @@
 ]#
 
 when defined(freestanding):
-  {.pragma: memoryExport, exportc.}
+    {.pragma: memoryExport, exportc.}
 else:
-  {.pragma: memoryExport.}
+    {.pragma: memoryExport.}
 
 
 #[

@@ -9,7 +9,7 @@ import subprocess
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-HOSTED_OUTPUT = PROJECT_ROOT / "kernel" / "bin" / "vol-hosted"
+HOSTED_OUTPUT = PROJECT_ROOT / "dist" / "vol-hosted"
 
 
 def main() -> int:

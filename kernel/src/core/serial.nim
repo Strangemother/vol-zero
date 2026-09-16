@@ -47,13 +47,13 @@ proc serialIn(port: uint16): uint8 {.importc: "nim_serial_in".}
     write("serial console ready\0")
 ]#
 proc init*() =
-  serialOut(0x3f9, 0)
-  serialOut(0x3fb, 0x80)
-  serialOut(0x3f8, 3)
-  serialOut(0x3f9, 0)
-  serialOut(0x3fb, 3)
-  serialOut(0x3fa, 0xc7)
-  serialOut(0x3fc, 0x0b)
+    serialOut(0x3f9, 0)
+    serialOut(0x3fb, 0x80)
+    serialOut(0x3f8, 3)
+    serialOut(0x3f9, 0)
+    serialOut(0x3fb, 3)
+    serialOut(0x3fa, 0xc7)
+    serialOut(0x3fc, 0x0b)
 
 #[
   Sends a NUL-terminated message through COM1.
@@ -68,10 +68,10 @@ proc init*() =
     write("hello from the kernel\0")
 ]#
 proc write*(message: cstring) =
-  let current = cast[ptr UncheckedArray[char]](message)
-  var index = 0
-  while current[index] != '\0':
-    while (serialIn(0x3fd) and 0x20) == 0:
-      discard
-    serialOut(0x3f8, uint8(current[index]))
-    inc index
+    let current = cast[ptr UncheckedArray[char]](message)
+    var index = 0
+    while current[index] != '\0':
+        while (serialIn(0x3fd) and 0x20) == 0:
+            discard
+        serialOut(0x3f8, uint8(current[index]))
+        inc index
