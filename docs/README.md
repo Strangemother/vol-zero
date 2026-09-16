@@ -215,5 +215,15 @@ python tools/run_oraclebox.py --headless
 python tools/run_oraclebox.py --name "VOL Debug" --memory 4096 --cpus 4
 ```
 
+VirtualBox COM1 logging defaults to a raw file at
+`vol-serial-<version>.log`. To stream serial output through TCP instead:
+
+```sh
+tool r vbox --headless --serial tcp
+tool t
+```
+
+Use `--serial file` to select the raw-file mode explicitly.
+
 Run `python3 tools/cleanup.py` to remove local build outputs while preserving downloaded dependencies and tools. Use `python3 tools/cleanup.py --hard` to remove those downloaded assets as well.
 

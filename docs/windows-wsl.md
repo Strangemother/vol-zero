@@ -172,6 +172,16 @@ VirtualBox configures the guest COM1 port automatically and writes raw serial
 output to `vol-serial-<version>.log` in the workspace, regardless of whether
 the VM is started with a display or with `--headless`.
 
+To use a live TCP serial console instead, run:
+
+```sh
+tool r vbox --headless --serial tcp
+tool t
+```
+
+The `tool t` command waits for the VirtualBox TCP serial server and streams its
+output to the terminal. Use `--serial file` to select raw-file logging.
+
 If `VBoxManage.exe` is installed outside the standard VirtualBox directory,
 add its directory to the WSL `PATH` before running the command.
 

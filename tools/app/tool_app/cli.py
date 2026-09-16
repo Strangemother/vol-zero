@@ -17,6 +17,7 @@ from tools.first_time import main as first_time_main
 from tools.run_compiled_no_display import main as run_no_display_main
 from tools.run_oraclebox import main as run_oraclebox_main
 from tools.run_hosted import main as run_hosted_main
+from tools.tail_serial import main as tail_serial_main
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -71,6 +72,23 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="run with a graphical display (not implemented yet)",
     )
+    run.add_argument(
+        "--serial",
+        choices=["file", "tcp"],
+        default="file",
+        help="VirtualBox serial output mode (default: file)",
+    )
+    run.add_argument(
+        "--headless",
+        action="store_true",
+        help="start VirtualBox without a window",
+    )
+
+    subparsers.add_parser(
+        "tail",
+        aliases=["t"],
+        help="wait for and stream the VirtualBox TCP serial console",
+    )
 
     for command, help_text in (("lcr", "cleanup, compile, then run"), ("cr", "compile, then run")):
         parser_for_command = subparsers.add_parser(command, help=help_text)
@@ -103,11 +121,19 @@ def compile_target(target: str) -> int:
     return compile_main([])
 
 
-def run_target(target: str, display: bool = False) -> int:
+def run_target(
+    target: str,
+    display: bool = False,
+    serial: str = "file",
+    headless: bool = False,
+) -> int:
     if target == "app":
         return run_hosted_main()
     if target in {"oraclebox", "vbox"}:
-        return run_oraclebox_main([])
+        arguments = ["--serial", serial]
+        if headless:
+            arguments.append("--headless")
+        return run_oraclebox_main(arguments)
     return run_command(display)
 
 
@@ -131,7 +157,11 @@ def main(arguments: list[str] | None = None) -> int:
     if parsed.command in {"first_time", "first-time", "f"}:
         return first_time_main()
     if parsed.command in {"run", "r"}:
+        if parsed.target in {"oraclebox", "vbox"}:
+            return run_target(parsed.target, parsed.display, parsed.serial, parsed.headless)
         return run_target(parsed.target, parsed.display)
+    if parsed.command in {"tail", "t"}:
+        return tail_serial_main()
     if parsed.command in {"lcr", "cr"}:
         target = parsed.target
     elif parsed.command in {"alcr", "arc", "acr", "car"}:

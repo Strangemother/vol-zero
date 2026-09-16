@@ -26,6 +26,7 @@ DEFAULT_MEMORY = 256
 DEFAULT_VIDEO_MEMORY = 50
 DEFAULT_GRAPHICS_CONTROLLER = "vboxvga"
 DEFAULT_IOAPIC = "on"
+SERIAL_PORT = 1234
 
 
 def find_vboxmanage() -> str:
@@ -106,6 +107,7 @@ def configure_vm(
     cpus: int,
     iso_path: str,
     serial_log_path: str,
+    serial_mode: str = "file",
 ) -> None:
     if not vm_exists(vboxmanage, vm_name):
         run(
@@ -137,6 +139,11 @@ def configure_vm(
     if state not in {"poweroff", "saved", "aborted", "unknown"}:
         run([vboxmanage, "controlvm", vm_name, "poweroff"])
 
+    serial_arguments = (
+        ["--uartmode1", "file", serial_log_path]
+        if serial_mode == "file"
+        else ["--uartmode1", "tcpserver", str(SERIAL_PORT)]
+    )
     run(
         [
             vboxmanage,
@@ -167,9 +174,7 @@ def configure_vm(
             "--uart1",
             "0x3F8",
             "4",
-            "--uartmode1",
-            "file",
-            serial_log_path,
+            *serial_arguments,
         ]
     )
     run(
@@ -200,6 +205,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--memory", type=int, default=DEFAULT_MEMORY, help="VM memory in MiB")
     parser.add_argument("--cpus", type=int, default=2, help="Number of virtual CPUs")
     parser.add_argument("--headless", action="store_true", help="start without a VirtualBox window")
+    parser.add_argument(
+        "--serial",
+        choices=["file", "tcp"],
+        default="file",
+        help="serial output mode (default: file)",
+    )
     return parser
 
 
@@ -224,6 +235,7 @@ def main(arguments: list[str] | None = None) -> int:
         parsed.cpus,
         windows_path(iso_path),
         windows_path(serial_log_path),
+        parsed.serial,
     )
     run([vboxmanage, "startvm", vm_name, "--type", "headless" if parsed.headless else "gui"])
     return 0
