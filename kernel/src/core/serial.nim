@@ -75,3 +75,16 @@ proc write*(message: cstring) =
             discard
         serialOut(0x3f8, uint8(current[index]))
         inc index
+
+proc writeUInt64*(value: uint64) =
+  var digits: array[20, char]
+  var remaining = value
+  var index = digits.len
+  if remaining == 0:
+    write("0")
+    return
+  while remaining > 0:
+    dec index
+    digits[index] = char(ord('0') + int(remaining mod 10))
+    remaining = remaining div 10
+  write(cast[cstring](digits[index].addr))

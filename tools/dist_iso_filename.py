@@ -13,7 +13,7 @@ def iso_filename(asset_knowledge: dict[str, Any]) -> str:
     version = kernel_version()
     date = asset_knowledge.get("build_datetime", "00-00-00-00-00")
     count = asset_knowledge.get("build_count", 0)
-    return f"vol-kernel-{version}-{date}-{count}.iso"
+    return f"vol-kernel-{version}-{count}.iso"
 
 
 def main() -> str:

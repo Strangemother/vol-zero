@@ -9,11 +9,13 @@
 # imported for organization and namespacing, not as a runtime performance choice.
 # include core/memory/pure
 import core/memory/test as mem_test
+import core/memory/info as mem_info
 import core/serial
 import core/display/gradient
 import core/halt as kernelHalt
 import core/version as kernelVersion
 
+import core/human/bytes as human_bytes
 
 # VOL through Limine enters the kernel through the C-compatible symbol kmain.
 proc kmain() {.exportc: "kmain", noreturn.} =
@@ -27,6 +29,10 @@ proc kmain() {.exportc: "kmain", noreturn.} =
 
     serial.write("Kernel version: ")
     serial.write(kernelVersion.get_version())
+    serial.write("\r\n")
+
+    serial.write("Usable memory: ")
+    serial.write(human_bytes.human_bytes(mem_info.usableMemoryBytes()))
     serial.write("\r\n")
 
     if not gradient.renderAll():

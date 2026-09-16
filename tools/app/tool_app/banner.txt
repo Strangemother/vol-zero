@@ -1,0 +1,23 @@
+The "tool" is a quick access utility for the build and run of the app.
+
+    tool -h     
+    tool f          # first time install
+
+    tool acr        # compile run app 
+    tool cr         # compile run QEMU
+
+    tool compile 
+    tool c          # compile the kernel and iso 
+    tool c app      # Compile the app version
+
+    tool r          # run the QEMU kernel 
+    tool r os       # run the QEMU kenel 
+    tool r app      # run the app version (applied `--no-display`)
+    tool r vbox     # run the kernel in oraclebox (assumes `--display`)
+
+    tool cleanup 
+    tool l          # soft delete 
+    tool l --soft   # delete caches, don't delete downloaded assets
+    tool l --hard   # delete all caches and downloads 
+
+

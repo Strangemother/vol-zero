@@ -20,9 +20,13 @@ from tools.run_hosted import main as run_hosted_main
 
 
 def build_parser() -> argparse.ArgumentParser:
+
+    banner = Path(__file__).resolve().parent / "banner.txt"
     parser = argparse.ArgumentParser(
         prog="tool",
-        description="Build, clean, and run the Limine kernel template.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        usage=banner.read_text(),
+        description="Build, clean, and run the kernel.",
     )
     subparsers = parser.add_subparsers(dest="command", metavar="COMMAND")
 

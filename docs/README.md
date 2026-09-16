@@ -64,7 +64,7 @@ $ tool compile app
 ```
 
 ```sh
-$ ./dist/vol-hosted 
+$ tool run app
 VOL hosted test
 Kernel version: 0.1.0
 Memory routines: OK
@@ -157,6 +157,10 @@ tool run app
 tool arc
 tool alcr
 ```
+
+The `tool compile app` command writes the hosted executable to
+`dist/vol-hosted-{version}-{build_count}` and `tool run app` runs the current
+filename from the build cache.
 
 The existing commands continue to target the OS build by default. Use `tool
 compile`, `tool run`, `tool cr`, or `tool lcr` for the freestanding OS image.
