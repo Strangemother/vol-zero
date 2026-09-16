@@ -168,6 +168,10 @@ python tools/run_oraclebox.py --headless
 python tools/run_oraclebox.py --name "VOL Debug" --memory 4096 --cpus 4
 ```
 
+VirtualBox configures the guest COM1 port automatically and writes raw serial
+output to `vol-serial-<version>.log` in the workspace, regardless of whether
+the VM is started with a display or with `--headless`.
+
 If `VBoxManage.exe` is installed outside the standard VirtualBox directory,
 add its directory to the WSL `PATH` before running the command.
 

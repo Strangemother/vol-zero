@@ -99,7 +99,14 @@ def migrate_versioned_vm(vboxmanage: str, vm_name: str) -> None:
     run([vboxmanage, "modifyvm", previous_name, "--name", vm_name])
 
 
-def configure_vm(vboxmanage: str, vm_name: str, memory: int, cpus: int, iso_path: str) -> None:
+def configure_vm(
+    vboxmanage: str,
+    vm_name: str,
+    memory: int,
+    cpus: int,
+    iso_path: str,
+    serial_log_path: str,
+) -> None:
     if not vm_exists(vboxmanage, vm_name):
         run(
             [
@@ -157,6 +164,12 @@ def configure_vm(vboxmanage: str, vm_name: str, memory: int, cpus: int, iso_path
             "none",
             "--audio-driver",
             "none",
+            "--uart1",
+            "0x3F8",
+            "4",
+            "--uartmode1",
+            "file",
+            serial_log_path,
         ]
     )
     run(
@@ -201,9 +214,17 @@ def main(arguments: list[str] | None = None) -> int:
 
     vboxmanage = find_vboxmanage()
     vm_name = parsed.name or f"{VERSIONED_VM_PREFIX}{kernel_version()}"
+    serial_log_path = PROJECT_ROOT / f"vol-serial-{kernel_version()}.log"
     if parsed.name is None:
         migrate_versioned_vm(vboxmanage, vm_name)
-    configure_vm(vboxmanage, vm_name, parsed.memory, parsed.cpus, windows_path(iso_path))
+    configure_vm(
+        vboxmanage,
+        vm_name,
+        parsed.memory,
+        parsed.cpus,
+        windows_path(iso_path),
+        windows_path(serial_log_path),
+    )
     run([vboxmanage, "startvm", vm_name, "--type", "headless" if parsed.headless else "gui"])
     return 0
 

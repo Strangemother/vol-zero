@@ -35,7 +35,7 @@ proc kmain() {.exportc: "kmain", noreturn.} =
     serial.write(human_bytes.human_bytes(mem_info.usableMemoryBytes()))
     serial.write("\r\n")
 
-    if not gradient.renderAll():
-        kernelHalt.halt()
+    # if not gradient.renderAll():
+    #     kernelHalt.halt()
         
     kernelHalt.halt()
