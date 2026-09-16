@@ -15,12 +15,12 @@ import core/display/gradient
 import core/halt as kernelHalt
 import core/version as kernelVersion
 
-import core/human/bytes as human_bytes
+import core/human/bytes_x as human_bytes
 
 # VOL through Limine enters the kernel through the C-compatible symbol kmain.
 proc kmain() {.exportc: "kmain", noreturn.} =
     serial.init()
-    
+
     if mem_test.quicktest_memory():
         serial.write("Memory routines: OK\r\n")
     else:
@@ -32,10 +32,12 @@ proc kmain() {.exportc: "kmain", noreturn.} =
     serial.write("\r\n")
 
     serial.write("Usable memory: ")
+    # serial.writeUInt64(mem_info.usableMemoryBytes())
+
     serial.write(human_bytes.human_bytes(mem_info.usableMemoryBytes()))
     serial.write("\r\n")
 
-    # if not gradient.renderAll():
-    #     kernelHalt.halt()
-        
+    if not gradient.renderAll():
+        kernelHalt.halt()
+
     kernelHalt.halt()
