@@ -52,4 +52,38 @@ options:
   -h, --help            show this help message and exit
 ```
 
+## Nim Documentation Metadata
+
+`nim_docs.py` extracts the project's existing `#[ ... ]#` and `##` comments
+and associates them with module-level Nim declarations. It is intended as a
+source of metadata for a custom documentation site rather than as a replacement
+for Nim's compiler or documentation generator.
+
+Print a summary:
+
+```sh
+python tools/nim_docs.py kernel/src/core/display/gradient.nim
+```
+
+Emit JSON for one module:
+
+```sh
+python tools/nim_docs.py \
+  kernel/src/core/display/gradient.nim \
+  --json --pretty > gradient.json
+```
+
+The parser is also importable by a Flask application:
+
+```python
+from tools.nim_docs import parse_nim_source
+
+module = parse_nim_source("kernel/src/core/display/gradient.nim")
+page = module.to_dict()
+```
+
+The resulting module contains its path, module name, declarations, visibility,
+source lines, signatures, and extracted documentation. Indented locals and
+object fields are ignored so each result represents a module-level page entry.
+
 

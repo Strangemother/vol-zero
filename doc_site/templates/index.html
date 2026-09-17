@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="welcome-panel" aria-labelledby="page-title">
+    <h1 id="page-title">Documentation workspace</h1>
+    <p class="intro">A blank slate for exploring the kernel source and its generated documentation.</p>
+
+    <section class="metadata">
+        <h2>Source</h2>
+        <ul>
+            {% for entry in entries %}
+            <li>
+                <a href="{{ entry.url }}">{{ entry.name }}{% if entry.kind == "directory" %}/{% endif %}</a>
+            </li>
+            {% else %}
+            <li>No Nim files or directories.</li>
+            {% endfor %}
+        </ul>
+    </section>
+</section>
+{% endblock %}

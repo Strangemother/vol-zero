@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}VOL Documentation{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body{% block body_class %}{% endblock %}>
+    <main class="page-shell">
+        {% block pre_header %}{% endblock %}
+        <header class="site-header">
+            <a class="site-title" href="/">VOL kernel <span class="version">{{ project_version }}</span></a>
+            <a class="github-link" href="{{ github_url }}">GitHub</a>
+        </header>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

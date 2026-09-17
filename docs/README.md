@@ -124,6 +124,11 @@ Additionally, building an ISO with `make all` requires `xorriso`, and building a
 
 The kernel sources are written in Nim and require the upstream Nim 2.2.12 binary at `$HOME/.local/opt/nim-2.2.12/bin/nim`. `tool c` and `tool c app` download and unpack `nim-2.2.12-linux_x64.tar.xz` from [nim-lang.org](https://nim-lang.org/download/nim-2.2.12-linux_x64.tar.xz) into that directory when it is missing.
 
+To install and configure Nim without starting a build, run `tool install nim`,
+`tool i nim`, or simply `tool i`. The command also links `nim` and `nimble` in
+`$HOME/.local/bin`; add that directory to the current shell's `PATH` if it is
+not already present.
+
 ### Kernel version
 
 The canonical kernel version is stored in `kernel/VERSION`. Keep the file to a
