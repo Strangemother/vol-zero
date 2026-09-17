@@ -92,7 +92,8 @@ proc render(framebuffer: ptr LimineFramebuffer) =
         for x in 0'u64 ..< framebuffer.width:
             let nx = uint8(x * 255 div framebuffer.width)
             let ny = uint8(y * 255 div framebuffer.height)
-            pixels[y * pitchPixels + x] = framebufferPixel(framebuffer, nx, 0, ny)
+            let purple = uint8(160 + ((x + y) * 40 div (framebuffer.width + framebuffer.height)))
+            pixels[y * pitchPixels + x] = framebufferPixel(framebuffer, purple, 0, purple)
 
 #[
   Validates Limine's framebuffer response and renders the demo pattern.
