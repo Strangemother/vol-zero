@@ -1,0 +1,41 @@
+{
+  "path": "/workspaces/vol-zero/kernel/src/core/version.nim",
+  "module_name": "version",
+  "declarations": [
+    {
+      "kind": "const",
+      "name": "kernelVersion",
+      "exported": true,
+      "signature": "const kernelVersion* {.strdefine.} = \"unknown\"",
+      "documentation": "",
+      "line": 7
+    },
+    {
+      "kind": "proc",
+      "name": "get_version",
+      "exported": true,
+      "signature": "proc get_version*(): cstring =",
+      "documentation": "  Returns the embedded kernel version for runtime consumers such as the serial\n  console. The returned `cstring` points to the read-only version string\n  compiled into the kernel; callers must not modify it.",
+      "line": 14
+    }
+  ],
+  "file_documentation": "  The kernel version is supplied by the Nimble build task from `../VERSION`.\n\n  `strdefine` makes this value available while compiling Nim code and embeds\n  the same string in the kernel, so runtime code does not need to read a file.",
+  "public_declarations": [
+    {
+      "kind": "const",
+      "name": "kernelVersion",
+      "exported": true,
+      "signature": "const kernelVersion* {.strdefine.} = \"unknown\"",
+      "documentation": "",
+      "line": 7
+    },
+    {
+      "kind": "proc",
+      "name": "get_version",
+      "exported": true,
+      "signature": "proc get_version*(): cstring =",
+      "documentation": "  Returns the embedded kernel version for runtime consumers such as the serial\n  console. The returned `cstring` points to the read-only version string\n  compiled into the kernel; callers must not modify it.",
+      "line": 14
+    }
+  ]
+}

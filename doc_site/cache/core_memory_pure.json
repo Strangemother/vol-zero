@@ -1,0 +1,105 @@
+{
+  "path": "/workspaces/vol-zero/kernel/src/core/memory/pure.nim",
+  "module_name": "pure",
+  "declarations": [
+    {
+      "kind": "template",
+      "name": "pointer_to_uint",
+      "exported": false,
+      "signature": "template pointer_to_uint(address: pointer): uint =",
+      "documentation": "  Sugar for converting pointers to unsigned integers.\n\n  Converts a raw pointer to an unsigned integer containing its address.\n\n  This is a template rather than a runtime procedure: Nim substitutes the\n  `cast[uint]` expression at the call site. It makes the purpose of the cast\n  easier to read while preserving the same low-level behavior.",
+      "line": 24
+    },
+    {
+      "kind": "template",
+      "name": "pointer_to_byte_array",
+      "exported": false,
+      "signature": "template pointer_to_byte_array(address: pointer): ptr UncheckedArray[uint8] =",
+      "documentation": "",
+      "line": 28
+    },
+    {
+      "kind": "template",
+      "name": "copy_bytes_forward",
+      "exported": false,
+      "signature": "template copy_bytes_forward(source, destination: ptr UncheckedArray[uint8], size: csize_t) =",
+      "documentation": "  Copies `size` bytes from a source byte array to a destination byte array in\n  forward order. The pointers do not contain length information, so `size`\n  tells the template how many byte positions are valid to access.",
+      "line": 38
+    },
+    {
+      "kind": "template",
+      "name": "copy_bytes_backward",
+      "exported": false,
+      "signature": "template copy_bytes_backward( source, destination: ptr UncheckedArray[uint8], size: csize_t ) =",
+      "documentation": "",
+      "line": 43
+    },
+    {
+      "kind": "proc",
+      "name": "memcpy",
+      "exported": true,
+      "signature": "proc memcpy*(destination: pointer, source: pointer, size: csize_t): pointer {.memoryExport.} =",
+      "documentation": "   Copies `size` bytes from `source` to `destination`.\n\n   The memory regions must not overlap. If they overlap, the copy order used\n   by `memcpy` can overwrite source bytes before they are read; use `memmove`\n   when overlapping regions are possible.\n\n   `destination` must refer to a writable region of at least `size` bytes,\n   and `source` must refer to a readable region of at least `size` bytes.\n   A `size` of zero performs no memory access. The procedure returns the\n   original `destination` pointer, matching the C `memcpy` contract.\n\n   Example:\n\n     var source = [uint8(1), 2, 3, 4]\n     var destination: array[4, uint8]\n     discard memcpy(destination.addr, source.addr, csize_t(source.len))",
+      "line": 70
+    },
+    {
+      "kind": "proc",
+      "name": "memset",
+      "exported": true,
+      "signature": "proc memset*(destination: pointer, value: cint, size: csize_t): pointer {.memoryExport.} =",
+      "documentation": "  Fills the first `size` bytes of `destination` with `value`.\n\n  Only the low eight bits of `value` are written to each byte, because the\n  destination is a byte array. `destination` must refer to a writable region\n  of at least `size` bytes. A `size` of zero performs no memory access. The\n  procedure returns the original `destination` pointer, matching the C\n  `memset` contract.\n\n   Example:\n\n     var buffer: array[8, uint8]\n     discard memset(buffer.addr, 0, csize_t(buffer.len))",
+      "line": 91
+    },
+    {
+      "kind": "proc",
+      "name": "memmove",
+      "exported": true,
+      "signature": "proc memmove*(destination: pointer, source: pointer, size: csize_t): pointer {.memoryExport.} =",
+      "documentation": "  Copies `size` bytes from `source` to `destination`, safely handling overlap.\n\n  When the destination begins before the source, bytes are copied from low to\n  high addresses. When the destination begins after the source, bytes are\n  copied from high to low addresses so that unread source bytes are preserved.\n  If both pointers are equal, no copying is necessary. `destination` must be\n  writable and `source` readable for the requested range; the procedure\n  returns the original `destination` pointer, matching the C `memmove`\n  contract.\n\n   Example:\n\n     var source = [uint8(10), 20, 30, 40]\n     var destination: array[4, uint8]\n     discard memmove(destination.addr, source.addr, csize_t(source.len))",
+      "line": 114
+    },
+    {
+      "kind": "proc",
+      "name": "memcmp",
+      "exported": true,
+      "signature": "proc memcmp*(first: pointer, second: pointer, size: csize_t): cint {.memoryExport.} =",
+      "documentation": "  Compares the first `size` bytes at `first` and `second` lexicographically.\n\n  Bytes are compared as unsigned values, from low to high addresses. The\n  procedure returns a negative value when the first differing byte in `first`\n  is smaller, a positive value when it is larger, and zero when all `size`\n  bytes are equal. Callers should rely on the sign of a nonzero result rather\n  than on its exact magnitude. Both pointers must refer to readable regions\n  of at least `size` bytes; a `size` of zero returns zero without reading.\n\n   Example:\n\n     var left = [uint8(1), 2, 3]\n     var right = [uint8(1), 2, 4]\n     let comparison = memcmp(left.addr, right.addr, csize_t(left.len))\n     # comparison is negative because 3 is less than 4.",
+      "line": 147
+    }
+  ],
+  "file_documentation": "  Freestanding memory manipulation routines for the Limine kernel.\n  Provides implementations of memcpy, memset, memmove, and memcmp.\n\n  Note: For VOL. these are reserved for the core machine and potentially a stepper.",
+  "public_declarations": [
+    {
+      "kind": "proc",
+      "name": "memcpy",
+      "exported": true,
+      "signature": "proc memcpy*(destination: pointer, source: pointer, size: csize_t): pointer {.memoryExport.} =",
+      "documentation": "   Copies `size` bytes from `source` to `destination`.\n\n   The memory regions must not overlap. If they overlap, the copy order used\n   by `memcpy` can overwrite source bytes before they are read; use `memmove`\n   when overlapping regions are possible.\n\n   `destination` must refer to a writable region of at least `size` bytes,\n   and `source` must refer to a readable region of at least `size` bytes.\n   A `size` of zero performs no memory access. The procedure returns the\n   original `destination` pointer, matching the C `memcpy` contract.\n\n   Example:\n\n     var source = [uint8(1), 2, 3, 4]\n     var destination: array[4, uint8]\n     discard memcpy(destination.addr, source.addr, csize_t(source.len))",
+      "line": 70
+    },
+    {
+      "kind": "proc",
+      "name": "memset",
+      "exported": true,
+      "signature": "proc memset*(destination: pointer, value: cint, size: csize_t): pointer {.memoryExport.} =",
+      "documentation": "  Fills the first `size` bytes of `destination` with `value`.\n\n  Only the low eight bits of `value` are written to each byte, because the\n  destination is a byte array. `destination` must refer to a writable region\n  of at least `size` bytes. A `size` of zero performs no memory access. The\n  procedure returns the original `destination` pointer, matching the C\n  `memset` contract.\n\n   Example:\n\n     var buffer: array[8, uint8]\n     discard memset(buffer.addr, 0, csize_t(buffer.len))",
+      "line": 91
+    },
+    {
+      "kind": "proc",
+      "name": "memmove",
+      "exported": true,
+      "signature": "proc memmove*(destination: pointer, source: pointer, size: csize_t): pointer {.memoryExport.} =",
+      "documentation": "  Copies `size` bytes from `source` to `destination`, safely handling overlap.\n\n  When the destination begins before the source, bytes are copied from low to\n  high addresses. When the destination begins after the source, bytes are\n  copied from high to low addresses so that unread source bytes are preserved.\n  If both pointers are equal, no copying is necessary. `destination` must be\n  writable and `source` readable for the requested range; the procedure\n  returns the original `destination` pointer, matching the C `memmove`\n  contract.\n\n   Example:\n\n     var source = [uint8(10), 20, 30, 40]\n     var destination: array[4, uint8]\n     discard memmove(destination.addr, source.addr, csize_t(source.len))",
+      "line": 114
+    },
+    {
+      "kind": "proc",
+      "name": "memcmp",
+      "exported": true,
+      "signature": "proc memcmp*(first: pointer, second: pointer, size: csize_t): cint {.memoryExport.} =",
+      "documentation": "  Compares the first `size` bytes at `first` and `second` lexicographically.\n\n  Bytes are compared as unsigned values, from low to high addresses. The\n  procedure returns a negative value when the first differing byte in `first`\n  is smaller, a positive value when it is larger, and zero when all `size`\n  bytes are equal. Callers should rely on the sign of a nonzero result rather\n  than on its exact magnitude. Both pointers must refer to readable regions\n  of at least `size` bytes; a `size` of zero returns zero without reading.\n\n   Example:\n\n     var left = [uint8(1), 2, 3]\n     var right = [uint8(1), 2, 4]\n     let comparison = memcmp(left.addr, right.addr, csize_t(left.len))\n     # comparison is negative because 3 is less than 4.",
+      "line": 147
+    }
+  ]
+}

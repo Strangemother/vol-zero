@@ -1,0 +1,145 @@
+{
+  "path": "/workspaces/vol-zero/kernel/src/core/memory/allocate.nim",
+  "module_name": "allocate",
+  "declarations": [
+    {
+      "kind": "proc",
+      "name": "getAllocationState",
+      "exported": true,
+      "signature": "proc getAllocationState*(): AllocationState {.importc: \"limine_get_allocation_state\".}",
+      "documentation": "",
+      "line": 34
+    },
+    {
+      "kind": "proc",
+      "name": "reset",
+      "exported": true,
+      "signature": "proc reset*() {.importc: \"limine_allocator_reset\".}",
+      "documentation": "Resets the physical allocator back to the beginning of the memory map.\n\nExample:\n\n    reset()\n    let physical = allocatePhysicalBytes(pageSize)\n\nAfter the reset, the next allocation may reuse addresses returned before the\nreset. Every pointer and physical address allocated before `reset()` must\ntherefore be considered invalid. Use this only when all earlier allocations\nare disposable. This is a whole-arena reset, not an individual deallocator.",
+      "line": 50
+    },
+    {
+      "kind": "proc",
+      "name": "allocatePhysicalBytesRaw",
+      "exported": false,
+      "signature": "proc allocatePhysicalBytesRaw(size: uint64): uint64 {.importc: \"limine_allocate_physical\".}",
+      "documentation": "Returns a physical address from the C implementation of the Limine-backed\nallocator.\n\nThis is an internal ABI bridge. Nim code should call `allocatePhysicalBytes`\ninstead, because that function returns the type-safe `PhysicalAddress` type.\n\nThe allocator rounds sizes up to whole pages and returns zero when allocation\nfails. The returned address is physical memory, not automatically a Nim\npointer.",
+      "line": 63
+    },
+    {
+      "kind": "proc",
+      "name": "hhdmOffsetRaw",
+      "exported": false,
+      "signature": "proc hhdmOffsetRaw(): uint64 {.importc: \"limine_hhdm_offset\".}",
+      "documentation": "Returns the HHDM offset supplied by Limine.\n\nThis is an internal ABI bridge. Nim code should normally call `hhdmOffset`\ninstead. The value must not be guessed or hard-coded because Limine may choose\na different offset on different boots or configurations.",
+      "line": 72
+    },
+    {
+      "kind": "proc",
+      "name": "hhdmAvailableRaw",
+      "exported": false,
+      "signature": "proc hhdmAvailableRaw(): uint64 {.importc: \"limine_hhdm_available\".}",
+      "documentation": "Reports whether Limine supplied an HHDM response.\n\nThis is an internal ABI bridge. Nim code should call `hhdmAvailable` instead.\nThe C function returns an integer because that is a simple C ABI\nrepresentation of a boolean value.",
+      "line": 81
+    },
+    {
+      "kind": "proc",
+      "name": "allocatePhysicalBytes",
+      "exported": true,
+      "signature": "proc allocatePhysicalBytes*(size: uint64): PhysicalAddress =",
+      "documentation": "Allocates a range of usable physical memory.\n\nExample:\n\n    let physical = allocatePhysicalBytes(pageSize)\n    if uint64(physical) == 0:\n        serial.write(\"Allocation failed\\r\\n\")\n\nThe allocator rounds `size` up to a multiple of `pageSize`. For example, a\nrequest for 1 byte consumes one 4096-byte page, and a request for 4097 bytes\nconsumes two pages. A result of zero means that allocation failed.\n\nThe returned value is a `PhysicalAddress`, not a dereferenceable pointer. Use\n`physicalBytes` after confirming that an HHDM mapping is available. This first\nallocator is intentionally simple: it does not free memory and is not safe to\ncall concurrently from multiple CPUs or interrupt handlers.",
+      "line": 101
+    },
+    {
+      "kind": "proc",
+      "name": "hhdmOffset",
+      "exported": true,
+      "signature": "proc hhdmOffset*(): uint64 =",
+      "documentation": "Returns the HHDM offset selected by Limine.\n\nExample:\n\n    if hhdmAvailable():\n        let offset = hhdmOffset()\n        serial.writeUInt64(offset)\n\nThe offset is added to a physical address to produce the corresponding HHDM\nvirtual address. Do not use this value unless `hhdmAvailable()` is true. A\nzero offset can be valid on some systems, so checking the offset alone is not\na reliable availability test.",
+      "line": 118
+    },
+    {
+      "kind": "proc",
+      "name": "hhdmAvailable",
+      "exported": true,
+      "signature": "proc hhdmAvailable*(): bool =",
+      "documentation": "Reports whether Limine created the HHDM mapping requested by the kernel.\n\nExample:\n\n    if not hhdmAvailable():\n        serial.write(\"HHDM unavailable\\r\\n\")\n\nWhen this returns `false`, the kernel must not turn physical addresses into\npointers with this module. A physical allocator can still return addresses,\nbut those addresses need another virtual mapping before they can be read or\nwritten by Nim code.",
+      "line": 134
+    },
+    {
+      "kind": "proc",
+      "name": "physicalToVirtual",
+      "exported": true,
+      "signature": "proc physicalToVirtual*(physical: PhysicalAddress, offset: uint64): VirtualAddress =",
+      "documentation": "Converts a physical address into its HHDM virtual address.\n\nExample:\n\n    let physical = allocatePhysicalBytes(pageSize)\n    let virtual = physicalToVirtual(physical, hhdmOffset())\n\nThe conversion is only meaningful when `hhdmAvailable()` is true. A zero\nphysical address is treated as invalid because zero is also the allocator's\nfailure value. The function returns zero if adding the offset would overflow\nthe 64-bit address space.\n\nThis function returns a `VirtualAddress` number, not a Nim pointer. Use\n`physicalBytes` when byte access is required.",
+      "line": 153
+    },
+    {
+      "kind": "proc",
+      "name": "physicalBytes",
+      "exported": true,
+      "signature": "proc physicalBytes*(physical: PhysicalAddress): ptr UncheckedArray[uint8] =",
+      "documentation": "Returns a byte-array pointer for a physical allocation through the HHDM.\n\nExample:\n\n    let physical = allocatePhysicalBytes(pageSize)\n    let bytes = physicalBytes(physical)\n\n    if bytes != nil:\n        bytes[3] = uint8('X')\n\nThe returned pointer can access the allocated memory through the HHDM. For a\n4096-byte allocation, valid indexes are 0 through 4095. Nim does not know the\nallocation length because `UncheckedArray` has no bounds checking, so callers\nmust track the requested size themselves.\n\nThis returns `nil` when the physical address is zero or when HHDM is\nunavailable. It does not validate that an arbitrary physical address belongs\nto an allocation made by this module. The pointer is also unsuitable for\nsharing between CPUs until the allocator is made concurrency-safe.",
+      "line": 180
+    }
+  ],
+  "file_documentation": "Low-level physical memory allocation and HHDM (Higher Half Direct Map) support.\n\nThis module has two related responsibilities:\n\n1. Allocate a range of currently usable physical memory.\n2. Convert that physical address into a virtual address that the kernel can\n   access through a Nim pointer.\n\nA physical address is a number describing a location in RAM. A Nim pointer is\na virtual address that the CPU must translate through page tables. The HHDM is\na bootloader-provided virtual mapping that makes this conversion simple:\n\n    virtual address = physical address + HHDM offset\n\nThe physical allocator and HHDM do not provide a general-purpose heap. Memory\nreturned by this module is not freed, and callers must not access more bytes\nthan they requested.",
+  "public_declarations": [
+    {
+      "kind": "proc",
+      "name": "getAllocationState",
+      "exported": true,
+      "signature": "proc getAllocationState*(): AllocationState {.importc: \"limine_get_allocation_state\".}",
+      "documentation": "",
+      "line": 34
+    },
+    {
+      "kind": "proc",
+      "name": "reset",
+      "exported": true,
+      "signature": "proc reset*() {.importc: \"limine_allocator_reset\".}",
+      "documentation": "Resets the physical allocator back to the beginning of the memory map.\n\nExample:\n\n    reset()\n    let physical = allocatePhysicalBytes(pageSize)\n\nAfter the reset, the next allocation may reuse addresses returned before the\nreset. Every pointer and physical address allocated before `reset()` must\ntherefore be considered invalid. Use this only when all earlier allocations\nare disposable. This is a whole-arena reset, not an individual deallocator.",
+      "line": 50
+    },
+    {
+      "kind": "proc",
+      "name": "allocatePhysicalBytes",
+      "exported": true,
+      "signature": "proc allocatePhysicalBytes*(size: uint64): PhysicalAddress =",
+      "documentation": "Allocates a range of usable physical memory.\n\nExample:\n\n    let physical = allocatePhysicalBytes(pageSize)\n    if uint64(physical) == 0:\n        serial.write(\"Allocation failed\\r\\n\")\n\nThe allocator rounds `size` up to a multiple of `pageSize`. For example, a\nrequest for 1 byte consumes one 4096-byte page, and a request for 4097 bytes\nconsumes two pages. A result of zero means that allocation failed.\n\nThe returned value is a `PhysicalAddress`, not a dereferenceable pointer. Use\n`physicalBytes` after confirming that an HHDM mapping is available. This first\nallocator is intentionally simple: it does not free memory and is not safe to\ncall concurrently from multiple CPUs or interrupt handlers.",
+      "line": 101
+    },
+    {
+      "kind": "proc",
+      "name": "hhdmOffset",
+      "exported": true,
+      "signature": "proc hhdmOffset*(): uint64 =",
+      "documentation": "Returns the HHDM offset selected by Limine.\n\nExample:\n\n    if hhdmAvailable():\n        let offset = hhdmOffset()\n        serial.writeUInt64(offset)\n\nThe offset is added to a physical address to produce the corresponding HHDM\nvirtual address. Do not use this value unless `hhdmAvailable()` is true. A\nzero offset can be valid on some systems, so checking the offset alone is not\na reliable availability test.",
+      "line": 118
+    },
+    {
+      "kind": "proc",
+      "name": "hhdmAvailable",
+      "exported": true,
+      "signature": "proc hhdmAvailable*(): bool =",
+      "documentation": "Reports whether Limine created the HHDM mapping requested by the kernel.\n\nExample:\n\n    if not hhdmAvailable():\n        serial.write(\"HHDM unavailable\\r\\n\")\n\nWhen this returns `false`, the kernel must not turn physical addresses into\npointers with this module. A physical allocator can still return addresses,\nbut those addresses need another virtual mapping before they can be read or\nwritten by Nim code.",
+      "line": 134
+    },
+    {
+      "kind": "proc",
+      "name": "physicalToVirtual",
+      "exported": true,
+      "signature": "proc physicalToVirtual*(physical: PhysicalAddress, offset: uint64): VirtualAddress =",
+      "documentation": "Converts a physical address into its HHDM virtual address.\n\nExample:\n\n    let physical = allocatePhysicalBytes(pageSize)\n    let virtual = physicalToVirtual(physical, hhdmOffset())\n\nThe conversion is only meaningful when `hhdmAvailable()` is true. A zero\nphysical address is treated as invalid because zero is also the allocator's\nfailure value. The function returns zero if adding the offset would overflow\nthe 64-bit address space.\n\nThis function returns a `VirtualAddress` number, not a Nim pointer. Use\n`physicalBytes` when byte access is required.",
+      "line": 153
+    },
+    {
+      "kind": "proc",
+      "name": "physicalBytes",
+      "exported": true,
+      "signature": "proc physicalBytes*(physical: PhysicalAddress): ptr UncheckedArray[uint8] =",
+      "documentation": "Returns a byte-array pointer for a physical allocation through the HHDM.\n\nExample:\n\n    let physical = allocatePhysicalBytes(pageSize)\n    let bytes = physicalBytes(physical)\n\n    if bytes != nil:\n        bytes[3] = uint8('X')\n\nThe returned pointer can access the allocated memory through the HHDM. For a\n4096-byte allocation, valid indexes are 0 through 4095. Nim does not know the\nallocation length because `UncheckedArray` has no bounds checking, so callers\nmust track the requested size themselves.\n\nThis returns `nil` when the physical address is zero or when HHDM is\nunavailable. It does not validate that an arbitrary physical address belongs\nto an allocation made by this module. The pointer is also unsuitable for\nsharing between CPUs until the allocator is made concurrency-safe.",
+      "line": 180
+    }
+  ]
+}

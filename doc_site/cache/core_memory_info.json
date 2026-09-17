@@ -1,0 +1,49 @@
+{
+  "path": "/workspaces/vol-zero/kernel/src/core/memory/info.nim",
+  "module_name": "info",
+  "declarations": [
+    {
+      "kind": "proc",
+      "name": "memoryBytesByType",
+      "exported": false,
+      "signature": "proc memoryBytesByType(memoryType: uint64): uint64 {.importc: \"limine_memory_bytes_by_type\".}",
+      "documentation": "",
+      "line": 36
+    },
+    {
+      "kind": "proc",
+      "name": "usableMemoryBytesSector",
+      "exported": true,
+      "signature": "proc usableMemoryBytesSector*(memoryType: int): uint64 =",
+      "documentation": "",
+      "line": 38
+    },
+    {
+      "kind": "proc",
+      "name": "usableMemoryBytes",
+      "exported": true,
+      "signature": "proc usableMemoryBytes*(): uint64 =",
+      "documentation": "",
+      "line": 41
+    }
+  ],
+  "file_documentation": "Provides functions and constants for querying memory information.\n\nThis module interfaces with the Limine bootloader to retrieve memory\ninformation, including usable memory and memory categorized by type.",
+  "public_declarations": [
+    {
+      "kind": "proc",
+      "name": "usableMemoryBytesSector",
+      "exported": true,
+      "signature": "proc usableMemoryBytesSector*(memoryType: int): uint64 =",
+      "documentation": "",
+      "line": 38
+    },
+    {
+      "kind": "proc",
+      "name": "usableMemoryBytes",
+      "exported": true,
+      "signature": "proc usableMemoryBytes*(): uint64 =",
+      "documentation": "",
+      "line": 41
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "path": "/workspaces/vol-zero/kernel/src/core/human/bytes_x.nim",
+  "module_name": "bytes_x",
+  "declarations": [
+    {
+      "kind": "var",
+      "name": "humanBytesBuffer",
+      "exported": false,
+      "signature": "var humanBytesBuffer: array[32, char]",
+      "documentation": "",
+      "line": 2
+    },
+    {
+      "kind": "proc",
+      "name": "human_bytes",
+      "exported": true,
+      "signature": "proc human_bytes*(bytes: uint64): cstring =",
+      "documentation": "",
+      "line": 4
+    }
+  ],
+  "file_documentation": "",
+  "public_declarations": [
+    {
+      "kind": "proc",
+      "name": "human_bytes",
+      "exported": true,
+      "signature": "proc human_bytes*(bytes: uint64): cstring =",
+      "documentation": "",
+      "line": 4
+    }
+  ]
+}

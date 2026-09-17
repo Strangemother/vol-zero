@@ -1,0 +1,73 @@
+{
+  "path": "/workspaces/vol-zero/kernel/src/core/serial.nim",
+  "module_name": "serial",
+  "declarations": [
+    {
+      "kind": "proc",
+      "name": "serialOut",
+      "exported": false,
+      "signature": "proc serialOut(port: uint16, value: uint8) {.importc: \"nim_serial_out\".}",
+      "documentation": "  Declares the C helper that writes one byte to an x86 I/O port.\n\n  This procedure is private to this module because callers should normally\n  use `init` and `write` instead of manipulating UART registers directly.",
+      "line": 29
+    },
+    {
+      "kind": "proc",
+      "name": "serialIn",
+      "exported": false,
+      "signature": "proc serialIn(port: uint16): uint8 {.importc: \"nim_serial_in\".}",
+      "documentation": "  Declares the C helper that reads one byte from an x86 I/O port.\n\n  It is used to inspect the UART status register before writing another byte.",
+      "line": 36
+    },
+    {
+      "kind": "proc",
+      "name": "init",
+      "exported": true,
+      "signature": "proc init*() =",
+      "documentation": "  Configures the first PC serial port, COM1, for eight data bits, no parity,\n  one stop bit, and a baud-rate divisor of three.\n\n  The numeric port addresses are COM1's standard registers. Call this before\n  `write` so the UART is configured to transmit reliably.\n\n  Example:\n    init()\n    write(\"serial console ready\\0\")",
+      "line": 49
+    },
+    {
+      "kind": "proc",
+      "name": "write",
+      "exported": true,
+      "signature": "proc write*(message: cstring) =",
+      "documentation": "  Sends a NUL-terminated message through COM1.\n\n  A `cstring` is a pointer to characters ending with a NUL byte (`'\\0'`). The\n  procedure reads one character at a time, waits until the UART transmitter is\n  ready, and then writes the character to COM1. Call `init` first and provide a\n  valid NUL-terminated string.\n\n  Example:\n    init()\n    write(\"hello from the kernel\\0\")",
+      "line": 70
+    },
+    {
+      "kind": "proc",
+      "name": "writeUInt64",
+      "exported": true,
+      "signature": "proc writeUInt64*(value: uint64) =",
+      "documentation": "",
+      "line": 80
+    }
+  ],
+  "file_documentation": "  The x86 CPU communicates with legacy devices through I/O ports. Nim does not\n  express the compiler constraints needed by the `inb` and `outb` instructions,\n  so these small C helpers provide that boundary.\n\n  The `\"a\"` constraint places the byte value in the accumulator register, and\n  `\"Nd\"` allows the compiler to use either an immediate port number or the DX\n  register. `volatile` prevents the compiler from removing or reordering the\n  hardware access as if it were an ordinary unused calculation.",
+  "public_declarations": [
+    {
+      "kind": "proc",
+      "name": "init",
+      "exported": true,
+      "signature": "proc init*() =",
+      "documentation": "  Configures the first PC serial port, COM1, for eight data bits, no parity,\n  one stop bit, and a baud-rate divisor of three.\n\n  The numeric port addresses are COM1's standard registers. Call this before\n  `write` so the UART is configured to transmit reliably.\n\n  Example:\n    init()\n    write(\"serial console ready\\0\")",
+      "line": 49
+    },
+    {
+      "kind": "proc",
+      "name": "write",
+      "exported": true,
+      "signature": "proc write*(message: cstring) =",
+      "documentation": "  Sends a NUL-terminated message through COM1.\n\n  A `cstring` is a pointer to characters ending with a NUL byte (`'\\0'`). The\n  procedure reads one character at a time, waits until the UART transmitter is\n  ready, and then writes the character to COM1. Call `init` first and provide a\n  valid NUL-terminated string.\n\n  Example:\n    init()\n    write(\"hello from the kernel\\0\")",
+      "line": 70
+    },
+    {
+      "kind": "proc",
+      "name": "writeUInt64",
+      "exported": true,
+      "signature": "proc writeUInt64*(value: uint64) =",
+      "documentation": "",
+      "line": 80
+    }
+  ]
+}

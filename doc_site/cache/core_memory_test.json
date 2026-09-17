@@ -1,0 +1,25 @@
+{
+  "path": "/workspaces/vol-zero/kernel/src/core/memory/test.nim",
+  "module_name": "test",
+  "declarations": [
+    {
+      "kind": "proc",
+      "name": "quicktest_memory",
+      "exported": true,
+      "signature": "proc quicktest_memory*(): bool =",
+      "documentation": "Quick memory test for the VOL kernel.\n\nThis test verifies that memory can be copied correctly using memcpy and compared using memcmp.",
+      "line": 9
+    }
+  ],
+  "file_documentation": "",
+  "public_declarations": [
+    {
+      "kind": "proc",
+      "name": "quicktest_memory",
+      "exported": true,
+      "signature": "proc quicktest_memory*(): bool =",
+      "documentation": "Quick memory test for the VOL kernel.\n\nThis test verifies that memory can be copied correctly using memcpy and compared using memcmp.",
+      "line": 9
+    }
+  ]
+}

@@ -1,0 +1,388 @@
+{
+  "entries": [
+    {
+      "kind": "dir",
+      "name": "core",
+      "url": "/core/"
+    },
+    {
+      "kind": "dir",
+      "name": "core.display",
+      "url": "/core/display/"
+    },
+    {
+      "kind": "module",
+      "name": "core.display.gradient",
+      "url": "/core/display/gradient"
+    },
+    {
+      "kind": "declaration",
+      "name": "LimineFramebufferRgb",
+      "full_name": "core.display.gradient.LimineFramebufferRgb",
+      "url": "/core/display/gradient#declaration-2"
+    },
+    {
+      "kind": "declaration",
+      "name": "framebufferRequest",
+      "full_name": "core.display.gradient.framebufferRequest",
+      "url": "/core/display/gradient#declaration-53"
+    },
+    {
+      "kind": "declaration",
+      "name": "limineBaseRevision",
+      "full_name": "core.display.gradient.limineBaseRevision",
+      "url": "/core/display/gradient#declaration-54"
+    },
+    {
+      "kind": "declaration",
+      "name": "framebufferChannel",
+      "full_name": "core.display.gradient.framebufferChannel",
+      "url": "/core/display/gradient#declaration-64"
+    },
+    {
+      "kind": "declaration",
+      "name": "framebufferPixel",
+      "full_name": "core.display.gradient.framebufferPixel",
+      "url": "/core/display/gradient#declaration-75"
+    },
+    {
+      "kind": "declaration",
+      "name": "render",
+      "full_name": "core.display.gradient.render",
+      "url": "/core/display/gradient#declaration-88"
+    },
+    {
+      "kind": "declaration",
+      "name": "renderAll",
+      "full_name": "core.display.gradient.renderAll",
+      "url": "/core/display/gradient#declaration-132"
+    },
+    {
+      "kind": "module",
+      "name": "core.halt",
+      "url": "/core/halt"
+    },
+    {
+      "kind": "declaration",
+      "name": "halt",
+      "full_name": "core.halt.halt",
+      "url": "/core/halt#declaration-21"
+    },
+    {
+      "kind": "declaration",
+      "name": "halt",
+      "full_name": "core.halt.halt",
+      "url": "/core/halt#declaration-26"
+    },
+    {
+      "kind": "dir",
+      "name": "core.human",
+      "url": "/core/human/"
+    },
+    {
+      "kind": "module",
+      "name": "core.human.bytes",
+      "url": "/core/human/bytes"
+    },
+    {
+      "kind": "declaration",
+      "name": "humanByteUnits",
+      "full_name": "core.human.bytes.humanByteUnits",
+      "url": "/core/human/bytes#declaration-1"
+    },
+    {
+      "kind": "declaration",
+      "name": "humanBytesBuffer",
+      "full_name": "core.human.bytes.humanBytesBuffer",
+      "url": "/core/human/bytes#declaration-3"
+    },
+    {
+      "kind": "declaration",
+      "name": "byte_unit",
+      "full_name": "core.human.bytes.byte_unit",
+      "url": "/core/human/bytes#declaration-6"
+    },
+    {
+      "kind": "declaration",
+      "name": "human_bytes",
+      "full_name": "core.human.bytes.human_bytes",
+      "url": "/core/human/bytes#declaration-17"
+    },
+    {
+      "kind": "module",
+      "name": "core.human.bytes_x",
+      "url": "/core/human/bytes_x"
+    },
+    {
+      "kind": "declaration",
+      "name": "humanBytesBuffer",
+      "full_name": "core.human.bytes_x.humanBytesBuffer",
+      "url": "/core/human/bytes_x#declaration-2"
+    },
+    {
+      "kind": "declaration",
+      "name": "human_bytes",
+      "full_name": "core.human.bytes_x.human_bytes",
+      "url": "/core/human/bytes_x#declaration-4"
+    },
+    {
+      "kind": "dir",
+      "name": "core.memory",
+      "url": "/core/memory/"
+    },
+    {
+      "kind": "module",
+      "name": "core.memory.allocate",
+      "url": "/core/memory/allocate"
+    },
+    {
+      "kind": "declaration",
+      "name": "getAllocationState",
+      "full_name": "core.memory.allocate.getAllocationState",
+      "url": "/core/memory/allocate#declaration-34"
+    },
+    {
+      "kind": "declaration",
+      "name": "reset",
+      "full_name": "core.memory.allocate.reset",
+      "url": "/core/memory/allocate#declaration-50"
+    },
+    {
+      "kind": "declaration",
+      "name": "allocatePhysicalBytesRaw",
+      "full_name": "core.memory.allocate.allocatePhysicalBytesRaw",
+      "url": "/core/memory/allocate#declaration-63"
+    },
+    {
+      "kind": "declaration",
+      "name": "hhdmOffsetRaw",
+      "full_name": "core.memory.allocate.hhdmOffsetRaw",
+      "url": "/core/memory/allocate#declaration-72"
+    },
+    {
+      "kind": "declaration",
+      "name": "hhdmAvailableRaw",
+      "full_name": "core.memory.allocate.hhdmAvailableRaw",
+      "url": "/core/memory/allocate#declaration-81"
+    },
+    {
+      "kind": "declaration",
+      "name": "allocatePhysicalBytes",
+      "full_name": "core.memory.allocate.allocatePhysicalBytes",
+      "url": "/core/memory/allocate#declaration-101"
+    },
+    {
+      "kind": "declaration",
+      "name": "hhdmOffset",
+      "full_name": "core.memory.allocate.hhdmOffset",
+      "url": "/core/memory/allocate#declaration-118"
+    },
+    {
+      "kind": "declaration",
+      "name": "hhdmAvailable",
+      "full_name": "core.memory.allocate.hhdmAvailable",
+      "url": "/core/memory/allocate#declaration-134"
+    },
+    {
+      "kind": "declaration",
+      "name": "physicalToVirtual",
+      "full_name": "core.memory.allocate.physicalToVirtual",
+      "url": "/core/memory/allocate#declaration-153"
+    },
+    {
+      "kind": "declaration",
+      "name": "physicalBytes",
+      "full_name": "core.memory.allocate.physicalBytes",
+      "url": "/core/memory/allocate#declaration-180"
+    },
+    {
+      "kind": "module",
+      "name": "core.memory.info",
+      "url": "/core/memory/info"
+    },
+    {
+      "kind": "declaration",
+      "name": "memoryBytesByType",
+      "full_name": "core.memory.info.memoryBytesByType",
+      "url": "/core/memory/info#declaration-36"
+    },
+    {
+      "kind": "declaration",
+      "name": "usableMemoryBytesSector",
+      "full_name": "core.memory.info.usableMemoryBytesSector",
+      "url": "/core/memory/info#declaration-38"
+    },
+    {
+      "kind": "declaration",
+      "name": "usableMemoryBytes",
+      "full_name": "core.memory.info.usableMemoryBytes",
+      "url": "/core/memory/info#declaration-41"
+    },
+    {
+      "kind": "module",
+      "name": "core.memory.pure",
+      "url": "/core/memory/pure"
+    },
+    {
+      "kind": "declaration",
+      "name": "pointer_to_uint",
+      "full_name": "core.memory.pure.pointer_to_uint",
+      "url": "/core/memory/pure#declaration-24"
+    },
+    {
+      "kind": "declaration",
+      "name": "pointer_to_byte_array",
+      "full_name": "core.memory.pure.pointer_to_byte_array",
+      "url": "/core/memory/pure#declaration-28"
+    },
+    {
+      "kind": "declaration",
+      "name": "copy_bytes_forward",
+      "full_name": "core.memory.pure.copy_bytes_forward",
+      "url": "/core/memory/pure#declaration-38"
+    },
+    {
+      "kind": "declaration",
+      "name": "copy_bytes_backward",
+      "full_name": "core.memory.pure.copy_bytes_backward",
+      "url": "/core/memory/pure#declaration-43"
+    },
+    {
+      "kind": "declaration",
+      "name": "memcpy",
+      "full_name": "core.memory.pure.memcpy",
+      "url": "/core/memory/pure#declaration-70"
+    },
+    {
+      "kind": "declaration",
+      "name": "memset",
+      "full_name": "core.memory.pure.memset",
+      "url": "/core/memory/pure#declaration-91"
+    },
+    {
+      "kind": "declaration",
+      "name": "memmove",
+      "full_name": "core.memory.pure.memmove",
+      "url": "/core/memory/pure#declaration-114"
+    },
+    {
+      "kind": "declaration",
+      "name": "memcmp",
+      "full_name": "core.memory.pure.memcmp",
+      "url": "/core/memory/pure#declaration-147"
+    },
+    {
+      "kind": "module",
+      "name": "core.memory.test",
+      "url": "/core/memory/test"
+    },
+    {
+      "kind": "declaration",
+      "name": "quicktest_memory",
+      "full_name": "core.memory.test.quicktest_memory",
+      "url": "/core/memory/test#declaration-9"
+    },
+    {
+      "kind": "module",
+      "name": "core.panicoverride",
+      "url": "/core/panicoverride"
+    },
+    {
+      "kind": "declaration",
+      "name": "panic",
+      "full_name": "core.panicoverride.panic",
+      "url": "/core/panicoverride#declaration-17"
+    },
+    {
+      "kind": "declaration",
+      "name": "rawoutput",
+      "full_name": "core.panicoverride.rawoutput",
+      "url": "/core/panicoverride#declaration-32"
+    },
+    {
+      "kind": "module",
+      "name": "core.serial",
+      "url": "/core/serial"
+    },
+    {
+      "kind": "declaration",
+      "name": "serialOut",
+      "full_name": "core.serial.serialOut",
+      "url": "/core/serial#declaration-29"
+    },
+    {
+      "kind": "declaration",
+      "name": "serialIn",
+      "full_name": "core.serial.serialIn",
+      "url": "/core/serial#declaration-36"
+    },
+    {
+      "kind": "declaration",
+      "name": "init",
+      "full_name": "core.serial.init",
+      "url": "/core/serial#declaration-49"
+    },
+    {
+      "kind": "declaration",
+      "name": "write",
+      "full_name": "core.serial.write",
+      "url": "/core/serial#declaration-70"
+    },
+    {
+      "kind": "declaration",
+      "name": "writeUInt64",
+      "full_name": "core.serial.writeUInt64",
+      "url": "/core/serial#declaration-80"
+    },
+    {
+      "kind": "module",
+      "name": "core.version",
+      "url": "/core/version"
+    },
+    {
+      "kind": "declaration",
+      "name": "kernelVersion",
+      "full_name": "core.version.kernelVersion",
+      "url": "/core/version#declaration-7"
+    },
+    {
+      "kind": "declaration",
+      "name": "get_version",
+      "full_name": "core.version.get_version",
+      "url": "/core/version#declaration-14"
+    },
+    {
+      "kind": "module",
+      "name": "hosted_main",
+      "url": "/hosted_main"
+    },
+    {
+      "kind": "declaration",
+      "name": "main",
+      "full_name": "hosted_main.main",
+      "url": "/hosted_main#declaration-16"
+    },
+    {
+      "kind": "module",
+      "name": "main",
+      "url": "/main"
+    },
+    {
+      "kind": "declaration",
+      "name": "print_allocation_state",
+      "full_name": "main.print_allocation_state",
+      "url": "/main#declaration-22"
+    },
+    {
+      "kind": "declaration",
+      "name": "kmain",
+      "full_name": "main.kmain",
+      "url": "/main#declaration-32"
+    },
+    {
+      "kind": "module",
+      "name": "panicoverride",
+      "url": "/panicoverride"
+    }
+  ]
+}

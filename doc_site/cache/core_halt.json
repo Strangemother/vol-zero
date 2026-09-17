@@ -1,0 +1,41 @@
+{
+  "path": "/workspaces/vol-zero/kernel/src/core/halt.nim",
+  "module_name": "halt",
+  "declarations": [
+    {
+      "kind": "proc",
+      "name": "halt",
+      "exported": true,
+      "signature": "proc halt*() {.noreturn.} =",
+      "documentation": "  In kernel mode, calling `hlt` in a loop halts the CPU permanently.",
+      "line": 21
+    },
+    {
+      "kind": "proc",
+      "name": "halt",
+      "exported": true,
+      "signature": "proc halt*() =",
+      "documentation": "  In hosted mode, we simply call app exit.",
+      "line": 26
+    }
+  ],
+  "file_documentation": "  Stops execution permanently.\n\n  The `hlt` instruction places the CPU in a halted state until an interrupt\n  arrives. Because interrupts are not disabled here, an interrupt could wake\n  the CPU and allow the loop to execute again; the loop makes the halt state\n  permanent from the kernel's point of view. The `noreturn` pragma documents\n  that this procedure never returns to its caller.\n\n  Use this for an unrecoverable boot failure or when the kernel has completed\n  its work and has no scheduler or idle loop to run.\n\n  Example:\n\n    halt()",
+  "public_declarations": [
+    {
+      "kind": "proc",
+      "name": "halt",
+      "exported": true,
+      "signature": "proc halt*() {.noreturn.} =",
+      "documentation": "  In kernel mode, calling `hlt` in a loop halts the CPU permanently.",
+      "line": 21
+    },
+    {
+      "kind": "proc",
+      "name": "halt",
+      "exported": true,
+      "signature": "proc halt*() =",
+      "documentation": "  In hosted mode, we simply call app exit.",
+      "line": 26
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "path": "/workspaces/vol-zero/kernel/src/core/human/bytes.nim",
+  "module_name": "bytes",
+  "declarations": [
+    {
+      "kind": "const",
+      "name": "humanByteUnits",
+      "exported": false,
+      "signature": "const humanByteUnits = [\"B\", \"KB\", \"MB\", \"GB\", \"TB\", \"PB\", \"EB\"]",
+      "documentation": "",
+      "line": 1
+    },
+    {
+      "kind": "var",
+      "name": "humanBytesBuffer",
+      "exported": false,
+      "signature": "var humanBytesBuffer: array[32, char]",
+      "documentation": "",
+      "line": 3
+    },
+    {
+      "kind": "proc",
+      "name": "byte_unit",
+      "exported": false,
+      "signature": "proc byte_unit(bytes: uint64): tuple[size: uint64, index: int] =",
+      "documentation": "",
+      "line": 6
+    },
+    {
+      "kind": "proc",
+      "name": "human_bytes",
+      "exported": true,
+      "signature": "proc human_bytes*(bytes: uint64): cstring =",
+      "documentation": "",
+      "line": 17
+    }
+  ],
+  "file_documentation": "",
+  "public_declarations": [
+    {
+      "kind": "proc",
+      "name": "human_bytes",
+      "exported": true,
+      "signature": "proc human_bytes*(bytes: uint64): cstring =",
+      "documentation": "",
+      "line": 17
+    }
+  ]
+}

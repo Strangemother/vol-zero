@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Super sheet | VOL Documentation{% endblock %}
+
+{% block content %}
+<article class="document-page super-sheet-page">
+    <div class="content">
+        <h1>Super sheet</h1>
+        <ul class="super-sheet-list">
+            {% for entry in entries %}
+            <li class="{{ entry.kind }}">
+                <a href="{{ entry.url }}">{{ entry.name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</article>
+{% endblock %}

@@ -1,0 +1,16 @@
+{
+  "path": "/workspaces/vol-zero/kernel/src/hosted_main.nim",
+  "module_name": "hosted_main",
+  "declarations": [
+    {
+      "kind": "proc",
+      "name": "main",
+      "exported": false,
+      "signature": "proc main() =",
+      "documentation": "",
+      "line": 16
+    }
+  ],
+  "file_documentation": "  Hosted development entry point for VOL.\n\n  This file uses the shared memory and version modules without importing\n  Limine, serial-port I/O, framebuffer access, or CPU halt instructions. It\n  can therefore be compiled as an ordinary Nim application for fast tests.",
+  "public_declarations": []
+}

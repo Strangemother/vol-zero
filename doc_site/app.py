@@ -1,4 +1,5 @@
 import sys
+import json
 from pathlib import Path
 
 from flask import Flask, abort, render_template
@@ -7,16 +8,20 @@ from flask import Flask, abort, render_template
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SOURCE_ROOT = PROJECT_ROOT / "kernel" / "src"
 DOCS_ROOT = PROJECT_ROOT / "docs"
+CACHE_ROOT = PROJECT_ROOT / "doc_site" / "cache"
 VERSION = (PROJECT_ROOT / "kernel" / "VERSION").read_text(encoding="utf-8").strip()
 GITHUB_URL = "https://github.com/Strangemother/vol-zero"
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from tools.nim_docs import parse_nim_source
-from tools.markdown_tool import to_html
+from tools.markdown_tool import code_to_html, signature_to_html, to_html
 
 
 app = Flask(__name__)
 app.jinja_env.globals["md_to_html"] = to_html
+app.jinja_env.globals["nim_md_to_html"] = lambda text: to_html(text, "nim")
+app.jinja_env.globals["code_to_html"] = code_to_html
+app.jinja_env.globals["signature_to_html"] = signature_to_html
 app.jinja_env.globals["project_version"] = VERSION
 app.jinja_env.globals["github_url"] = GITHUB_URL
 
@@ -24,6 +29,68 @@ app.jinja_env.globals["github_url"] = GITHUB_URL
 @app.get("/")
 def home():
 	return render_template("index.html", entries=directory_entries(SOURCE_ROOT))
+
+
+def _module_cache_path(source_path: Path) -> Path:
+	relative_path = source_path.relative_to(SOURCE_ROOT).with_suffix("")
+	cache_name = "_".join(relative_path.parts) + ".json"
+	return CACHE_ROOT / cache_name
+
+
+def _load_module(source_path: Path) -> dict:
+	cache_path = _module_cache_path(source_path)
+	if cache_path.exists():
+		return json.loads(cache_path.read_text(encoding="utf-8"))
+
+	module = parse_nim_source(source_path).to_dict()
+	CACHE_ROOT.mkdir(parents=True, exist_ok=True)
+	cache_path.write_text(json.dumps(module, indent=2) + "\n", encoding="utf-8")
+	return module
+
+
+def _load_supersheet() -> list[dict[str, str]]:
+	sheet_cache_path = CACHE_ROOT / "supersheet.json"
+	if sheet_cache_path.exists():
+		return json.loads(sheet_cache_path.read_text(encoding="utf-8"))["entries"]
+
+	entries: list[dict[str, str]] = []
+	directories: set[str] = set()
+	for source_path in sorted(SOURCE_ROOT.rglob("*.nim")):
+		relative_path = source_path.relative_to(SOURCE_ROOT).with_suffix("")
+		module_name = ".".join(relative_path.parts)
+		for index in range(1, len(relative_path.parts)):
+			directory_name = ".".join(relative_path.parts[:index])
+			if directory_name not in directories:
+				directories.add(directory_name)
+				directory_url = "/" + "/".join(relative_path.parts[:index]) + "/"
+				entries.append({
+					"kind": "dir",
+					"name": directory_name,
+					"url": directory_url,
+				})
+
+		module_url = "/" + relative_path.as_posix()
+		entries.append({"kind": "module", "name": module_name, "url": module_url})
+		module = _load_module(source_path)
+		for declaration in module["declarations"]:
+			entries.append({
+				"kind": "declaration",
+				"name": declaration["name"],
+				"full_name": f"{module_name}.{declaration['name']}",
+				"url": f"{module_url}#declaration-{declaration['line']}",
+			})
+
+	CACHE_ROOT.mkdir(parents=True, exist_ok=True)
+	sheet_cache_path.write_text(
+		json.dumps({"entries": entries}, indent=2) + "\n",
+		encoding="utf-8",
+	)
+	return entries
+
+
+@app.get("/sheet/")
+def sheet():
+	return render_template("sheet.html", entries=_load_supersheet())
 
 
 def source_path_for(requested_path: str) -> Path:

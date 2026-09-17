@@ -6,6 +6,14 @@
     --text: #7d7d7d;
     --muted: #9ca5b5;
     --accent: #3ab7b1;
+    --code-text: #d6deeb;
+    --code-comment: #6f7f8f;
+    --code-keyword: #c792ea;
+    --code-name: #82aaff;
+    --code-string: #c3e88d;
+    --code-number: #f78c6c;
+    --code-operator: #89ddff;
+    --code-class: #ffcb6b;
 }
 
 
@@ -256,6 +264,75 @@ pre {
     white-space: pre-wrap;
 }
 
+.highlight pre {
+    white-space: pre;
+}
+
+.highlight {
+    color: var(--code-text);
+}
+
+.highlight .c,
+.highlight .ch,
+.highlight .cm,
+.highlight .cpf,
+.highlight .c1,
+.highlight .cs {
+    color: var(--code-comment);
+}
+
+.highlight .k,
+.highlight .kc,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr,
+.highlight .kt {
+    color: var(--code-keyword);
+}
+
+.highlight .nf,
+.highlight .nb,
+.highlight .nx {
+    color: var(--code-name);
+}
+
+.highlight .s,
+.highlight .sa,
+.highlight .sb,
+.highlight .sc,
+.highlight .dl,
+.highlight .sd,
+.highlight .s2,
+.highlight .se,
+.highlight .sh,
+.highlight .si,
+.highlight .sx,
+.highlight .sr,
+.highlight .ss {
+    color: var(--code-string);
+}
+
+.highlight .m,
+.highlight .mb,
+.highlight .mf,
+.highlight .mh,
+.highlight .mi,
+.highlight .mo {
+    color: var(--code-number);
+}
+
+.highlight .o,
+.highlight .ow {
+    color: var(--code-operator);
+}
+
+.highlight .nc,
+.highlight .nn,
+.highlight .no {
+    color: var(--code-class);
+}
+
 .eyebrow {
     margin: 0 0 1rem;
     color: var(--accent);
@@ -313,6 +390,22 @@ ul.toc-list {
     list-style: none;
     top: 2em;
     position: sticky;
+}
+
+ul.super-sheet-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: "JetBrains Mono", monospace;
+    /* line-height: 1.8; */
+}
+
+ul.super-sheet-list li.module {
+    margin-top: 1rem;
+}
+
+ul.super-sheet-list li.declaration {
+    padding-left: 2rem;
 }
 
 
@@ -375,4 +468,24 @@ p code {
     font-family: inherit;
     font-size: 1rem;
     color: hsl(177 44% 54% / 1);
+}
+
+
+.super-sheet-page .content {
+    /* outline: solid; */
+    margin: auto;
+}
+
+.super-sheet-list a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul.super-sheet-list li.dir {
+    margin-top: 1em;
+    /* border-top: solid; */
+}
+
+.super-sheet-list a:hover, .super-sheet-list a:focus {
+    text-decoration: underline;
 }

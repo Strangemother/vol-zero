@@ -1,0 +1,24 @@
+{
+  "path": "/workspaces/vol-zero/kernel/src/main.nim",
+  "module_name": "main",
+  "declarations": [
+    {
+      "kind": "proc",
+      "name": "print_allocation_state",
+      "exported": false,
+      "signature": "proc print_allocation_state() =",
+      "documentation": "",
+      "line": 22
+    },
+    {
+      "kind": "proc",
+      "name": "kmain",
+      "exported": false,
+      "signature": "proc kmain() {.exportc: \"kmain\", noreturn.} =",
+      "documentation": "VOL through Limine enters the kernel through the C-compatible symbol kmain.",
+      "line": 32
+    }
+  ],
+  "file_documentation": "Main kernel entry point for the VOL bootloader.\n\nInitializes serial communication, sets up the framebuffer,\nand halts the CPU if necessary.",
+  "public_declarations": []
+}

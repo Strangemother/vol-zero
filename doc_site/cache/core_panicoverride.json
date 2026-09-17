@@ -1,0 +1,41 @@
+{
+  "path": "/workspaces/vol-zero/kernel/src/core/panicoverride.nim",
+  "module_name": "panicoverride",
+  "declarations": [
+    {
+      "kind": "proc",
+      "name": "panic",
+      "exported": true,
+      "signature": "proc panic*(message: string) {.nimcall, noreturn.} =",
+      "documentation": "    Replaces Nim's default panic handler for the freestanding kernel.\n\n    A hosted application can print an error and ask the operating system to\n    terminate. A kernel has no operating system available to do that, so this\n    handler disables interrupts with `cli` and permanently stops the CPU with\n    `hlt`. The `noreturn` pragma tells the compiler that execution never comes\n    back to the caller. `message` is currently accepted for API compatibility,\n    but this implementation does not display it.\n\n    Example:\n\n        panic(\"unrecoverable kernel error\")",
+      "line": 17
+    },
+    {
+      "kind": "proc",
+      "name": "rawoutput",
+      "exported": true,
+      "signature": "proc rawoutput*(message: string) {.nimcall.} =",
+      "documentation": "    Provides the raw-output hook expected by some Nim runtime paths.\n\n    This freestanding implementation intentionally does nothing. It keeps code\n    that requests runtime output linkable without introducing a dependency on a\n    hosted terminal or file system. `message` is therefore ignored.\n\n    Example:\n        rawoutput(\"diagnostic text\")",
+      "line": 32
+    }
+  ],
+  "file_documentation": "",
+  "public_declarations": [
+    {
+      "kind": "proc",
+      "name": "panic",
+      "exported": true,
+      "signature": "proc panic*(message: string) {.nimcall, noreturn.} =",
+      "documentation": "    Replaces Nim's default panic handler for the freestanding kernel.\n\n    A hosted application can print an error and ask the operating system to\n    terminate. A kernel has no operating system available to do that, so this\n    handler disables interrupts with `cli` and permanently stops the CPU with\n    `hlt`. The `noreturn` pragma tells the compiler that execution never comes\n    back to the caller. `message` is currently accepted for API compatibility,\n    but this implementation does not display it.\n\n    Example:\n\n        panic(\"unrecoverable kernel error\")",
+      "line": 17
+    },
+    {
+      "kind": "proc",
+      "name": "rawoutput",
+      "exported": true,
+      "signature": "proc rawoutput*(message: string) {.nimcall.} =",
+      "documentation": "    Provides the raw-output hook expected by some Nim runtime paths.\n\n    This freestanding implementation intentionally does nothing. It keeps code\n    that requests runtime output linkable without introducing a dependency on a\n    hosted terminal or file system. `message` is therefore ignored.\n\n    Example:\n        rawoutput(\"diagnostic text\")",
+      "line": 32
+    }
+  ]
+}

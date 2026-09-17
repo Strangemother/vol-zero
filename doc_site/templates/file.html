@@ -21,7 +21,7 @@
             <h2>Header</h2>
             {% if module and module.file_documentation %}
             <div class="documentation">
-                {{ md_to_html(module.file_documentation) }}
+                {{ nim_md_to_html(module.file_documentation) }}
             </div>
             {% endif %}
             {% if documentation %}
@@ -37,7 +37,7 @@
             <h2>Declarations</h2>
             <ul class="declaration-list">
                 {% for item in module.declarations %}
-                <li>
+                <li id="declaration-{{ item.line }}">
                     <h3>
                         {% if item.exported %}
                         <span class="exported">public</span>
@@ -47,10 +47,10 @@
                     <div class="header">
                         <!-- <div class="exported">Exported: {{ item.exported }}</div> -->
                         <!-- <div class="kind">{{ item.kind }}</div> -->
-                        <div class="sig monospace-font">{{ item.signature }}</div>
+                        <div class="sig highlight monospace-font">{{ signature_to_html(item.signature) }}</div>
                     </div>
                     <div class="documentation">
-                        {{ md_to_html(item.documentation) }}
+                        {{ nim_md_to_html(item.documentation) }}
                     </div>
                 </li>
                 {% endfor %}
@@ -60,7 +60,7 @@
 
         <section class="source-code">
             <h2>Source</h2>
-            <pre><code>{{ file_content }}</code></pre>
+            {{ code_to_html(file_content, file_extension) }}
         </section>
     </div>
     <div class="toc-list-container">

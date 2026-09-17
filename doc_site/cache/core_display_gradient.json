@@ -1,0 +1,73 @@
+{
+  "path": "/workspaces/vol-zero/kernel/src/core/display/gradient.nim",
+  "module_name": "gradient",
+  "declarations": [
+    {
+      "kind": "const",
+      "name": "LimineFramebufferRgb",
+      "exported": false,
+      "signature": "const LimineFramebufferRgb = 1'u8",
+      "documentation": " Limine's identifier for a 32-bit RGB framebuffer.",
+      "line": 2
+    },
+    {
+      "kind": "var",
+      "name": "framebufferRequest",
+      "exported": false,
+      "signature": "var framebufferRequest {.importc: \"framebufferRequest\", volatile.}: LimineFramebufferRequest",
+      "documentation": "  The request objects themselves are declared in `ext/limine_requests.c`.\n\n  Importing them keeps Limine's official request identifiers and linker-section\n  placement in C, where the Limine headers define them. `volatile` tells the\n  compiler that these values come from externally populated memory and must be\n  read rather than optimized away as ordinary unused variables.",
+      "line": 53
+    },
+    {
+      "kind": "var",
+      "name": "limineBaseRevision",
+      "exported": false,
+      "signature": "var limineBaseRevision {.importc: \"limineBaseRevision\", volatile.}: array[3, uint64]",
+      "documentation": "",
+      "line": 54
+    },
+    {
+      "kind": "proc",
+      "name": "framebufferChannel",
+      "exported": false,
+      "signature": "proc framebufferChannel(value: uint8, maskSize: uint8, maskShift: uint8): uint32 =",
+      "documentation": "  Converts an 8-bit color channel to the framebuffer's channel range and moves\n  it into the channel's bit position.\n\n  For example, a five-bit channel has values from 0 to 31 rather than 0 to\n  255. The multiplication and division preserve relative brightness while the\n  left shift places the result in the packed pixel.",
+      "line": 64
+    },
+    {
+      "kind": "proc",
+      "name": "framebufferPixel",
+      "exported": false,
+      "signature": "proc framebufferPixel(framebuffer: ptr LimineFramebuffer, red: uint8, green: uint8, blue: uint8): uint32 =",
+      "documentation": "  Packs red, green, and blue channel values into one framebuffer pixel.\n\n  Each channel is converted using the layout supplied by Limine, then the\n  channel bit fields are combined with bitwise OR. This works for different\n  RGB layouts instead of assuming that every framebuffer uses the same bits.",
+      "line": 75
+    },
+    {
+      "kind": "proc",
+      "name": "render",
+      "exported": false,
+      "signature": "proc render(framebuffer: ptr LimineFramebuffer) =",
+      "documentation": "  Fills one framebuffer with a blue-to-green gradient.\n\n  Pixels are accessed as 32-bit values. Since Limine reports `pitch` in bytes,\n  it is divided by four to obtain the number of 32-bit pixel positions between\n  the starts of adjacent rows. That row stride must be used instead of the\n  visible width because padding may exist at the end of a framebuffer row.",
+      "line": 88
+    },
+    {
+      "kind": "proc",
+      "name": "renderAll",
+      "exported": true,
+      "signature": "proc renderAll*(): bool =",
+      "documentation": "  Validates Limine's framebuffer response and renders the demo pattern.\n\n  The function checks that the requested Limine base revision is supported,\n  that Limine returned a response, and that at least one framebuffer exists. It\n  then visits every framebuffer and rejects layouts this renderer does not\n  understand. `true` means every framebuffer was rendered; `false` means the\n  response was missing or unsupported.\n\n  Example:\n    if not renderAll():\n      halt()",
+      "line": 132
+    }
+  ],
+  "file_documentation": "",
+  "public_declarations": [
+    {
+      "kind": "proc",
+      "name": "renderAll",
+      "exported": true,
+      "signature": "proc renderAll*(): bool =",
+      "documentation": "  Validates Limine's framebuffer response and renders the demo pattern.\n\n  The function checks that the requested Limine base revision is supported,\n  that Limine returned a response, and that at least one framebuffer exists. It\n  then visits every framebuffer and rejects layouts this renderer does not\n  understand. `true` means every framebuffer was rendered; `false` means the\n  response was missing or unsupported.\n\n  Example:\n    if not renderAll():\n      halt()",
+      "line": 132
+    }
+  ]
+}
