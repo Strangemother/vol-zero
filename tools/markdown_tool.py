@@ -1,6 +1,6 @@
 """Centralized Markdown parsing for the VOL documentation tools."""
 
-from markupsafe import Markup
+from markupsafe import Markup, escape
 import mistune
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
@@ -39,9 +39,11 @@ _NIM_MARKDOWN = mistune.create_markdown(
 def code_to_html(text: str, language: str) -> Markup:
     """Render a source file with syntax highlighting when its language is known."""
 
-    if language.lower() not in {"nim", "nimrod"}:
-        return Markup.escape(text)
-    lexer = get_lexer_by_name("nim")
+    lexer_name = {"h": "c", "hh": "cpp", "hpp": "cpp"}.get(language.lower(), language.lower())
+    try:
+        lexer = get_lexer_by_name(lexer_name)
+    except ClassNotFound:
+        return Markup("<pre><code>") + escape(text) + Markup("</code></pre>")
     return Markup(highlight(text, lexer, _FORMATTER))
 
 

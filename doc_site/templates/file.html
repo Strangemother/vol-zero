@@ -35,6 +35,9 @@
         {% if module %}
         <section class="metadata">
             <h2>Declarations</h2>
+            {% if module.declarations|length == 0 %}
+            <p>No declarations in this module.</p>
+            {% endif %}
             <ul class="declaration-list">
                 {% for item in module.declarations %}
                 <li id="declaration-{{ item.line }}">
