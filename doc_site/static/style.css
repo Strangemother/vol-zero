@@ -5,7 +5,7 @@
     --border: #303642;
     --text: #7d7d7d;
     --muted: #9ca5b5;
-    --accent: #a88cff;
+    --accent: #3ab7b1;
 }
 
 
@@ -17,8 +17,8 @@
 }
 
 body p {
-    line-height: 1.4em;
-    font-size: 1.1em;
+    line-height: 1.5em;
+    font-size: 1.2em;
 }
 
 .ibm-plex-sans {
@@ -115,7 +115,10 @@ body p {
 }
 
 
-.jetbrains-mono {
+.jetbrains-mono,
+.header .sig,
+pre code,
+.monospace-font {
   font-family: "JetBrains Mono", monospace;
   font-optical-sizing: auto;
   font-weight: 400;
@@ -201,9 +204,9 @@ body {
 .document-page .content {
     width: min(100%, 64rem);
     /* width: 59em; */
-    padding: 0 2rem;
+    padding: 0 0rem;
     /* border: 1px solid var(--border); */
-    background: var(--surface);
+    /* background: var(--surface); */
     /* box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 24%); */
     margin: 0;
     /* flex-grow: 1; */
@@ -231,9 +234,9 @@ body {
 }
 
 h2 {
-    margin: 2rem 0 0.75rem;
+    margin: 1rem 0 1em;
     color: var(--accent);
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -336,10 +339,40 @@ ul.toc-list {
     gap: 0.3em;
 }
 
-.toc-list li a .exported {
+.toc-list li a .exported, h3 .exported {
     color: #444;
 }
 
 .toc-list li a:hover, .toc-list li a:focus {
     text-decoration: underline;
+}
+
+
+.header .sig {
+    /* border: solid 1px #333; */
+    padding: 1em 0.9em;
+    background: hsl(220 17% 11% / 1);
+    margin: 0.1em;
+    border-radius: 0.1em;
+    font-size: 0.9rem;
+    /* font-family: 'IBM Plex Serif'; */
+}
+
+
+.content > section {/* background: hsl(210 15% 12% / 1); */padding: 1em 2em;margin: 2em 0;}
+
+.declaration-list h3 {
+    font-weight: 500;
+    font-size: 1.3em;
+    margin: 0 0 1em;
+    color: #b7a93a;
+    /* color: hsl(53 51% 43% / 1); */
+}
+
+p code {
+    background: #0a0a0a;
+    padding: 0.1em 0.3em;
+    font-family: inherit;
+    font-size: 1rem;
+    color: hsl(177 44% 54% / 1);
 }

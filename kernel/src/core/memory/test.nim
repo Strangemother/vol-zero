@@ -2,9 +2,9 @@
 include pure
 
 #[
-    Quick memory test for the VOL kernel.
-    
-    This test verifies that memory can be copied correctly using memcpy and compared using memcmp.
+Quick memory test for the VOL kernel.
+
+This test verifies that memory can be copied correctly using memcpy and compared using memcmp.
 ]#
 proc quicktest_memory*(): bool =
     var source = [uint8(1), 2, 3, 4]

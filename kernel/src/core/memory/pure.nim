@@ -62,6 +62,7 @@ template copy_bytes_backward(
    original `destination` pointer, matching the C `memcpy` contract.
 
    Example:
+       
      var source = [uint8(1), 2, 3, 4]
      var destination: array[4, uint8]
      discard memcpy(destination.addr, source.addr, csize_t(source.len))
@@ -83,6 +84,7 @@ proc memcpy*(destination: pointer, source: pointer, size: csize_t): pointer {.me
   `memset` contract.
 
    Example:
+       
      var buffer: array[8, uint8]
      discard memset(buffer.addr, 0, csize_t(buffer.len))
 ]#
@@ -104,6 +106,7 @@ proc memset*(destination: pointer, value: cint, size: csize_t): pointer {.memory
   contract.
 
    Example:
+       
      var source = [uint8(10), 20, 30, 40]
      var destination: array[4, uint8]
      discard memmove(destination.addr, source.addr, csize_t(source.len))
@@ -135,6 +138,7 @@ proc memmove*(destination: pointer, source: pointer, size: csize_t): pointer {.m
   of at least `size` bytes; a `size` of zero returns zero without reading.
 
    Example:
+       
      var left = [uint8(1), 2, 3]
      var right = [uint8(1), 2, 4]
      let comparison = memcmp(left.addr, right.addr, csize_t(left.len))

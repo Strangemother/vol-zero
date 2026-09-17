@@ -1,8 +1,8 @@
 #[
-    Provides functions and constants for querying memory information.
+Provides functions and constants for querying memory information.
 
-    This module interfaces with the Limine bootloader to retrieve memory
-    information, including usable memory and memory categorized by type.
+This module interfaces with the Limine bootloader to retrieve memory
+information, including usable memory and memory categorized by type.
 ]#
 
 #[

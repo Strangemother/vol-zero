@@ -18,7 +18,7 @@
 
         {% if documentation or (module and module.file_documentation) %}
         <section class="source-document">
-            <h2>Document</h2>
+            <h2>Header</h2>
             {% if module and module.file_documentation %}
             <div class="documentation">
                 {{ md_to_html(module.file_documentation) }}
@@ -34,7 +34,7 @@
 
         {% if module %}
         <section class="metadata">
-            <h2>Metadata</h2>
+            <h2>Declarations</h2>
             <ul class="declaration-list">
                 {% for item in module.declarations %}
                 <li>
@@ -47,7 +47,7 @@
                     <div class="header">
                         <!-- <div class="exported">Exported: {{ item.exported }}</div> -->
                         <!-- <div class="kind">{{ item.kind }}</div> -->
-                        <div class="sig">{{ item.signature }}</div>
+                        <div class="sig monospace-font">{{ item.signature }}</div>
                     </div>
                     <div class="documentation">
                         {{ md_to_html(item.documentation) }}
