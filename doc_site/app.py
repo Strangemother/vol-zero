@@ -155,6 +155,9 @@ def file_view(requested_path: str):
 
 	relative_source_path = source_path.relative_to(SOURCE_ROOT)
 	relative_path = relative_source_path.with_suffix("")
+	display_source_path = (
+		relative_path if source_path.suffix == ".nim" else relative_source_path
+	)
 	doc_path = DOCS_ROOT / relative_path.with_suffix(".md")
 	documentation = doc_path.read_text(encoding="utf-8") if doc_path.is_file() else None
 	file_content = source_path.read_text(encoding="utf-8", errors="replace")
@@ -166,7 +169,7 @@ def file_view(requested_path: str):
 		file_content=file_content,
 		file_extension=source_path.suffix.lstrip(".").lower(),
 		parent_url=parent_url_for(relative_path),
-		source_path=relative_source_path.as_posix(),
+		source_path=display_source_path.as_posix(),
 	)
 
 
