@@ -54,10 +54,11 @@ options:
 
 ## Nim Documentation Metadata
 
-`nim_docs.py` extracts the project's existing `#[ ... ]#` and `##` comments
-and associates them with module-level Nim declarations. It is intended as a
-source of metadata for a custom documentation site rather than as a replacement
-for Nim's compiler or documentation generator.
+`nim_docs.py` extracts the project's existing `#[ ... ]#` and `##` comments,
+associates them with module-level Nim declarations, and recognizes a multiline
+comment beginning on line one as file documentation. It is intended as a source
+of metadata for a custom documentation site rather than as a replacement for
+Nim's compiler or documentation generator.
 
 Print a summary:
 

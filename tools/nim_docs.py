@@ -18,7 +18,7 @@ from typing import Iterable
 
 DECLARATION_RE = re.compile(
     r"^(?P<indent>\s*)(?P<kind>proc|func|method|iterator|template|macro|converter|"
-    r"type|const|var|let|const\s+|when|concept)\b(?P<rest>.*)$"
+    r"type|const|var|let|const\s+|concept)\b(?P<rest>.*)$"
 )
 NAME_RE = re.compile(r"^\s*(?P<name>[A-Za-z_][A-Za-z0-9_']*)(?P<export>\*)?")
 
@@ -42,6 +42,7 @@ class NimModule:
     path: str
     module_name: str
     declarations: list[NimDeclaration] = field(default_factory=list)
+    file_documentation: str = ""
 
     @property
     def public_declarations(self) -> list[NimDeclaration]:
@@ -136,10 +137,12 @@ def _declaration_header(lines: list[str], start: int) -> str:
     return " ".join(header)
 
 
-def _parse_declaration(lines: list[str], index: int) -> NimDeclaration | None:
+def _parse_declaration(
+    lines: list[str], index: int, *, allow_indented: bool = False
+) -> NimDeclaration | None:
     # Module documentation describes module-level symbols. Indented `let`,
     # `var`, and object fields belong to the surrounding declaration or proc.
-    if lines[index].startswith((" ", "\t")):
+    if not allow_indented and lines[index].startswith((" ", "\t")):
         return None
 
     match = DECLARATION_RE.match(lines[index])
@@ -172,10 +175,23 @@ def parse_nim_source(path: str | Path) -> NimModule:
     lines = source_path.read_text(encoding="utf-8").splitlines()
     module = NimModule(path=source_path.as_posix(), module_name=source_path.stem)
     pending: DocumentationBlock | None = None
+    conditional_indent: int | None = None
     index = 0
+
+    if lines and lines[0].strip().startswith("#["):
+        first_comment, comment_end = _read_block_comment(lines, 0)
+        if comment_end > 1:
+            module.file_documentation = first_comment.text
+            index = comment_end
+    elif lines and lines[0].strip().startswith("##"):
+        first_comment, comment_end = _read_line_comments(lines, 0)
+        if comment_end > 1:
+            module.file_documentation = first_comment.text
+            index = comment_end
 
     while index < len(lines):
         stripped = lines[index].strip()
+        indentation = len(lines[index]) - len(lines[index].lstrip())
         if stripped.startswith("#["):
             pending, index = _read_block_comment(lines, index)
             continue
@@ -183,7 +199,27 @@ def parse_nim_source(path: str | Path) -> NimModule:
             pending, index = _read_line_comments(lines, index)
             continue
 
-        declaration = _parse_declaration(lines, index)
+        if stripped.startswith("when ") and indentation == 0:
+            conditional_indent = indentation
+            index += 1
+            continue
+
+        if (
+            conditional_indent is not None
+            and stripped
+            and indentation <= conditional_indent
+        ):
+            is_conditional_branch = indentation == conditional_indent and (
+                stripped.startswith("else") or stripped.startswith("elif")
+            )
+            if not is_conditional_branch:
+                conditional_indent = None
+
+        declaration = _parse_declaration(
+            lines,
+            index,
+            allow_indented=conditional_indent is not None,
+        )
         if declaration is not None:
             if pending is not None:
                 declaration.documentation = pending.text

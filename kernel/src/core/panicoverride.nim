@@ -1,3 +1,4 @@
+
 #[
     Replaces Nim's default panic handler for the freestanding kernel.
 
@@ -9,7 +10,9 @@
     but this implementation does not display it.
 
     Example:
+        
         panic("unrecoverable kernel error")
+        
 ]#
 proc panic*(message: string) {.nimcall, noreturn.} =
     while true:

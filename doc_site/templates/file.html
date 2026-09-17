@@ -16,12 +16,19 @@
             <a href="{{ parent_url }}">Parent</a>
         </nav>
 
-        {% if documentation %}
+        {% if documentation or (module and module.file_documentation) %}
         <section class="source-document">
             <h2>Document</h2>
+            {% if module and module.file_documentation %}
+            <div class="documentation">
+                {{ md_to_html(module.file_documentation) }}
+            </div>
+            {% endif %}
+            {% if documentation %}
             <div class="documentation">
                 {{ md_to_html(documentation) }}
             </div>
+            {% endif %}
         </section>
         {% endif %}
 

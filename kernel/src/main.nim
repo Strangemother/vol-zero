@@ -1,8 +1,8 @@
 #[
-    Main kernel entry point for the VOL bootloader.
+Main kernel entry point for the VOL bootloader.
 
-    Initializes serial communication, sets up the framebuffer,
-    and halts the CPU if necessary.
+Initializes serial communication, sets up the framebuffer,
+and halts the CPU if necessary.
 ]#
 
 # Memory is included as low-level C ABI support; the other modules are
@@ -28,7 +28,7 @@ proc print_allocation_state() =
     serial.write("\r\n")
 
 
-# VOL through Limine enters the kernel through the C-compatible symbol kmain.
+## VOL through Limine enters the kernel through the C-compatible symbol kmain.
 proc kmain() {.exportc: "kmain", noreturn.} =
     serial.init()
 

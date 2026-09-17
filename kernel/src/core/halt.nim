@@ -11,14 +11,17 @@
   its work and has no scheduler or idle loop to run.
 
   Example:
+    
     halt()
 ]#
 
+
 when defined(freestanding):
+    #[  In kernel mode, calling `hlt` in a loop halts the CPU permanently. ]#
     proc halt*() {.noreturn.} =
         while true:
             asm "hlt"
 else:
-    # In hosted mode, we simply call app exit.
+    #[  In hosted mode, we simply call app exit. ]#
     proc halt*() =
         quit "Hosted halt called"
