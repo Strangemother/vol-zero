@@ -4,12 +4,13 @@
 
 {% block body_class %} class="file-lang-{{ file_extension }}"{% endblock %}
 
+{% block pre_header %}
+{% endblock %}
+
 {% block content %}
 <article class="document-page">
-    <p class="eyebrow">VOL kernel</p>
     <h1>{{ source_path }}</h1>
-    <nav class="page-navigation" aria-label="Page navigation">
-        <a href="/">Home</a>
+    <nav class="pre-header-navigation" aria-label="Page navigation">
         <a href="{{ parent_url }}">Parent</a>
     </nav>
 
@@ -25,7 +26,7 @@
     {% if module %}
     <section class="metadata">
         <h2>Metadata</h2>
-        <ul>
+        <ul class="declaration-list">
             {% for item in module.declarations %}
             <li>
                 <h3>

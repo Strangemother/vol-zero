@@ -7,6 +7,8 @@ from flask import Flask, abort, render_template
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SOURCE_ROOT = PROJECT_ROOT / "kernel" / "src"
 DOCS_ROOT = PROJECT_ROOT / "docs"
+VERSION = (PROJECT_ROOT / "kernel" / "VERSION").read_text(encoding="utf-8").strip()
+GITHUB_URL = "https://github.com/Strangemother/vol-zero"
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from tools.nim_docs import parse_nim_source
@@ -15,6 +17,8 @@ from tools.markdown_tool import to_html
 
 app = Flask(__name__)
 app.jinja_env.globals["md_to_html"] = to_html
+app.jinja_env.globals["project_version"] = VERSION
+app.jinja_env.globals["github_url"] = GITHUB_URL
 
 
 @app.get("/")

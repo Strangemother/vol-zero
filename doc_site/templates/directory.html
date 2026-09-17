@@ -4,10 +4,8 @@
 
 {% block content %}
 <article class="document-page">
-    <p class="eyebrow">VOL kernel directory</p>
     <h1>{{ directory_path or "src" }}</h1>
     <nav class="page-navigation" aria-label="Page navigation">
-        <a href="/">Home</a>
         <a href="{{ parent_url }}">Parent</a>
     </nav>
 
@@ -22,7 +20,7 @@
 
     <section class="metadata">
         <h2>Files</h2>
-        <ul>
+        <ul class="file-list">
             {% for entry in entries %}
             <li>
                 <a href="{{ entry.url }}">{{ entry.name }}{% if entry.kind == "directory" %}/{% endif %}</a>

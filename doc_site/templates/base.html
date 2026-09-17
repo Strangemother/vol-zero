@@ -8,6 +8,11 @@
 </head>
 <body{% block body_class %}{% endblock %}>
     <main class="page-shell">
+        {% block pre_header %}{% endblock %}
+        <header class="site-header">
+            <a class="site-title" href="/">VOL kernel <span class="version">{{ project_version }}</span></a>
+            <a class="github-link" href="{{ github_url }}">GitHub</a>
+        </header>
         {% block content %}{% endblock %}
     </main>
 </body>
