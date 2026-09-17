@@ -10,12 +10,23 @@
 # include core/memory/pure
 import core/memory/test as mem_test
 import core/memory/info as mem_info
+import core/memory/allocate as mem_allocate
 import core/serial
 import core/display/gradient
 import core/halt as kernelHalt
 import core/version as kernelVersion
 
 import core/human/bytes_x as human_bytes
+
+
+proc print_allocation_state() =
+    serial.write("Allocation state: ")
+    let allocationState = mem_allocate.getAllocationState()
+    serial.writeUInt64(allocationState.entryIndex)
+    serial.write(" ")
+    serial.writeUInt64(allocationState.address)
+    serial.write("\r\n")
+
 
 # VOL through Limine enters the kernel through the C-compatible symbol kmain.
 proc kmain() {.exportc: "kmain", noreturn.} =
@@ -33,10 +44,28 @@ proc kmain() {.exportc: "kmain", noreturn.} =
 
     serial.write("Usable memory: ")
     serial.writeUInt64(mem_info.usableMemoryBytes())
-
+    serial.write("\r\n")
+    
     serial.write(human_bytes.human_bytes(mem_info.usableMemoryBytes()))
     serial.write("\r\n")
 
+    print_allocation_state()
+
+    serial.write("Performing single byte memory test\r\n")
+    let physical = mem_allocate.allocatePhysicalBytes(mem_allocate.pageSize)
+    let bytes = mem_allocate.physicalBytes(physical)
+
+    print_allocation_state()
+
+    if bytes == nil:
+        serial.write("Memory allocation or HHDM mapping failed\r\n")
+    else:
+        bytes[3] = uint8('X')
+        if bytes[3] == uint8('X'):
+            serial.write("Memory allocation and HHDM mapping succeeded\r\n")
+        else:
+            serial.write("Memory allocation succeeded but HHDM mapping failed\r\n")
+    
     if not gradient.renderAll():
         kernelHalt.halt()
 
