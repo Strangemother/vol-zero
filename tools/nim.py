@@ -14,6 +14,7 @@ NIM_INSTALL_DIR = Path.home() / ".local" / "opt" / f"nim-{NIM_VERSION}"
 NIM_BIN_DIR = NIM_INSTALL_DIR / "bin"
 NIM_PATH = NIM_BIN_DIR / "nim"
 NIMBLE_PATH = NIM_BIN_DIR / "nimble"
+USER_BIN_DIR = Path.home() / ".local" / "bin"
 
 
 def _run(command: list[str]) -> None:
@@ -38,3 +39,16 @@ def ensure_nim() -> Path:
     if not NIM_PATH.is_file() or not NIMBLE_PATH.is_file():
         raise RuntimeError(f"Nim {NIM_VERSION} was not installed at {NIM_INSTALL_DIR}")
     return NIMBLE_PATH
+
+
+def configure_nim() -> None:
+    """Make Nim and Nimble available through the user's local bin directory."""
+    USER_BIN_DIR.mkdir(parents=True, exist_ok=True)
+    for command, target in (("nim", NIM_PATH), ("nimble", NIMBLE_PATH)):
+        link = USER_BIN_DIR / command
+        if link.is_symlink() and link.resolve() == target:
+            continue
+        if link.exists() or link.is_symlink():
+            print(f"Skipping existing {link}; it was not changed.", flush=True)
+            continue
+        link.symlink_to(target)

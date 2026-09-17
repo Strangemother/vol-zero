@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 import sys
 
@@ -14,6 +15,7 @@ from tools.cleanup import main as cleanup_main
 from tools.compile import main as compile_main
 from tools.compile_hosted import main as compile_hosted_main
 from tools.first_time import main as first_time_main
+from tools.nim import NIM_BIN_DIR, USER_BIN_DIR, configure_nim, ensure_nim
 from tools.run_compiled_no_display import main as run_no_display_main
 from tools.run_oraclebox import main as run_oraclebox_main
 from tools.run_hosted import main as run_hosted_main
@@ -49,6 +51,17 @@ def build_parser() -> argparse.ArgumentParser:
         "first_time",
         aliases=["first-time", "f"],
         help="install dependencies, build, and run QEMU",
+    )
+
+    install = subparsers.add_parser(
+        "install", aliases=["i"], help="install and configure toolchain dependencies"
+    )
+    install.add_argument(
+        "dependency",
+        nargs="?",
+        choices=["nim"],
+        default="nim",
+        help="dependency to install (default: nim)",
     )
 
     run = subparsers.add_parser(
@@ -121,6 +134,16 @@ def compile_target(target: str) -> int:
     return compile_main([])
 
 
+def install_target(dependency: str) -> int:
+    if dependency == "nim":
+        ensure_nim()
+        configure_nim()
+        print(f"Nim is ready at {NIM_BIN_DIR}.", flush=True)
+        if str(USER_BIN_DIR) not in os.environ.get("PATH", "").split(os.pathsep):
+            print(f"Add it to this shell with: export PATH=\"{USER_BIN_DIR}:$PATH\"", flush=True)
+    return 0
+
+
 def run_target(
     target: str,
     display: bool = False,
@@ -156,6 +179,8 @@ def main(arguments: list[str] | None = None) -> int:
         return compile_main(parsed.make_args)
     if parsed.command in {"first_time", "first-time", "f"}:
         return first_time_main()
+    if parsed.command in {"install", "i"}:
+        return install_target(parsed.dependency)
     if parsed.command in {"run", "r"}:
         if parsed.target in {"oraclebox", "vbox"}:
             return run_target(parsed.target, parsed.display, parsed.serial, parsed.headless)
