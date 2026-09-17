@@ -92,8 +92,29 @@ proc render(framebuffer: ptr LimineFramebuffer) =
         for x in 0'u64 ..< framebuffer.width:
             let nx = uint8(x * 255 div framebuffer.width)
             let ny = uint8(y * 255 div framebuffer.height)
-            let purple = uint8(160 + ((x + y) * 40 div (framebuffer.width + framebuffer.height)))
-            pixels[y * pitchPixels + x] = framebufferPixel(framebuffer, purple, 0, purple)
+            
+            ## dark purple 
+            let purple = uint8(10 + ((x + y) * 40 div (framebuffer.width + framebuffer.height)))
+            let purple2 = uint8(10 + ((x + y) * 100 div (framebuffer.width + framebuffer.height)))
+            pixels[y * pitchPixels + x] = framebufferPixel(framebuffer, purple, 0, purple2)
+
+            ## purple 
+            # let purple = uint8(160 + ((x + y) * 40 div (framebuffer.width + framebuffer.height)))
+            # let purple2 = uint8(90 + ((x + y) * 60 div (framebuffer.width + framebuffer.height)))
+            # pixels[y * pitchPixels + x] = framebufferPixel(framebuffer, purple, 0, purple2)
+
+            ## bright green
+            # let purple = uint8(160 + ((x + y) * 40 div (framebuffer.width + framebuffer.height)))
+            # let purple2 = uint8(90 + ((x + y) * 60 div (framebuffer.width + framebuffer.height)))
+            # pixels[y * pitchPixels + x] = framebufferPixel(framebuffer, 0, purple, purple2)
+
+            ## green
+            # let purple = uint8(100 + ((x + y) * 40 div (framebuffer.width + framebuffer.height)))
+            # let purple2 = uint8(40 + ((x + y) * 20 div (framebuffer.width + framebuffer.height)))
+            # pixels[y * pitchPixels + x] = framebufferPixel(framebuffer, 0, purple, purple2)
+
+            ## default
+            # pixels[y * pitchPixels + x] = framebufferPixel(framebuffer, 0, ny, nx)
 
 #[
   Validates Limine's framebuffer response and renders the demo pattern.

@@ -2,56 +2,76 @@
 
 {% block title %}{{ source_path }} | VOL Documentation{% endblock %}
 
-{% block body_class %} class="file-lang-{{ file_extension }}"{% endblock %}
+{% block body_class %} class="file-detail file-lang-{{ file_extension }}"{% endblock %}
 
 {% block pre_header %}
 {% endblock %}
 
 {% block content %}
 <article class="document-page">
-    <h1>{{ source_path }}</h1>
-    <nav class="pre-header-navigation" aria-label="Page navigation">
-        <a href="{{ parent_url }}">Parent</a>
-    </nav>
+    <div class="content">
 
-    {% if documentation %}
-    <section class="source-document">
-        <h2>Document</h2>
-        <div class="documentation">
-            {{ md_to_html(documentation) }}
-        </div>
-    </section>
-    {% endif %}
+        <h1>{{ source_path }}</h1>
+        <nav class="pre-header-navigation" aria-label="Page navigation">
+            <a href="{{ parent_url }}">Parent</a>
+        </nav>
 
-    {% if module %}
-    <section class="metadata">
-        <h2>Metadata</h2>
-        <ul class="declaration-list">
+        {% if documentation %}
+        <section class="source-document">
+            <h2>Document</h2>
+            <div class="documentation">
+                {{ md_to_html(documentation) }}
+            </div>
+        </section>
+        {% endif %}
+
+        {% if module %}
+        <section class="metadata">
+            <h2>Metadata</h2>
+            <ul class="declaration-list">
+                {% for item in module.declarations %}
+                <li>
+                    <h3>
+                        {% if item.exported %}
+                        <span class="exported">public</span>
+                        {% endif %}
+                        {{ item.name }}
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: {{ item.exported }}</div> -->
+                        <!-- <div class="kind">{{ item.kind }}</div> -->
+                        <div class="sig">{{ item.signature }}</div>
+                    </div>
+                    <div class="documentation">
+                        {{ md_to_html(item.documentation) }}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
+
+        <section class="source-code">
+            <h2>Source</h2>
+            <pre><code>{{ file_content }}</code></pre>
+        </section>
+    </div>
+    <div class="toc-list-container">
+        <ul class="toc-list">
             {% for item in module.declarations %}
             <li>
-                <h3>
+                <a href="#">
                     {% if item.exported %}
                     <span class="exported">public</span>
                     {% endif %}
                     {{ item.name }}
-                </h3>
-                <div class="header">
-                    <!-- <div class="exported">Exported: {{ item.exported }}</div> -->
-                    <!-- <div class="kind">{{ item.kind }}</div> -->
-                    <div class="sig">{{ item.signature }}</div>
-                </div>
-                <div class="documentation">
-                    {{ md_to_html(item.documentation) }}
-                </div>
+                </a>
             </li>
             {% endfor %}
         </ul>
-    </section>
-    {% endif %}
+    </div>
 
-    <section class="source-code">
-        <h2>Source</h2>
-        <pre><code>{{ file_content }}</code></pre>
-    </section>
 </article>
+
+
 {% endblock %}
