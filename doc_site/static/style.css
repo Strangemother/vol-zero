@@ -35,6 +35,64 @@ body {
     box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 24%);
 }
 
+.document-page {
+    width: min(100%, 64rem);
+    padding: 2rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 24%);
+}
+
+.document-page h1 {
+    max-width: none;
+    overflow-wrap: anywhere;
+    font-family: monospace;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    line-height: 1.2;
+}
+
+.page-navigation {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+.page-navigation a {
+    padding: 0.45rem 0.75rem;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: monospace;
+    text-decoration: none;
+}
+
+.page-navigation a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+h2 {
+    margin: 2rem 0 0.75rem;
+    color: var(--accent);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+pre {
+    max-width: 100%;
+    margin: 0;
+    overflow-x: auto;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    background: #0c0e12;
+    color: var(--text);
+    font-family: monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
 .eyebrow {
     margin: 0 0 1rem;
     color: var(--accent);

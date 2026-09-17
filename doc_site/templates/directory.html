@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}{{ directory_path or "VOL Documentation" }}{% endblock %}
+
+{% block content %}
+<article class="document-page">
+    <p class="eyebrow">VOL kernel directory</p>
+    <h1>{{ directory_path or "src" }}</h1>
+    <nav class="page-navigation" aria-label="Page navigation">
+        <a href="/">Home</a>
+        <a href="{{ parent_url }}">Parent</a>
+    </nav>
+
+    {% if documentation %}
+    <section class="source-document">
+        <h2>Document</h2>
+        <div class="documentation">
+            {{ md_to_html(documentation) }}
+        </div>
+    </section>
+    {% endif %}
+
+    <section class="metadata">
+        <h2>Files</h2>
+        <ul>
+            {% for entry in entries %}
+            <li>
+                <a href="{{ entry.url }}">{{ entry.name }}{% if entry.kind == "directory" %}/{% endif %}</a>
+            </li>
+            {% else %}
+            <li>No Nim files or directories.</li>
+            {% endfor %}
+        </ul>
+    </section>
+</article>
+{% endblock %}
