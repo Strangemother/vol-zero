@@ -43,7 +43,7 @@ type
         response: ptr LimineFramebufferResponse
 
 #[
-  The request objects themselves are declared in `limine_requests.c`.
+  The request objects themselves are declared in `ext/limine_requests.c`.
 
   Importing them keeps Limine's official request identifiers and linker-section
   placement in C, where the Limine headers define them. `volatile` tells the
@@ -92,7 +92,7 @@ proc render(framebuffer: ptr LimineFramebuffer) =
         for x in 0'u64 ..< framebuffer.width:
             let nx = uint8(x * 255 div framebuffer.width)
             let ny = uint8(y * 255 div framebuffer.height)
-            pixels[y * pitchPixels + x] = framebufferPixel(framebuffer, 0, ny, nx)
+            pixels[y * pitchPixels + x] = framebufferPixel(framebuffer, nx, 0, ny)
 
 #[
   Validates Limine's framebuffer response and renders the demo pattern.

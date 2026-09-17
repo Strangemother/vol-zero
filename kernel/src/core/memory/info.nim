@@ -19,6 +19,8 @@
 
 ]#
 
+
+
 const
     memoryTypeUsable* = 0
     memoryTypeReserved* = 1
