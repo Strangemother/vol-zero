@@ -83,8 +83,10 @@ module = parse_nim_source("kernel/src/core/display/gradient.nim")
 page = module.to_dict()
 ```
 
-The resulting module contains its path, module name, declarations, visibility,
-source lines, signatures, and extracted documentation. Indented locals and
-object fields are ignored so each result represents a module-level page entry.
+The resulting module contains its path, module name, imports, includes,
+declarations, visibility, source lines, signatures, and extracted documentation.
+Each import/include entry contains its `name`, optional `alias`, source `line`,
+and `.nim` `filename`. Indented locals and object fields are ignored so each
+result represents a module-level page entry.
 
 

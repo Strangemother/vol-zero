@@ -21,6 +21,9 @@ DECLARATION_RE = re.compile(
     r"type|const|var|let|const\s+|concept)\b(?P<rest>.*)$"
 )
 NAME_RE = re.compile(r"^\s*(?P<name>[A-Za-z_][A-Za-z0-9_']*)(?P<export>\*)?")
+DEPENDENCY_RE = re.compile(
+    r"^(?P<name>.+?)(?:\s+as\s+(?P<alias>[A-Za-z_][A-Za-z0-9_']*))?$"
+)
 
 
 @dataclass
@@ -36,12 +39,24 @@ class NimDeclaration:
 
 
 @dataclass
+class NimDependency:
+    """An import or include target referenced by a Nim module."""
+
+    name: str
+    alias: str | None
+    filename: str
+    line: int
+
+
+@dataclass
 class NimModule:
     """Documentation metadata extracted from one Nim module."""
 
     path: str
     module_name: str
     declarations: list[NimDeclaration] = field(default_factory=list)
+    imports: list[NimDependency] = field(default_factory=list)
+    includes: list[NimDependency] = field(default_factory=list)
     file_documentation: str = ""
 
     @property
@@ -168,6 +183,78 @@ def _parse_declaration(
     )
 
 
+def _directive_header(lines: list[str], start: int) -> str:
+    """Collect an import/include statement spanning comma or bracket lines."""
+
+    header = [lines[start].strip()]
+    balance = 0
+    for character in header[0]:
+        if character in "([{":
+            balance += 1
+        elif character in ")]}":
+            balance = max(0, balance - 1)
+
+    index = start + 1
+    while index < len(lines) and (balance > 0 or header[-1].rstrip().endswith(",")):
+        current = lines[index].strip()
+        if not current or current.startswith("#"):
+            break
+        header.append(current)
+        for character in current:
+            if character in "([{":
+                balance += 1
+            elif character in ")]}":
+                balance = max(0, balance - 1)
+        index += 1
+    return " ".join(header)
+
+
+def _split_dependency_names(value: str) -> list[str]:
+    names: list[str] = []
+    current: list[str] = []
+    balance = 0
+    for character in value:
+        if character in "([{":
+            balance += 1
+        elif character in ")]}":
+            balance = max(0, balance - 1)
+        if character == "," and balance == 0:
+            names.append("".join(current).strip())
+            current = []
+        else:
+            current.append(character)
+    if current:
+        names.append("".join(current).strip())
+    return [name for name in names if name]
+
+
+def _dependency_entries(value: str, line: int) -> list[NimDependency]:
+    entries: list[NimDependency] = []
+    for item in _split_dependency_names(value):
+        match = DEPENDENCY_RE.match(item)
+        if match is None:
+            continue
+        name = match.group("name").strip()
+        alias = match.group("alias")
+        grouped_match = re.fullmatch(r"(?P<prefix>[^[]+)/\[(?P<names>[^]]+)\]", name)
+        names = _split_dependency_names(grouped_match.group("names")) if grouped_match else [name]
+        for grouped_name in names:
+            dependency_name = (
+                f"{grouped_match.group('prefix').rstrip('/')}/{grouped_name}"
+                if grouped_match
+                else grouped_name
+            )
+            entries.append(
+                NimDependency(
+                    name=dependency_name,
+                    alias=alias,
+                    filename=f"{dependency_name}.nim",
+                    line=line,
+                )
+            )
+    return entries
+
+
 def parse_nim_source(path: str | Path) -> NimModule:
     """Extract documentation blocks and declarations from a Nim source file."""
 
@@ -197,6 +284,18 @@ def parse_nim_source(path: str | Path) -> NimModule:
             continue
         if stripped.startswith("##"):
             pending, index = _read_line_comments(lines, index)
+            continue
+
+        directive_match = re.match(r"^(import|include)\s+(.+)$", stripped)
+        if directive_match is not None:
+            dependencies = _dependency_entries(
+                _directive_header(lines, index).split(None, 1)[1], index + 1
+            )
+            if directive_match.group(1) == "import":
+                module.imports.extend(dependencies)
+            else:
+                module.includes.extend(dependencies)
+            index += 1
             continue
 
         if stripped.startswith("when ") and indentation == 0:

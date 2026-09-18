@@ -15,6 +15,7 @@ import core/serial
 import core/display/gradient
 import core/halt as kernelHalt
 import core/version as kernelVersion
+import core/monotonic
 
 import core/human/bytes_x as human_bytes
 
@@ -28,9 +29,24 @@ proc print_allocation_state() =
     serial.write("\r\n")
 
 
+proc print_clock_info() =
+    serial.write("Clock:")
+    serial.write("\r\n   Monotonic time: ")
+    serial.writeUInt64(monotonic.delta())
+    serial.write("\r\n   tsc:            ")
+    serial.writeUInt64(monotonic.read_tsc64())
+    serial.write("\r\n   Date at boot:   ")
+    serial.writeUInt64(uint64(monotonic.date_at_boot()))
+    serial.write("\r\n   Frequency:      ")
+    serial.writeUInt64(monotonic.tsc_frequency())
+    serial.write("\r\n")
+
 ## VOL through Limine enters the kernel through the C-compatible symbol kmain.
 proc kmain() {.exportc: "kmain", noreturn.} =
     serial.init()
+    monotonic.record_start()
+
+    print_clock_info()
 
     if mem_test.quicktest_memory():
         serial.write("Memory routines: OK\r\n")

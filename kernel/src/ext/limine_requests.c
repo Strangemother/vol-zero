@@ -22,6 +22,18 @@ volatile struct limine_memmap_request memoryMapRequest = {
     .revision = 0
 };
 
+__attribute__((used, section(".limine_requests")))
+volatile struct limine_tsc_frequency_request tscFrequencyRequest = {
+    .id = LIMINE_TSC_FREQUENCY_REQUEST_ID,
+    .revision = 0
+};
+
+__attribute__((used, section(".limine_requests")))
+volatile struct limine_date_at_boot_request dateAtBootRequest = {
+    .id = LIMINE_DATE_AT_BOOT_REQUEST_ID,
+    .revision = 0
+};
+
 uint64_t limine_memory_bytes_by_type(uint64_t memoryType) {
     if (memoryMapRequest.response == 0) {
         return 0;
@@ -54,6 +66,20 @@ uint64_t limine_hhdm_available(void) {
 
 uint64_t limine_usable_memory_bytes(void) {
     return limine_memory_bytes_by_type(LIMINE_MEMMAP_USABLE);
+}
+
+uint64_t limine_tsc_frequency(void) {
+    if (tscFrequencyRequest.response == 0) {
+        return 0;
+    }
+    return tscFrequencyRequest.response->frequency;
+}
+
+int64_t limine_date_at_boot(void) {
+    if (dateAtBootRequest.response == 0) {
+        return 0;
+    }
+    return dateAtBootRequest.response->timestamp;
 }
 
 __attribute__((used, section(".limine_requests_start")))

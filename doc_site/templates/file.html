@@ -32,6 +32,40 @@
         </section>
         {% endif %}
 
+        <section class="imports-includes">
+            {% if module.imports|length > 0 or module.includes|length > 0 %}
+            <h2>Imports</h2>
+            {% endif %}
+            <ul class="import-list">
+                {% for item in module.imports %}
+                <li>
+                    <!-- {{ item }} -->
+                    <span class="include-type">import</span>
+                    <a href="{{ item.filename}}">{{ item.name }}</a>
+                    <span class="alias">{% if item.alias %}
+                        {{ item.alias }}
+                    {% endif %}</span>
+                    <!-- <div class="line">line {{ item.line }}</div> -->
+                    
+                </li>
+                {% endfor %}
+            </ul>
+            <ul class="include-list">
+                {% for item in module.includes %}
+                <li>
+                    <!-- {{ item }} -->
+                    <span class="include-type">include</span>
+                    <a href="{{ item.filename}}">{{ item.name }}</a>
+                    <span class="alias">{% if item.alias %}
+                        {{ item.alias }}
+                    {% endif %}</span>
+                    <!-- <div class="line">line {{ item.line }}</div> -->
+                    
+                </li>
+                {% endfor %}
+            </ul>
+               
+        </section>
         {% if module %}
         <section class="metadata">
             <h2>Declarations</h2>

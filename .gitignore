@@ -9,3 +9,4 @@ tools/app/*.egg-info/
 *.hdd
 tools/__pycache__/
 *.pyc
+tools/cache.json
