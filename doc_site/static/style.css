@@ -24,7 +24,7 @@
   font-style: normal;
 }
 
-body p {
+body p, body ul, body ol {
     line-height: 1.5em;
     font-size: 1.2em;
 }
@@ -257,9 +257,9 @@ pre {
     overflow-x: auto;
     padding: 1rem;
     border: 1px solid var(--border);
-    background: #0c0e12;
+    /* background: #0c0e12; */
     color: var(--text);
-    font-family: monospace;
+    /* font-family: monospace; */
     font-size: 0.9rem;
     line-height: 1.6;
     white-space: pre-wrap;
@@ -367,8 +367,8 @@ section.metadata ul {
 
 section.metadata ul.declaration-list li {
     margin: 0;
-    padding: 1em 0 2em;
-    border-bottom: solid 1px #000;
+    padding: 3em 0 3em;
+    border-bottom: solid 2px #0a0c0e;
 }
 
 .metadata li .documentation {
@@ -389,7 +389,7 @@ ul.toc-list {
     margin: 0;
     padding: 0;
     list-style: none;
-    top: 2em;
+    top: 11em;
     position: sticky;
 }
 

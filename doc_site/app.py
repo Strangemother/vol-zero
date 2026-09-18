@@ -1,6 +1,7 @@
 import sys
 import json
 from pathlib import Path
+from typing import assert_type
 
 from flask import Flask, abort, render_template
 
@@ -124,6 +125,7 @@ def documentation_view(requested_path: str):
 		module=None,
 		documentation=document_path.read_text(encoding="utf-8"),
 		file_content=None,
+		assert_type='markdown-doc',
 		file_extension="md",
 		parent_url=parent_url,
 		source_path=f"docs/{relative_path.as_posix()}",
@@ -154,6 +156,7 @@ def documentation_directory_view(directory: Path):
 		"directory.html",
 		directory_path=f"docs/{relative_path.as_posix()}" if str(relative_path) != "." else "docs",
 		parent_url=parent_url,
+		asset_type='markdown-doc',
 		documentation=readme_path.read_text(encoding="utf-8") if readme_path else None,
 		entries=documentation_directory_entries(directory),
 	)
@@ -234,6 +237,7 @@ def file_view(requested_path: str):
 			"directory.html",
 			directory_path=relative_path.as_posix(),
 			parent_url=parent_url_for(relative_path),
+			asset_type='file-doc',
 			documentation=documentation,
 			entries=directory_entries(source_path),
 		)
@@ -254,6 +258,7 @@ def file_view(requested_path: str):
 		module=module.to_dict() if module else None,
 		documentation=documentation,
 		file_content=file_content,
+		assert_type='file-doc',
 		file_extension=source_path.suffix.lstrip(".").lower(),
 		parent_url=parent_url_for(relative_path),
 		source_path=display_source_path.as_posix(),
