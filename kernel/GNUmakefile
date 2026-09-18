@@ -24,7 +24,7 @@ endif
 ifneq ($(TOOLCHAIN_PREFIX),)
     CC := $(TOOLCHAIN_PREFIX)gcc
 else
-    CC := cc
+    CC := $(or $(shell command -v cc 2>/dev/null),$(shell command -v gcc 2>/dev/null),/usr/bin/cc)
 endif
 
 # User controllable linker command.
@@ -38,6 +38,8 @@ ifeq ($(TOOLCHAIN),llvm)
     CC := clang
     LD := ld.lld
 endif
+
+MKDIR := $(or $(shell command -v mkdir 2>/dev/null),/usr/bin/mkdir)
 
 # User controllable C flags.
 CFLAGS := -g -O2 -pipe
@@ -143,27 +145,27 @@ all: bin/$(OUTPUT)
 
 # Link rules for the final executable.
 bin/$(OUTPUT): GNUmakefile linker-scripts/x86_64.lds $(OBJ)
-	mkdir -p "$(dir $@)"
+	$(MKDIR) -p "$(dir $@)"
 	$(LD) $(LDFLAGS) $(OBJ) -o $@
 
 # Compilation rules for *.c files.
 obj/%.c.o: %.c GNUmakefile
-	mkdir -p "$(dir $@)"
+	$(MKDIR) -p "$(dir $@)"
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 # Compilation rules for *.nim files.
 obj/%.nim.o: %.nim GNUmakefile vol_kernel.nimble VERSION
-	mkdir -p "$(dir $@)"
-	PATH="$(HOME)/.local/opt/nim-2.2.12/bin:$${PATH}" NIM="$(HOME)/.local/opt/nim-2.2.12/bin/nim" NIM_SOURCE="$<" NIMCACHE="$(CURDIR)/obj/nimcache/$*" NIM_OUTPUT="$@" $(NIMBLE) buildKernel
+	$(MKDIR) -p "$(dir $@)"
+	PATH="$(HOME)/.local/opt/nim-2.2.12/bin:$${PATH}" NIM="$(HOME)/.local/opt/nim-2.2.12/bin/nim" NIM_SOURCE="$<" NIMCACHE="$(CURDIR)/obj/nimcache/$*" NIM_OUTPUT="$@" $(NIMBLE) --nim:"$(HOME)/.local/opt/nim-2.2.12/bin/nim" buildKernel
 
 # Compilation rules for *.S files.
 obj/%.S.o: %.S GNUmakefile
-	mkdir -p "$(dir $@)"
+	$(MKDIR) -p "$(dir $@)"
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 # Compilation rules for *.asm (nasm) files.
 obj/%.asm.o: %.asm GNUmakefile
-	mkdir -p "$(dir $@)"
+	$(MKDIR) -p "$(dir $@)"
 	nasm $(NASMFLAGS) -MD $(@:.o=.d) -MP $< -o $@
 
 # Remove object files and the final executable.
