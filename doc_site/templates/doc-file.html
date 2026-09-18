@@ -11,14 +11,14 @@
 <article class="document-page">
     <div class="content">
 
+        <!--<h1>{{ source_path }}</h1>-->
         <nav class="pre-header-navigation" aria-label="Page navigation">
             <a href="{{ parent_url }}">Parent</a>
         </nav>
-        <h1>{{ source_path }}</h1>
 
         {% if documentation or (module and module.file_documentation) %}
         <section class="source-document">
-            <h2>Header</h2>
+            <!--<h2>Header</h2>-->
             {% if module and module.file_documentation %}
             <div class="documentation">
                 {{ nim_md_to_html(module.file_documentation) }}
@@ -32,40 +32,6 @@
         </section>
         {% endif %}
 
-        <section class="imports-includes">
-            {% if module.imports|length > 0 or module.includes|length > 0 %}
-            <h2>Imports</h2>
-            {% endif %}
-            <ul class="import-list">
-                {% for item in module.imports %}
-                <li>
-                    <!-- {{ item }} -->
-                    <span class="include-type">import</span>
-                    <a href="{{ item.filename}}">{{ item.name }}</a>
-                    <span class="alias">{% if item.alias %}
-                        {{ item.alias }}
-                    {% endif %}</span>
-                    <!-- <div class="line">line {{ item.line }}</div> -->
-                    
-                </li>
-                {% endfor %}
-            </ul>
-            <ul class="include-list">
-                {% for item in module.includes %}
-                <li>
-                    <!-- {{ item }} -->
-                    <span class="include-type">include</span>
-                    <a href="{{ item.filename}}">{{ item.name }}</a>
-                    <span class="alias">{% if item.alias %}
-                        {{ item.alias }}
-                    {% endif %}</span>
-                    <!-- <div class="line">line {{ item.line }}</div> -->
-                    
-                </li>
-                {% endfor %}
-            </ul>
-               
-        </section>
         {% if module %}
         <section class="metadata">
             <h2>Declarations</h2>
