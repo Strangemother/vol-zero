@@ -1,4 +1,20 @@
 #[
+The x86 CPU communicates with legacy devices through I/O ports.
+Nim does not express the compiler constraints needed by
+the `inb` and `outb` instructions, so small C helpers provide that boundary.
+
+The serial port communciates at the standard rate `115200` by default.
+
+Example:
+
+    serial.init()
+
+    serial.write("Usable memory: ")
+    serial.writeUInt64(mem_info.usableMemoryBytes())
+    serial.write("\r\n")
+]#
+
+#[
   The x86 CPU communicates with legacy devices through I/O ports. Nim does not
   express the compiler constraints needed by the `inb` and `outb` instructions,
   so these small C helpers provide that boundary.
@@ -23,8 +39,8 @@ static inline unsigned char nim_serial_in(unsigned short port) {
 #[
   Declares the C helper that writes one byte to an x86 I/O port.
 
-  This procedure is private to this module because callers should normally
-  use `init` and `write` instead of manipulating UART registers directly.
+  A procedure is private to this module. Callers should typically
+  call `init` and `write` rather than manipulating UART registers directly.
 ]#
 proc serialOut(port: uint16, value: uint8) {.importc: "nim_serial_out".}
 
@@ -43,6 +59,7 @@ proc serialIn(port: uint16): uint8 {.importc: "nim_serial_in".}
   `write` so the UART is configured to transmit reliably.
 
   Example:
+      
     init()
     write("serial console ready\0")
 ]#
@@ -64,6 +81,7 @@ proc init*() =
   valid NUL-terminated string.
 
   Example:
+      
     init()
     write("hello from the kernel\0")
 ]#

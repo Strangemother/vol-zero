@@ -496,3 +496,27 @@ ul.super-sheet-list li.dir {
     font-size: 3em;
     margin: 1.5em 0 1.5em;
 }
+
+.asset-markdown-doc li .documentation pre {
+    padding: 1.5em;
+    font-size: 1rem;
+}
+
+.asset-markdown-doc  .documentation h1 {
+    text-align: center;
+    margin: 4rem;
+}
+
+.asset-markdown-doc h2, .asset-markdown-doc h3 {
+    margin: 2em 0 1.4em;
+    text-transform: none;
+    font-size: 2em;
+    color: inherit;
+    letter-spacing: unset;
+}
+
+.asset-markdown-doc h3 {
+    margin: 2em 0 1.5em;
+    font-size: 1.5em;
+    font-weight: 600;
+}
