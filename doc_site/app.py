@@ -120,7 +120,7 @@ def documentation_view(requested_path: str):
 	if str(parent_path) != ".":
 		parent_url += parent_path.as_posix().strip("/") + "/"
 	return render_template(
-		"file.html",
+		"doc-file.html",
 		module=None,
 		documentation=document_path.read_text(encoding="utf-8"),
 		file_content=None,
