@@ -61,16 +61,19 @@
         </section>
         {% endif %}
 
+        {% if file_content %}
         <section class="source-code">
             <h2>Source</h2>
             {{ code_to_html(file_content, file_extension) }}
         </section>
+        {% endif %}
     </div>
     <div class="toc-list-container">
+        {% if module %}
         <ul class="toc-list">
             {% for item in module.declarations %}
             <li>
-                <a href="#">
+                <a href="#declaration-{{ item.line }}">
                     {% if item.exported %}
                     <span class="exported">public</span>
                     {% endif %}
@@ -79,6 +82,7 @@
             </li>
             {% endfor %}
         </ul>
+        {% endif %}
     </div>
 
 </article>

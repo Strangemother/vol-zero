@@ -201,12 +201,13 @@ body {
 }
 
 .welcome-panel {
-    /* width: min(100%, 42rem); */
+    width: min(100%, 70rem);
     padding: clamp(2rem, 6vw, 5rem);
     /* border: 1px solid var(--border); */
-    background: var(--surface);
+    background: hsl(224 19% 7% / 1);
     /* box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 24%); */
     margin: auto;
+    padding: 1em 5em 5em;
 }
 
 .document-page .content {
@@ -488,4 +489,10 @@ ul.super-sheet-list li.dir {
 
 .super-sheet-list a:hover, .super-sheet-list a:focus {
     text-decoration: underline;
+}
+
+.welcome-panel h1 {
+    text-align: center;
+    font-size: 3em;
+    margin: 1.5em 0 1.5em;
 }

@@ -28,7 +28,13 @@ app.jinja_env.globals["github_url"] = GITHUB_URL
 
 @app.get("/")
 def home():
-	return render_template("index.html", entries=directory_entries(SOURCE_ROOT))
+	index_path = DOCS_ROOT / "index.md"
+	documentation = index_path.read_text(encoding="utf-8") if index_path.is_file() else None
+	return render_template(
+		"index.html",
+		entries=directory_entries(SOURCE_ROOT),
+		documentation=documentation,
+	)
 
 
 def _module_cache_path(source_path: Path) -> Path:
@@ -91,6 +97,87 @@ def _load_supersheet() -> list[dict[str, str]]:
 @app.get("/sheet/")
 def sheet():
 	return render_template("sheet.html", entries=_load_supersheet())
+
+
+@app.get("/docs/<path:requested_path>")
+def documentation_view(requested_path: str):
+	path = requested_path.strip("/")
+	document_path = (DOCS_ROOT / path).resolve()
+	if not document_path.suffix:
+		if document_path.is_dir():
+			return documentation_directory_view(document_path)
+		document_path = document_path.with_suffix(".md")
+	try:
+		document_path.relative_to(DOCS_ROOT.resolve())
+	except ValueError:
+		abort(404)
+	if not document_path.is_file() or document_path.suffix.lower() != ".md":
+		abort(404)
+
+	relative_path = document_path.relative_to(DOCS_ROOT).with_suffix("")
+	parent_path = relative_path.parent
+	parent_url = "/docs/"
+	if str(parent_path) != ".":
+		parent_url += parent_path.as_posix().strip("/") + "/"
+	return render_template(
+		"file.html",
+		module=None,
+		documentation=document_path.read_text(encoding="utf-8"),
+		file_content=None,
+		file_extension="md",
+		parent_url=parent_url,
+		source_path=f"docs/{relative_path.as_posix()}",
+	)
+
+
+@app.get("/docs/")
+def documentation_root():
+	return documentation_directory_view(DOCS_ROOT)
+
+
+def documentation_directory_view(directory: Path):
+	try:
+		directory.relative_to(DOCS_ROOT.resolve())
+	except ValueError:
+		abort(404)
+	if not directory.is_dir():
+		abort(404)
+
+	relative_path = directory.relative_to(DOCS_ROOT)
+	parent_url = "/docs/"
+	if str(relative_path) != ".":
+		parent_path = relative_path.parent
+		if str(parent_path) != ".":
+			parent_url += parent_path.as_posix().strip("/") + "/"
+	readme_path = readme_path_for(directory)
+	return render_template(
+		"directory.html",
+		directory_path=f"docs/{relative_path.as_posix()}" if str(relative_path) != "." else "docs",
+		parent_url=parent_url,
+		documentation=readme_path.read_text(encoding="utf-8") if readme_path else None,
+		entries=documentation_directory_entries(directory),
+	)
+
+
+def documentation_directory_entries(directory: Path) -> list[dict[str, str]]:
+	entries = []
+	for path in sorted(directory.iterdir(), key=lambda item: (not item.is_dir(), item.name.lower())):
+		relative_path = path.relative_to(DOCS_ROOT)
+		if path.is_dir():
+			url = "/docs/" + relative_path.as_posix().strip("/") + "/"
+			name = path.name
+		elif path.is_file():
+			url_path = relative_path.with_suffix("") if path.suffix.lower() == ".md" else relative_path
+			url = "/docs/" + url_path.as_posix().strip("/")
+			name = path.stem if path.suffix.lower() == ".md" else path.name
+		else:
+			continue
+		entries.append({
+			"name": name,
+			"kind": "directory" if path.is_dir() else "file",
+			"url": url,
+		})
+	return entries
 
 
 def source_path_for(requested_path: str) -> Path:
