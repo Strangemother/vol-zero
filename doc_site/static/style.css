@@ -521,3 +521,30 @@ ul.super-sheet-list li.dir {
     font-size: 1.5em;
     font-weight: 600;
 }
+
+ul.file-list a:visited,
+ul.import-list a:visited {
+    color: inherit;
+}
+
+ul.file-list a, ul.import-list a {
+    text-decoration-color: #353535;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.1em;
+}
+
+.documentation blockquote {
+    /* border-left: solid 3px #444; */
+    padding: 0.1rem 2rem;
+    margin: 2em 0 3rem 0em;
+    background: #0c0e11;
+}
+
+.documentation hr {
+    border: none;
+    border-top: solid 3px #222;
+}
+
+.import-list .include-type {
+    display: none;
+}

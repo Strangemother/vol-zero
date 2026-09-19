@@ -33,10 +33,10 @@ const
     memoryTypeReservedMapped* = 8
 
 
-proc memoryBytesByType(memoryType: uint64): uint64 {.importc: "limine_memory_bytes_by_type".}
+proc memory_bytes_by_type(memoryType: uint64): uint64 {.importc: "limine_memory_bytes_by_type".}
 
-proc usableMemoryBytesSector*(memoryType: int): uint64 =
-    memoryBytesByType(uint64(memoryType))
+proc usable_memory_bytes_sector*(memoryType: int): uint64 =
+    memory_bytes_by_type(uint64(memoryType))
 
-proc usableMemoryBytes*(): uint64 =
-    usableMemoryBytesSector(memoryTypeUsable)
+proc usable_memory_bytes*(): uint64 =
+    usable_memory_bytes_sector(memoryTypeUsable)

@@ -12,7 +12,7 @@
 
     <section class="metadata">
         <h2>Source</h2>
-        <ul>
+        <ul class="file-list">
             {% for entry in entries %}
             <li>
                 <a href="{{ entry.url }}">{{ entry.name }}{% if entry.kind == "directory" %}/{% endif %}</a>

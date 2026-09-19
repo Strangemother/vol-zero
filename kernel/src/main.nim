@@ -24,8 +24,8 @@ import core/human/bytes_x as human_bytes
 
 proc print_allocation_state() =
     serial.write("Allocation state: ")
-    let allocationState = mem_allocate.getAllocationState()
-    tell.line(allocationState.entryIndex, allocationState.address)
+    let state = mem_allocate.current_state()
+    tell.line(state.entryIndex, state.address)
 
 
 proc print_clock_info() =
@@ -39,8 +39,8 @@ proc print_clock_info() =
 
 proc perform_single_byte_memory_test() =
     tell.line("Performing single byte memory test")
-    let physical = mem_allocate.allocatePhysicalBytes(mem_allocate.pageSize)
-    let bytes = mem_allocate.physicalBytes(physical)
+    let physical = mem_allocate.allocate_physical_bytes(mem_allocate.pageSize)
+    let bytes = mem_allocate.physical_bytes(physical)
 
     if bytes == nil:
         tell.line("Memory allocation or HHDM mapping failed")
@@ -69,20 +69,20 @@ proc kmain() {.exportc: "kmain", noreturn.} =
     tell.line("Kernel version: ", kernelVersion.get_version())
     tell.line(
         "Usable memory: ",
-        mem_info.usableMemoryBytes(),
-        human_bytes.human_bytes(mem_info.usableMemoryBytes())
+        mem_info.usable_memory_bytes(),
+        human_bytes.human_bytes(mem_info.usable_memory_bytes())
     )
 
     print_allocation_state()
     perform_single_byte_memory_test()
     print_allocation_state()
 
-    if not gradient.renderAll():
-        kernelHalt.halt()
+    # if not gradient.renderAll():
+    #     kernelHalt.halt()
 
-    if terminal.init():
-        terminal.writeLine("VOL kernel booted")
-        terminal.writeLine("Memory routines: OK")
-        terminal.writeLine("Framebuffer terminal: OK")
+    # if terminal.init():
+    #     terminal.writeLine("VOL kernel booted")
+    #     terminal.writeLine("Memory routines: OK")
+    #     terminal.writeLine("Framebuffer terminal: OK")
 
     kernelHalt.halt()

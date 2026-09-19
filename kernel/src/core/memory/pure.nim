@@ -49,6 +49,7 @@ template copy_bytes_backward(
         dec index
         destination[index] = source[index]
 
+        
 #[
    Copies `size` bytes from `source` to `destination`.
   
@@ -94,6 +95,7 @@ proc memset*(destination: pointer, value: cint, size: csize_t): pointer {.memory
         destinationBytes[index] = uint8(value)
     return destination
 
+    
 #[
   Copies `size` bytes from `source` to `destination`, safely handling overlap.
 
@@ -127,6 +129,7 @@ proc memmove*(destination: pointer, source: pointer, size: csize_t): pointer {.m
         copy_bytes_backward(sourceBytes, destinationBytes, size)
     return destination
 
+    
 #[
   Compares the first `size` bytes at `first` and `second` lexicographically.
 
