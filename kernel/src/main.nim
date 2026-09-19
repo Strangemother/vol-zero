@@ -66,24 +66,22 @@ proc kmain() {.exportc: "kmain", noreturn.} =
         tell.line("Hosted memory check failed")
         kernelHalt.halt()
 
+    let umb: uint64 = mem_info.usable_memory_bytes()
     tell.line("Kernel version: ", kernelVersion.get_version())
-    tell.line(
-        "Usable memory: ",
-        mem_info.usable_memory_bytes(),
-        human_bytes.human_bytes(mem_info.usable_memory_bytes())
-    )
+    tell.line("Usable memory: ", umb, human_bytes.human_bytes(umb))
+    # discard umb
 
     print_allocation_state()
     perform_single_byte_memory_test()
     print_allocation_state()
-    
+
     # if not gradient.renderAll():
         #     kernelHalt.halt()
 
-    if terminal.init(preserve = true):
-        terminal.setCursorPosition(0, 10)
-        terminal.writeLine("VOL kernel booted")
-        terminal.writeLine("Memory routines: OK")
-        terminal.writeLine("Framebuffer terminal: OK")
+    if terminal.init():
+        terminal.set_xy(0, 10)
+        terminal.write_line("VOL kernel booted")
+        terminal.write_line("Memory routines: OK")
+        terminal.write_line("Framebuffer terminal: OK")
 
     kernelHalt.halt()
