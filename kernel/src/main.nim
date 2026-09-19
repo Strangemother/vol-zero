@@ -26,7 +26,7 @@ proc print_allocation_state() =
     let allocationState = mem_allocate.getAllocationState()
     tell.line(allocationState.entryIndex, allocationState.address)
 
-    
+
 proc print_clock_info() =
     tell.line("Clock:")
     tell.line("   Monotonic time:   ", monotonic.delta())
@@ -37,19 +37,19 @@ proc print_clock_info() =
 
 
 proc perform_single_byte_memory_test() =
-    serial.write("Performing single byte memory test\r\n")
+    tell.line("Performing single byte memory test")
     let physical = mem_allocate.allocatePhysicalBytes(mem_allocate.pageSize)
     let bytes = mem_allocate.physicalBytes(physical)
 
     if bytes == nil:
-        serial.write("Memory allocation or HHDM mapping failed\r\n")
+        tell.line("Memory allocation or HHDM mapping failed")
     else:
         bytes[3] = uint8('X')
         if bytes[3] == uint8('X'):
-            serial.write("Memory allocation and HHDM mapping succeeded\r\n")
+            tell.line("Memory allocation and HHDM mapping succeeded")
         else:
-            serial.write("Memory allocation succeeded but HHDM mapping failed\r\n")
-    
+            tell.line("Memory allocation succeeded but HHDM mapping failed")
+
 
 ## VOL through Limine enters the kernel through the C-compatible symbol kmain.
 proc kmain() {.exportc: "kmain", noreturn.} =
@@ -60,19 +60,19 @@ proc kmain() {.exportc: "kmain", noreturn.} =
     print_clock_info()
 
     if mem_test.quicktest_memory():
-        serial.write("Memory routines: OK\r\n")
+        tell.line("Memory routines: OK")
     else:
-        serial.write("Hosted memory check failed\r\n")
+        tell.line("Hosted memory check failed")
         kernelHalt.halt()
 
     tell.line("Kernel version: ", kernelVersion.get_version())
     tell.line(
-        "Usable memory: ", 
+        "Usable memory: ",
         mem_info.usableMemoryBytes(),
         human_bytes.human_bytes(mem_info.usableMemoryBytes())
     )
 
-    print_allocation_state()    
+    print_allocation_state()
     perform_single_byte_memory_test()
     print_allocation_state()
 

@@ -1,11 +1,11 @@
-#[ Echo macro for serial write
+#[ Simplified serial write
 
 This is a convenience **macro** for writing to the serial output.
 Importantly this assumes the `serial` module has been initialized and is ready for writing.
 
 Example:
 
-    kernelEcho.echo("Kernel version: ", kernelVersion.get_version())
+    tell.line("Kernel version: ", kernelVersion.get_version())
 
 Replaces:
 
@@ -21,21 +21,19 @@ Replaces:
 import std/macros
 import serial
 
-#[ Echo macro for serial write
+#[ tell a line through the active serial write
 
 This macro allows writing multiple arguments to the serial output conveniently.
 It handles _string_ and `uint64` types only and appends a newline `\r\n` by default.
 
+    tell.line(allocationState.entryIndex, allocationState.address)
+    
 With Serial:
 
     serial.writeUInt64(allocationState.entryIndex)
     serial.write(" ")
     serial.writeUInt64(allocationState.address)
     serial.write("\r\n")
-
-Exact replacement:
-
-    kernelEcho.echo(allocationState.entryIndex, allocationState.address)
 
 ---
 
