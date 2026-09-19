@@ -1,5 +1,7 @@
 #include <stdint.h>
 #include <limine.h>
+#include <flanterm.h>
+#include <flanterm_backends/fb.h>
 
 __attribute__((used, section(".limine_requests")))
 volatile uint64_t limineBaseRevision[] = LIMINE_BASE_REVISION(6);
@@ -13,6 +15,12 @@ volatile struct limine_hhdm_request hhdmRequest = {
 __attribute__((used, section(".limine_requests")))
 volatile struct limine_framebuffer_request framebufferRequest = {
     .id = LIMINE_FRAMEBUFFER_REQUEST_ID,
+    .revision = 0
+};
+
+__attribute__((used, section(".limine_requests")))
+volatile struct limine_flanterm_fb_init_params_request flantermRequest = {
+    .id = LIMINE_FLANTERM_FB_INIT_PARAMS_REQUEST_ID,
     .revision = 0
 };
 
@@ -80,6 +88,69 @@ int64_t limine_date_at_boot(void) {
         return 0;
     }
     return dateAtBootRequest.response->timestamp;
+}
+
+static struct flanterm_context *flantermContext = 0;
+
+int limine_terminal_init(void) {
+    if (flantermRequest.response == 0 ||
+        flantermRequest.response->entry_count == 0 ||
+        flantermRequest.response->entries[0] == 0 ||
+        framebufferRequest.response == 0 ||
+        framebufferRequest.response->framebuffer_count == 0 ||
+        framebufferRequest.response->framebuffers[0] == 0) {
+        return 0;
+    }
+
+    struct limine_flanterm_fb_init_params *params =
+        flantermRequest.response->entries[0];
+    struct limine_framebuffer *framebuffer =
+        framebufferRequest.response->framebuffers[0];
+
+    flantermContext = flanterm_fb_init(
+        0,
+        0,
+        framebuffer->address,
+        framebuffer->width,
+        framebuffer->height,
+        framebuffer->pitch,
+        framebuffer->red_mask_size,
+        framebuffer->red_mask_shift,
+        framebuffer->green_mask_size,
+        framebuffer->green_mask_shift,
+        framebuffer->blue_mask_size,
+        framebuffer->blue_mask_shift,
+        params->canvas,
+        params->ansi_colours,
+        params->ansi_bright_colours,
+        &params->default_bg,
+        &params->default_fg,
+        &params->default_bg_bright,
+        &params->default_fg_bright,
+        params->font,
+        params->font_width,
+        params->font_height,
+        params->font_spacing,
+        params->font_scale_x,
+        params->font_scale_y,
+        params->margin,
+        params->rotation,
+        true
+    );
+
+    return flantermContext != 0;
+}
+
+void limine_terminal_write(const char *message) {
+    if (flantermContext == 0 || message == 0) {
+        return;
+    }
+
+    size_t length = 0;
+    while (message[length] != '\0') {
+        length++;
+    }
+    flanterm_write(flantermContext, message, length);
 }
 
 __attribute__((used, section(".limine_requests_start")))
