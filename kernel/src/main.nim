@@ -80,7 +80,7 @@ proc kmain() {.exportc: "kmain", noreturn.} =
     # if not gradient.renderAll():
         #     kernelHalt.halt()
 
-    if terminal.init():
+    if terminal.init(preserve = true):
         terminal.setCursorPosition(0, 10)
         terminal.writeLine("VOL kernel booted")
         terminal.writeLine("Memory routines: OK")

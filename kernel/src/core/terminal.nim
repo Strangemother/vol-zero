@@ -1,6 +1,6 @@
 #[ Small framebuffer terminal backed by Limine's Flanterm parameters. ]#
 
-proc init*(): bool {.importc: "limine_terminal_init".}
+proc init*(preserve: bool): bool {.importc: "limine_terminal_init".}
 
 proc write*(message: cstring) {.importc: "limine_terminal_write".}
 
