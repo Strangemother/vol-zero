@@ -222,7 +222,8 @@ body {
     border-radius: 0.3em;
 }
 
-.document-page .content > h1:first-child {
+.document-page .content > h1 {
+/* .document-page .content > h1:first-child { */
     /* max-width: none; */
     /* overflow-wrap: anywhere; */
     /* font-family: inherit; */

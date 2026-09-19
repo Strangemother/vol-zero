@@ -28,7 +28,7 @@ proc print_allocation_state() =
     serial.writeUInt64(allocationState.address)
     serial.write("\r\n")
 
-
+    
 proc print_clock_info() =
     serial.write("Clock:")
     serial.write("\r\n   Monotonic time: ")

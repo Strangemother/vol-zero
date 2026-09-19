@@ -1,5 +1,5 @@
 #[
-    Monotonic time module for handling TSC-based time measurements.
+Monotonic time module for handling TSC-based time measurements.
 ]#
 
 {.emit: """
