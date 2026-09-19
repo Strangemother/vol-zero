@@ -92,6 +92,8 @@ int64_t limine_date_at_boot(void) {
 
 static struct flanterm_context *flantermContext = 0;
 
+uint64_t limine_allocate_physical(uint64_t size);
+
 int limine_terminal_init(void) {
     if (flantermRequest.response == 0 ||
         flantermRequest.response->entry_count == 0 ||
@@ -106,6 +108,25 @@ int limine_terminal_init(void) {
         flantermRequest.response->entries[0];
     struct limine_framebuffer *framebuffer =
         framebufferRequest.response->framebuffers[0];
+
+    if ((framebuffer->height != 0 &&
+         framebuffer->pitch > SIZE_MAX / framebuffer->height) ||
+        !limine_hhdm_available()) {
+        return 0;
+    }
+
+    size_t snapshotSize = framebuffer->pitch * framebuffer->height;
+    uint64_t snapshotPhysical = limine_allocate_physical(snapshotSize);
+    if (snapshotPhysical == 0) {
+        return 0;
+    }
+
+    uint8_t *snapshot = (uint8_t *)(uintptr_t)(
+        snapshotPhysical + limine_hhdm_offset());
+    uint8_t *source = (uint8_t *)framebuffer->address;
+    for (size_t index = 0; index < snapshotSize; index++) {
+        snapshot[index] = source[index];
+    }
 
     flantermContext = flanterm_fb_init(
         0,
@@ -137,6 +158,10 @@ int limine_terminal_init(void) {
         params->rotation,
         true
     );
+
+    for (size_t index = 0; index < snapshotSize; index++) {
+        source[index] = snapshot[index];
+    }
 
     return flantermContext != 0;
 }
