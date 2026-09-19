@@ -153,6 +153,14 @@ void limine_terminal_write(const char *message) {
     flanterm_write(flantermContext, message, length);
 }
 
+void limine_terminal_set_cursor_position(uint64_t column, uint64_t row) {
+    if (flantermContext == 0) {
+        return;
+    }
+
+    flanterm_set_cursor_pos(flantermContext, column, row);
+}
+
 __attribute__((used, section(".limine_requests_start")))
 volatile uint64_t limine_requests_start_marker[] = LIMINE_REQUESTS_START_MARKER;
 

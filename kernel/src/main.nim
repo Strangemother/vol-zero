@@ -76,13 +76,14 @@ proc kmain() {.exportc: "kmain", noreturn.} =
     print_allocation_state()
     perform_single_byte_memory_test()
     print_allocation_state()
-
+    
     # if not gradient.renderAll():
-    #     kernelHalt.halt()
+        #     kernelHalt.halt()
 
-    # if terminal.init():
-    #     terminal.writeLine("VOL kernel booted")
-    #     terminal.writeLine("Memory routines: OK")
-    #     terminal.writeLine("Framebuffer terminal: OK")
+    if terminal.init():
+        terminal.setCursorPosition(0, 10)
+        terminal.writeLine("VOL kernel booted")
+        terminal.writeLine("Memory routines: OK")
+        terminal.writeLine("Framebuffer terminal: OK")
 
     kernelHalt.halt()
