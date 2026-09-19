@@ -16,7 +16,7 @@ import core/display/gradient
 import core/halt as kernelHalt
 import core/version as kernelVersion
 import core/monotonic
-from core/tell import kernel_write
+import core/tell
 
 import core/human/bytes_x as human_bytes
 
@@ -24,16 +24,16 @@ import core/human/bytes_x as human_bytes
 proc print_allocation_state() =
     serial.write("Allocation state: ")
     let allocationState = mem_allocate.getAllocationState()
-    kernel_write(allocationState.entryIndex, allocationState.address)
+    tell.line(allocationState.entryIndex, allocationState.address)
 
     
 proc print_clock_info() =
-    kernel_write("Clock:")
-    kernel_write("   Monotonic time:   ", monotonic.delta())
-    kernel_write("   Monotonic time 2: ", monotonic.delta())
-    kernel_write("   tsc:              ", monotonic.read_tsc64())
-    kernel_write("   Date at boot:     ", uint64(monotonic.date_at_boot()))
-    kernel_write("   Frequency:        ", monotonic.tsc_frequency())
+    tell.line("Clock:")
+    tell.line("   Monotonic time:   ", monotonic.delta())
+    tell.line("   Monotonic time 2: ", monotonic.delta())
+    tell.line("   tsc:              ", monotonic.read_tsc64())
+    tell.line("   Date at boot:     ", uint64(monotonic.date_at_boot()))
+    tell.line("   Frequency:        ", monotonic.tsc_frequency())
 
 
 proc perform_single_byte_memory_test() =
@@ -65,8 +65,8 @@ proc kmain() {.exportc: "kmain", noreturn.} =
         serial.write("Hosted memory check failed\r\n")
         kernelHalt.halt()
 
-    kernel_write("Kernel version: ", kernelVersion.get_version())
-    kernel_write(
+    tell.line("Kernel version: ", kernelVersion.get_version())
+    tell.line(
         "Usable memory: ", 
         mem_info.usableMemoryBytes(),
         human_bytes.human_bytes(mem_info.usableMemoryBytes())

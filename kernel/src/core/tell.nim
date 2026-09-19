@@ -42,7 +42,7 @@ Exact replacement:
 Note this is a compile time macro and will be expanded during compilation. It is not a runtime function.
 
 ]#
-macro kernel_write*(args: varargs[untyped], newline: untyped = "\r\n"): untyped =
+macro line*(args: varargs[untyped], newline: untyped = "\r\n"): untyped =
     result = newStmtList()
 
     for arg in args:
