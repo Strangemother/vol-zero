@@ -13,6 +13,7 @@ import core/memory/info as mem_info
 import core/memory/allocate as mem_allocate
 import core/serial
 import core/display/gradient
+import core/terminal
 import core/halt as kernelHalt
 import core/version as kernelVersion
 import core/monotonic
@@ -78,5 +79,10 @@ proc kmain() {.exportc: "kmain", noreturn.} =
 
     if not gradient.renderAll():
         kernelHalt.halt()
+
+    if terminal.init():
+        terminal.writeLine("VOL kernel booted")
+        terminal.writeLine("Memory routines: OK")
+        terminal.writeLine("Framebuffer terminal: OK")
 
     kernelHalt.halt()
