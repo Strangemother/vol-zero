@@ -91,6 +91,8 @@ int64_t limine_date_at_boot(void) {
 }
 
 static struct flanterm_context *flantermContext = 0;
+static uint64_t terminalColumns = 0;
+static uint64_t terminalRows = 0;
 
 uint64_t limine_allocate_physical(uint64_t size);
 
@@ -170,7 +172,24 @@ int limine_terminal_init(int preserve) {
         }
     }
 
-    return flantermContext != 0;
+    if (flantermContext == 0) {
+        return 0;
+    }
+
+    size_t columns = 0;
+    size_t rows = 0;
+    flanterm_get_dimensions(flantermContext, &columns, &rows);
+    terminalColumns = columns;
+    terminalRows = rows;
+    return 1;
+}
+
+uint64_t limine_terminal_columns(void) {
+    return terminalColumns;
+}
+
+uint64_t limine_terminal_rows(void) {
+    return terminalRows;
 }
 
 void limine_terminal_write(const char *message) {
