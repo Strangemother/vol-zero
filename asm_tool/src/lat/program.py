@@ -21,7 +21,7 @@ class ASM:
 
     def __getattr__(self, name):
         instruction_class = self.get_instruction_class(name)
-        return instruction_class(self, name)
+        return instruction_class(name, asm=self)
 
     def get_instruction_class(self, name):
         instr = self.instructions.get(name)

@@ -11,7 +11,7 @@ simple addition
 therefore change to
 
     mov al, 255
-    ad al, 1
+    add al, 1
 
 This time the add al will provide the carry flag.
 

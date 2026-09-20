@@ -13,9 +13,21 @@ class Register:
         self.name = name
         self.instructions = {}
         self.parent = parent
-  
+        self._args = None
+        self.kwargs = None
+
     def __repr__(self):
         return self.name.lower()
+
+    def __call__(self, *args, **kwargs):
+        """
+        Example usage:
+            reg = Register('EAX')
+            reg.mov(10)
+        """
+        self._args = args
+        self.kwargs = kwargs
+        return self 
     
     def __getattr__(self, name):
         """Dynamically handle attribute access for instructions.
@@ -24,12 +36,8 @@ class Register:
             reg.mov(20)
         """
         instruction_class = self.get_instruction_class(name)
-        owner = self
-        if self.parent is not None and self.parent.asm is not None:
-            owner = self.parent.asm
-        instruction = instruction_class(owner, name)
-        instruction.bound_operands = (self,)
-        return instruction
+        print('returning', instruction_class)
+        return instruction_class(name, asm=self.parent.asm, into=self)
   
     def get_instruction_class(self, name):
         instr = self.instructions.get(name)

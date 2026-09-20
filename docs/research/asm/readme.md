@@ -41,7 +41,7 @@
  - https://gitlab.com/momikey/nim-limine-barebones/-/tree/master?ref_type=heads
  - https://0xc0ffee.netlify.app/osdev/22-elf-loader-p2
  - https://github.com/dom96/nimkernel
-
+ - https://tonybaloney.github.io/posts/extending-python-with-assembly.html
 
 
 
