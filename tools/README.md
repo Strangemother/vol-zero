@@ -52,6 +52,26 @@ options:
   -h, --help            show this help message and exit
 ```
 
+## Static Site Export
+
+`tool site export` renders the hosted Flask documentation site as static files
+for GitHub Pages. By default it reads `github-pages/config.json` when that file
+exists.
+
+```sh
+tool site export github-pages/config.json
+```
+
+The config controls the source `base_url`, output directory, crawl limit,
+stylesheet path, manifest filename, and ignored file patterns such as `.git`
+folders.
+
+The compatibility command still works from the repository root:
+
+```sh
+python convert.py
+```
+
 ## Nim Documentation Metadata
 
 `nim_docs.py` extracts the project's existing `#[ ... ]#` and `##` comments,

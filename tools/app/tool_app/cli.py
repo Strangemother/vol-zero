@@ -19,6 +19,7 @@ from tools.nim import NIM_BIN_DIR, USER_BIN_DIR, configure_nim, ensure_nim
 from tools.run_compiled_no_display import main as run_no_display_main
 from tools.run_oraclebox import main as run_oraclebox_main
 from tools.run_hosted import main as run_hosted_main
+from tools.site_export import main as site_export_main
 from tools.tail_serial import main as tail_serial_main
 
 
@@ -102,6 +103,25 @@ def build_parser() -> argparse.ArgumentParser:
         aliases=["t"],
         help="wait for and stream the VirtualBox TCP serial console",
     )
+
+    site = subparsers.add_parser(
+        "site",
+        aliases=["s"],
+        help="manage the static documentation site",
+    )
+    site_subparsers = site.add_subparsers(dest="site_command", metavar="COMMAND")
+    site_export = site_subparsers.add_parser(
+        "export",
+        help="export the Flask documentation site as static files",
+    )
+    site_export.add_argument(
+        "config",
+        nargs="?",
+        help="JSON export configuration file",
+    )
+    site_export.add_argument("--base-url", help="override the configured Flask docs site URL")
+    site_export.add_argument("--output-dir", help="override the configured output directory")
+    site_export.add_argument("--max-pages", type=int, help="override the configured crawl page limit")
 
     for command, help_text in (("lcr", "cleanup, compile, then run"), ("cr", "compile, then run")):
         parser_for_command = subparsers.add_parser(command, help=help_text)
@@ -187,6 +207,19 @@ def main(arguments: list[str] | None = None) -> int:
         return run_target(parsed.target, parsed.display)
     if parsed.command in {"tail", "t"}:
         return tail_serial_main()
+    if parsed.command == "site":
+        if parsed.site_command == "export":
+            site_arguments = []
+            if parsed.config:
+                site_arguments.append(parsed.config)
+            if parsed.base_url:
+                site_arguments.extend(["--base-url", parsed.base_url])
+            if parsed.output_dir:
+                site_arguments.extend(["--output-dir", parsed.output_dir])
+            if parsed.max_pages:
+                site_arguments.extend(["--max-pages", str(parsed.max_pages)])
+            return site_export_main(site_arguments)
+        parser.error("site requires a command: export")
     if parsed.command in {"lcr", "cr"}:
         target = parsed.target
     elif parsed.command in {"alcr", "arc", "acr", "car"}:

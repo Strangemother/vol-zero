@@ -18,10 +18,10 @@ In the repository settings, configure GitHub Pages to deploy from:
 Render the Flask documentation site as static files:
 
 ```sh
-python convert.py
+tool site export github-pages/config.json
 ```
 
-From the repository root, the same command delegates to this folder's converter.
+The compatibility command `python convert.py` delegates to the same exporter.
 
 Commit changes to this folder on `main`, then publish them to the `gh-pages`
 branch when you want the public page to update:
