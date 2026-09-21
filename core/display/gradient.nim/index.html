@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>core/display/gradient | VOL Documentation</title>
+    <link rel="stylesheet" href="../../../style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body class="asset-file-doc file-detail file-lang-nim">
+    <main class="page-shell">
+        
+
+        <header class="site-header">
+            <a class="site-title" href="../../../">VOL kernel <span class="version">0.1.0</span></a>
+            <a class="github-link" href="https://github.com/Strangemother/vol-zero">GitHub</a>
+        </header>
+        
+<article class="document-page">
+    <div class="content">
+
+        <nav class="pre-header-navigation" aria-label="Page navigation">
+            <a href="../">Parent</a>
+        </nav>
+        <h1>core/display/gradient</h1>
+
+        
+        <section class="source-document">
+            <h2>Header</h2>
+            
+            
+            <div class="documentation">
+                <h1>Gradient Tool</h1>
+<p>The Gradient Tool allows you to create smooth transitions between colors in your display.</p>
+<p>Within the kernel, call until complete:</p>
+<div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">gradient</span><span class="p">.</span><span class="n">renderAll</span><span class="p">():</span>
+<span class="w">    </span><span class="n">kernelHalt</span><span class="p">.</span><span class="n">halt</span><span class="p">()</span>
+</pre></div>
+
+            </div>
+            
+        </section>
+        
+
+        <section class="imports-includes">
+            
+            <ul class="import-list">
+                
+            </ul>
+            <ul class="include-list">
+                
+            </ul>
+               
+        </section>
+        
+        <section class="metadata">
+            <h2>Declarations</h2>
+            
+            <ul class="declaration-list">
+                
+                <li id="declaration-2">
+                    <h3>
+                        
+                        LimineFramebufferRgb
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: False</div> -->
+                        <!-- <div class="kind">const</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">const</span><span class="w"> </span><span class="n">LimineFramebufferRgb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="sc">'u8</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Limine's identifier for a 32-bit RGB framebuffer.</p>
+
+                    </div>
+                </li>
+                
+                <li id="declaration-53">
+                    <h3>
+                        
+                        framebufferRequest
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: False</div> -->
+                        <!-- <div class="kind">var</div> -->
+                        <div class="sig highlight monospace-font"><span class="kd">var</span><span class="w"> </span><span class="n">framebufferRequest</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"framebufferRequest", volatile.}</span><span class="p">:</span><span class="w"> </span><span class="n">LimineFramebufferRequest</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>The request objects themselves are declared in <code>ext/limine_requests.c</code>.</p>
+<p>Importing them keeps Limine's official request identifiers and linker-section
+placement in C, where the Limine headers define them. <code>volatile</code> tells the
+compiler that these values come from externally populated memory and must be
+read rather than optimized away as ordinary unused variables.</p>
+
+                    </div>
+                </li>
+                
+                <li id="declaration-54">
+                    <h3>
+                        
+                        limineBaseRevision
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: False</div> -->
+                        <!-- <div class="kind">var</div> -->
+                        <div class="sig highlight monospace-font"><span class="kd">var</span><span class="w"> </span><span class="n">limineBaseRevision</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limineBaseRevision", volatile.}</span><span class="p">:</span><span class="w"> </span><span class="nb">array</span><span class="o">[</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">uint64</span><span class="o">]</span></div>
+                    </div>
+                    <div class="documentation">
+                        
+                    </div>
+                </li>
+                
+                <li id="declaration-64">
+                    <h3>
+                        
+                        framebufferChannel
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: False</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">framebufferChannel</span><span class="p">(</span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="n">uint8</span><span class="p">,</span><span class="w"> </span><span class="n">maskSize</span><span class="p">:</span><span class="w"> </span><span class="n">uint8</span><span class="p">,</span><span class="w"> </span><span class="n">maskShift</span><span class="p">:</span><span class="w"> </span><span class="n">uint8</span><span class="p">):</span><span class="w"> </span><span class="n">uint32</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Converts an 8-bit color channel to the framebuffer's channel range and moves
+it into the channel's bit position.</p>
+<p>For example, a five-bit channel has values from 0 to 31 rather than 0 to
+255. The multiplication and division preserve relative brightness while the
+left shift places the result in the packed pixel.</p>
+
+                    </div>
+                </li>
+                
+                <li id="declaration-75">
+                    <h3>
+                        
+                        framebufferPixel
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: False</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">framebufferPixel</span><span class="p">(</span><span class="n">framebuffer</span><span class="p">:</span><span class="w"> </span><span class="k">ptr</span><span class="w"> </span><span class="n">LimineFramebuffer</span><span class="p">,</span><span class="w"> </span><span class="n">red</span><span class="p">:</span><span class="w"> </span><span class="n">uint8</span><span class="p">,</span><span class="w"> </span><span class="n">green</span><span class="p">:</span><span class="w"> </span><span class="n">uint8</span><span class="p">,</span><span class="w"> </span><span class="n">blue</span><span class="p">:</span><span class="w"> </span><span class="n">uint8</span><span class="p">):</span><span class="w"> </span><span class="n">uint32</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Packs red, green, and blue channel values into one framebuffer pixel.</p>
+<p>Each channel is converted using the layout supplied by Limine, then the
+channel bit fields are combined with bitwise OR. This works for different
+RGB layouts instead of assuming that every framebuffer uses the same bits.</p>
+
+                    </div>
+                </li>
+                
+                <li id="declaration-88">
+                    <h3>
+                        
+                        render
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: False</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="n">framebuffer</span><span class="p">:</span><span class="w"> </span><span class="k">ptr</span><span class="w"> </span><span class="n">LimineFramebuffer</span><span class="p">)</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Fills one framebuffer with a blue-to-green gradient.</p>
+<p>Pixels are accessed as 32-bit values. Since Limine reports <code>pitch</code> in bytes,
+it is divided by four to obtain the number of 32-bit pixel positions between
+the starts of adjacent rows. That row stride must be used instead of the
+visible width because padding may exist at the end of a framebuffer row.</p>
+
+                    </div>
+                </li>
+                
+                <li id="declaration-132">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        renderAll
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">renderAll</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="nb">bool</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Validates Limine's framebuffer response and renders the demo pattern.</p>
+<p>The function checks that the requested Limine base revision is supported,
+that Limine returned a response, and that at least one framebuffer exists. It
+then visits every framebuffer and rejects layouts this renderer does not
+understand. <code>true</code> means every framebuffer was rendered; <code>false</code> means the
+response was missing or unsupported.</p>
+<p>Example:
+if not renderAll():
+halt()</p>
+
+                    </div>
+                </li>
+                
+            </ul>
+        </section>
+        
+
+        
+        <section class="source-code">
+            <h2>Source</h2>
+            <div class="highlight"><pre><span></span><span class="cm">#[ Limine's identifier for a 32-bit RGB framebuffer. ]#</span>
+<span class="k">const</span><span class="w"> </span><span class="n">LimineFramebufferRgb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="sc">'u8</span>
+
+<span class="cm">#[</span>
+<span class="cm">  These objects mirror the field order, sizes, and alignment of the matching</span>
+<span class="cm">  structures in Limine's `limine.h`.</span>
+
+<span class="cm">  Limine fills these structures before transferring control to the kernel. The</span>
+<span class="cm">  Nim code reads that existing memory through pointers, so changing a field's</span>
+<span class="cm">  type or order would make later fields appear at the wrong addresses and</span>
+<span class="cm">  break the C/Nim ABI. The framebuffer `address` points to pixel memory,</span>
+<span class="cm">  `pitch` is the number of bytes between rows, and the mask fields describe</span>
+<span class="cm">  where each color channel belongs inside a pixel.</span>
+<span class="cm">]#</span>
+<span class="k">type</span>
+<span class="w">    </span><span class="n">LimineFramebuffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">object</span>
+<span class="w">        </span><span class="n">address</span><span class="p">:</span><span class="w"> </span><span class="n">pointer</span>
+<span class="w">        </span><span class="n">width</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span>
+<span class="w">        </span><span class="n">height</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span>
+<span class="w">        </span><span class="n">pitch</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span>
+<span class="w">        </span><span class="n">bpp</span><span class="p">:</span><span class="w"> </span><span class="n">uint16</span>
+<span class="w">        </span><span class="n">memoryModel</span><span class="p">:</span><span class="w"> </span><span class="n">uint8</span>
+<span class="w">        </span><span class="n">redMaskSize</span><span class="p">:</span><span class="w"> </span><span class="n">uint8</span>
+<span class="w">        </span><span class="n">redMaskShift</span><span class="p">:</span><span class="w"> </span><span class="n">uint8</span>
+<span class="w">        </span><span class="n">greenMaskSize</span><span class="p">:</span><span class="w"> </span><span class="n">uint8</span>
+<span class="w">        </span><span class="n">greenMaskShift</span><span class="p">:</span><span class="w"> </span><span class="n">uint8</span>
+<span class="w">        </span><span class="n">blueMaskSize</span><span class="p">:</span><span class="w"> </span><span class="n">uint8</span>
+<span class="w">        </span><span class="n">blueMaskShift</span><span class="p">:</span><span class="w"> </span><span class="n">uint8</span>
+<span class="w">        </span><span class="n">unused</span><span class="p">:</span><span class="w"> </span><span class="nb">array</span><span class="o">[</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="n">uint8</span><span class="o">]</span>
+<span class="w">        </span><span class="n">edidSize</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span>
+<span class="w">        </span><span class="n">edid</span><span class="p">:</span><span class="w"> </span><span class="n">pointer</span>
+<span class="w">        </span><span class="n">modeCount</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span>
+<span class="w">        </span><span class="n">modes</span><span class="p">:</span><span class="w"> </span><span class="n">pointer</span>
+
+<span class="w">    </span><span class="n">LimineFramebufferResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">object</span>
+<span class="w">        </span><span class="n">revision</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span>
+<span class="w">        </span><span class="n">framebufferCount</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span>
+<span class="w">        </span><span class="n">framebuffers</span><span class="p">:</span><span class="w"> </span><span class="k">ptr</span><span class="w"> </span><span class="k">ptr</span><span class="w"> </span><span class="n">LimineFramebuffer</span>
+
+<span class="w">    </span><span class="n">LimineFramebufferRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">object</span>
+<span class="w">        </span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="nb">array</span><span class="o">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">uint64</span><span class="o">]</span>
+<span class="w">        </span><span class="n">revision</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span>
+<span class="w">        </span><span class="n">response</span><span class="p">:</span><span class="w"> </span><span class="k">ptr</span><span class="w"> </span><span class="n">LimineFramebufferResponse</span>
+
+<span class="cm">#[</span>
+<span class="cm">  The request objects themselves are declared in `ext/limine_requests.c`.</span>
+
+<span class="cm">  Importing them keeps Limine's official request identifiers and linker-section</span>
+<span class="cm">  placement in C, where the Limine headers define them. `volatile` tells the</span>
+<span class="cm">  compiler that these values come from externally populated memory and must be</span>
+<span class="cm">  read rather than optimized away as ordinary unused variables.</span>
+<span class="cm">]#</span>
+<span class="kd">var</span><span class="w"> </span><span class="n">framebufferRequest</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"framebufferRequest", volatile.}</span><span class="p">:</span><span class="w"> </span><span class="n">LimineFramebufferRequest</span>
+<span class="kd">var</span><span class="w"> </span><span class="n">limineBaseRevision</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limineBaseRevision", volatile.}</span><span class="p">:</span><span class="w"> </span><span class="nb">array</span><span class="o">[</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">uint64</span><span class="o">]</span>
+
+<span class="cm">#[</span>
+<span class="cm">  Converts an 8-bit color channel to the framebuffer's channel range and moves</span>
+<span class="cm">  it into the channel's bit position.</span>
+
+<span class="cm">  For example, a five-bit channel has values from 0 to 31 rather than 0 to</span>
+<span class="cm">  255. The multiplication and division preserve relative brightness while the</span>
+<span class="cm">  left shift places the result in the packed pixel.</span>
+<span class="cm">]#</span>
+<span class="k">proc</span><span class="w"> </span><span class="nf">framebufferChannel</span><span class="p">(</span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="n">uint8</span><span class="p">,</span><span class="w"> </span><span class="n">maskSize</span><span class="p">:</span><span class="w"> </span><span class="n">uint8</span><span class="p">,</span><span class="w"> </span><span class="n">maskShift</span><span class="p">:</span><span class="w"> </span><span class="n">uint8</span><span class="p">):</span><span class="w"> </span><span class="n">uint32</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">maximum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">uint64</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="ow">shl</span><span class="w"> </span><span class="n">maskSize</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="n">uint32</span><span class="p">((</span><span class="n">uint64</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">maximum</span><span class="w"> </span><span class="ow">div</span><span class="w"> </span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="ow">shl</span><span class="w"> </span><span class="n">maskShift</span><span class="p">)</span>
+
+<span class="cm">#[</span>
+<span class="cm">  Packs red, green, and blue channel values into one framebuffer pixel.</span>
+
+<span class="cm">  Each channel is converted using the layout supplied by Limine, then the</span>
+<span class="cm">  channel bit fields are combined with bitwise OR. This works for different</span>
+<span class="cm">  RGB layouts instead of assuming that every framebuffer uses the same bits.</span>
+<span class="cm">]#</span>
+<span class="k">proc</span><span class="w"> </span><span class="nf">framebufferPixel</span><span class="p">(</span><span class="n">framebuffer</span><span class="p">:</span><span class="w"> </span><span class="k">ptr</span><span class="w"> </span><span class="n">LimineFramebuffer</span><span class="p">,</span><span class="w"> </span><span class="n">red</span><span class="p">:</span><span class="w"> </span><span class="n">uint8</span><span class="p">,</span><span class="w"> </span><span class="n">green</span><span class="p">:</span><span class="w"> </span><span class="n">uint8</span><span class="p">,</span><span class="w"> </span><span class="n">blue</span><span class="p">:</span><span class="w"> </span><span class="n">uint8</span><span class="p">):</span><span class="w"> </span><span class="n">uint32</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">framebufferChannel</span><span class="p">(</span><span class="n">red</span><span class="p">,</span><span class="w"> </span><span class="n">framebuffer</span><span class="p">.</span><span class="n">redMaskSize</span><span class="p">,</span><span class="w"> </span><span class="n">framebuffer</span><span class="p">.</span><span class="n">redMaskShift</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span>
+<span class="w">      </span><span class="n">framebufferChannel</span><span class="p">(</span><span class="n">green</span><span class="p">,</span><span class="w"> </span><span class="n">framebuffer</span><span class="p">.</span><span class="n">greenMaskSize</span><span class="p">,</span><span class="w"> </span><span class="n">framebuffer</span><span class="p">.</span><span class="n">greenMaskShift</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span>
+<span class="w">      </span><span class="n">framebufferChannel</span><span class="p">(</span><span class="n">blue</span><span class="p">,</span><span class="w"> </span><span class="n">framebuffer</span><span class="p">.</span><span class="n">blueMaskSize</span><span class="p">,</span><span class="w"> </span><span class="n">framebuffer</span><span class="p">.</span><span class="n">blueMaskShift</span><span class="p">)</span>
+
+<span class="cm">#[</span>
+<span class="cm">  Fills one framebuffer with a blue-to-green gradient.</span>
+
+<span class="cm">  Pixels are accessed as 32-bit values. Since Limine reports `pitch` in bytes,</span>
+<span class="cm">  it is divided by four to obtain the number of 32-bit pixel positions between</span>
+<span class="cm">  the starts of adjacent rows. That row stride must be used instead of the</span>
+<span class="cm">  visible width because padding may exist at the end of a framebuffer row.</span>
+<span class="cm">]#</span>
+<span class="k">proc</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="n">framebuffer</span><span class="p">:</span><span class="w"> </span><span class="k">ptr</span><span class="w"> </span><span class="n">LimineFramebuffer</span><span class="p">)</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">pixels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">cast</span><span class="o">[</span><span class="k">ptr</span><span class="w"> </span><span class="n">UncheckedArray</span><span class="o">[</span><span class="n">uint32</span><span class="o">]]</span><span class="p">(</span><span class="n">framebuffer</span><span class="p">.</span><span class="n">address</span><span class="p">)</span>
+<span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">pitchPixels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">framebuffer</span><span class="p">.</span><span class="n">pitch</span><span class="w"> </span><span class="ow">div</span><span class="w"> </span><span class="mi">4</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="mi">0</span><span class="sc">'u64 ..&lt; framebuffer.height:</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="mi">0</span><span class="sc">'u64 ..&lt; framebuffer.width:</span>
+<span class="w">            </span><span class="k">let</span><span class="w"> </span><span class="n">nx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uint8</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">255</span><span class="w"> </span><span class="ow">div</span><span class="w"> </span><span class="n">framebuffer</span><span class="p">.</span><span class="n">width</span><span class="p">)</span>
+<span class="w">            </span><span class="k">let</span><span class="w"> </span><span class="n">ny</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uint8</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">255</span><span class="w"> </span><span class="ow">div</span><span class="w"> </span><span class="n">framebuffer</span><span class="p">.</span><span class="n">height</span><span class="p">)</span>
+<span class="w">            </span>
+<span class="w">            </span><span class="sd">## dark purple </span>
+<span class="w">            </span><span class="k">let</span><span class="w"> </span><span class="n">purple</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uint8</span><span class="p">(</span><span class="mi">10</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">((</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="ow">div</span><span class="w"> </span><span class="p">(</span><span class="n">framebuffer</span><span class="p">.</span><span class="n">width</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">framebuffer</span><span class="p">.</span><span class="n">height</span><span class="p">)))</span>
+<span class="w">            </span><span class="k">let</span><span class="w"> </span><span class="n">purple2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uint8</span><span class="p">(</span><span class="mi">10</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">((</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="ow">div</span><span class="w"> </span><span class="p">(</span><span class="n">framebuffer</span><span class="p">.</span><span class="n">width</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">framebuffer</span><span class="p">.</span><span class="n">height</span><span class="p">)))</span>
+<span class="w">            </span><span class="n">pixels</span><span class="o">[</span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pitchPixels</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">framebufferPixel</span><span class="p">(</span><span class="n">framebuffer</span><span class="p">,</span><span class="w"> </span><span class="n">purple</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">purple2</span><span class="p">)</span>
+
+<span class="w">            </span><span class="sd">## purple </span>
+<span class="w">            </span><span class="c"># let purple = uint8(160 + ((x + y) * 40 div (framebuffer.width + framebuffer.height)))</span>
+<span class="w">            </span><span class="c"># let purple2 = uint8(90 + ((x + y) * 60 div (framebuffer.width + framebuffer.height)))</span>
+<span class="w">            </span><span class="c"># pixels[y * pitchPixels + x] = framebufferPixel(framebuffer, purple, 0, purple2)</span>
+
+<span class="w">            </span><span class="sd">## bright green</span>
+<span class="w">            </span><span class="c"># let purple = uint8(160 + ((x + y) * 40 div (framebuffer.width + framebuffer.height)))</span>
+<span class="w">            </span><span class="c"># let purple2 = uint8(90 + ((x + y) * 60 div (framebuffer.width + framebuffer.height)))</span>
+<span class="w">            </span><span class="c"># pixels[y * pitchPixels + x] = framebufferPixel(framebuffer, 0, purple, purple2)</span>
+
+<span class="w">            </span><span class="sd">## green</span>
+<span class="w">            </span><span class="c"># let purple = uint8(100 + ((x + y) * 40 div (framebuffer.width + framebuffer.height)))</span>
+<span class="w">            </span><span class="c"># let purple2 = uint8(40 + ((x + y) * 20 div (framebuffer.width + framebuffer.height)))</span>
+<span class="w">            </span><span class="c"># pixels[y * pitchPixels + x] = framebufferPixel(framebuffer, 0, purple, purple2)</span>
+
+<span class="w">            </span><span class="sd">## default</span>
+<span class="w">            </span><span class="c"># pixels[y * pitchPixels + x] = framebufferPixel(framebuffer, 0, ny, nx)</span>
+
+<span class="cm">#[</span>
+<span class="cm">  Validates Limine's framebuffer response and renders the demo pattern.</span>
+
+<span class="cm">  The function checks that the requested Limine base revision is supported,</span>
+<span class="cm">  that Limine returned a response, and that at least one framebuffer exists. It</span>
+<span class="cm">  then visits every framebuffer and rejects layouts this renderer does not</span>
+<span class="cm">  understand. `true` means every framebuffer was rendered; `false` means the</span>
+<span class="cm">  response was missing or unsupported.</span>
+
+<span class="cm">  Example:</span>
+<span class="cm">    if not renderAll():</span>
+<span class="cm">      halt()</span>
+<span class="cm">]#</span>
+<span class="k">proc</span><span class="w"> </span><span class="nf">renderAll</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="nb">bool</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">limineBaseRevision</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">framebufferRequest</span><span class="p">.</span><span class="n">response</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kp">nil</span><span class="w"> </span><span class="ow">or</span>
+<span class="w">          </span><span class="n">framebufferRequest</span><span class="p">.</span><span class="n">response</span><span class="p">.</span><span class="n">framebufferCount</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kp">false</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="mi">0</span><span class="sc">'u64 ..&lt; framebufferRequest.response.framebufferCount:</span>
+<span class="w">        </span><span class="k">let</span><span class="w"> </span><span class="n">framebuffers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">cast</span><span class="o">[</span><span class="k">ptr</span><span class="w"> </span><span class="n">UncheckedArray</span><span class="o">[</span><span class="k">ptr</span><span class="w"> </span><span class="n">LimineFramebuffer</span><span class="o">]]</span><span class="p">(</span><span class="n">framebufferRequest</span><span class="p">.</span><span class="n">response</span><span class="p">.</span><span class="n">framebuffers</span><span class="p">)</span>
+<span class="w">        </span><span class="k">let</span><span class="w"> </span><span class="n">framebuffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">framebuffers</span><span class="o">[</span><span class="n">index</span><span class="o">]</span>
+<span class="w">        </span><span class="c"># This renderer only understands 32-bit RGB pixel memory.</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">framebuffer</span><span class="p">.</span><span class="n">memoryModel</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">LimineFramebufferRgb</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">framebuffer</span><span class="p">.</span><span class="n">bpp</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">32</span><span class="p">:</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kp">false</span>
+<span class="w">        </span><span class="n">render</span><span class="p">(</span><span class="n">framebuffer</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kp">true</span>
+</pre></div>
+
+        </section>
+        
+    </div>
+    <div class="toc-list-container">
+        
+        <ul class="toc-list">
+            
+            <li>
+                <a href="#declaration-2">
+                    
+                    LimineFramebufferRgb
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-53">
+                    
+                    framebufferRequest
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-54">
+                    
+                    limineBaseRevision
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-64">
+                    
+                    framebufferChannel
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-75">
+                    
+                    framebufferPixel
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-88">
+                    
+                    render
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-132">
+                    
+                    <span class="exported">public</span>
+                    
+                    renderAll
+                </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+
+</article>
+
+
+
+    </main>
+</body>
+</html>

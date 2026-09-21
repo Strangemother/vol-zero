@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ext/limine_requests.c | VOL Documentation</title>
+    <link rel="stylesheet" href="../../style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body class="asset-file-doc file-detail file-lang-c">
+    <main class="page-shell">
+        
+
+        <header class="site-header">
+            <a class="site-title" href="../../">VOL kernel <span class="version">0.1.0</span></a>
+            <a class="github-link" href="https://github.com/Strangemother/vol-zero">GitHub</a>
+        </header>
+        
+<article class="document-page">
+    <div class="content">
+
+        <nav class="pre-header-navigation" aria-label="Page navigation">
+            <a href="../">Parent</a>
+        </nav>
+        <h1>ext/limine_requests.c</h1>
+
+        
+
+        <section class="imports-includes">
+            
+            <ul class="import-list">
+                
+            </ul>
+            <ul class="include-list">
+                
+            </ul>
+               
+        </section>
+        
+
+        
+        <section class="source-code">
+            <h2>Source</h2>
+            <div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;limine.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;flanterm.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;flanterm_backends/fb.h&gt;</span>
+
+<span class="n">__attribute__</span><span class="p">((</span><span class="n">used</span><span class="p">,</span><span class="w"> </span><span class="n">section</span><span class="p">(</span><span class="s">".limine_requests"</span><span class="p">)))</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">limineBaseRevision</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LIMINE_BASE_REVISION</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+
+<span class="n">__attribute__</span><span class="p">((</span><span class="n">used</span><span class="p">,</span><span class="w"> </span><span class="n">section</span><span class="p">(</span><span class="s">".limine_requests"</span><span class="p">)))</span>
+<span class="k">volatile</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">limine_hhdm_request</span><span class="w"> </span><span class="n">hhdmRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LIMINE_HHDM_REQUEST_ID</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">revision</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">};</span>
+
+<span class="n">__attribute__</span><span class="p">((</span><span class="n">used</span><span class="p">,</span><span class="w"> </span><span class="n">section</span><span class="p">(</span><span class="s">".limine_requests"</span><span class="p">)))</span>
+<span class="k">volatile</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">limine_framebuffer_request</span><span class="w"> </span><span class="n">framebufferRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LIMINE_FRAMEBUFFER_REQUEST_ID</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">revision</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">};</span>
+
+<span class="n">__attribute__</span><span class="p">((</span><span class="n">used</span><span class="p">,</span><span class="w"> </span><span class="n">section</span><span class="p">(</span><span class="s">".limine_requests"</span><span class="p">)))</span>
+<span class="k">volatile</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">limine_flanterm_fb_init_params_request</span><span class="w"> </span><span class="n">flantermRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LIMINE_FLANTERM_FB_INIT_PARAMS_REQUEST_ID</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">revision</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">};</span>
+
+<span class="n">__attribute__</span><span class="p">((</span><span class="n">used</span><span class="p">,</span><span class="w"> </span><span class="n">section</span><span class="p">(</span><span class="s">".limine_requests"</span><span class="p">)))</span>
+<span class="k">volatile</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">limine_memmap_request</span><span class="w"> </span><span class="n">memoryMapRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LIMINE_MEMMAP_REQUEST_ID</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">revision</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">};</span>
+
+<span class="n">__attribute__</span><span class="p">((</span><span class="n">used</span><span class="p">,</span><span class="w"> </span><span class="n">section</span><span class="p">(</span><span class="s">".limine_requests"</span><span class="p">)))</span>
+<span class="k">volatile</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">limine_tsc_frequency_request</span><span class="w"> </span><span class="n">tscFrequencyRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LIMINE_TSC_FREQUENCY_REQUEST_ID</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">revision</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">};</span>
+
+<span class="n">__attribute__</span><span class="p">((</span><span class="n">used</span><span class="p">,</span><span class="w"> </span><span class="n">section</span><span class="p">(</span><span class="s">".limine_requests"</span><span class="p">)))</span>
+<span class="k">volatile</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">limine_date_at_boot_request</span><span class="w"> </span><span class="n">dateAtBootRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LIMINE_DATE_AT_BOOT_REQUEST_ID</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">revision</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">};</span>
+
+<span class="kt">uint64_t</span><span class="w"> </span><span class="nf">limine_memory_bytes_by_type</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">memoryType</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">memoryMapRequest</span><span class="p">.</span><span class="n">response</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">memoryMapRequest</span><span class="p">.</span><span class="n">response</span><span class="o">-&gt;</span><span class="n">entry_count</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">index</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">limine_memmap_entry</span><span class="w"> </span><span class="o">*</span><span class="n">entry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">memoryMapRequest</span><span class="p">.</span><span class="n">response</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">entry</span><span class="o">-&gt;</span><span class="n">type</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">memoryType</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">UINT64_MAX</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">entry</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">UINT64_MAX</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">total</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">entry</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">total</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">uint64_t</span><span class="w"> </span><span class="nf">limine_hhdm_offset</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hhdmRequest</span><span class="p">.</span><span class="n">response</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">hhdmRequest</span><span class="p">.</span><span class="n">response</span><span class="o">-&gt;</span><span class="n">offset</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">uint64_t</span><span class="w"> </span><span class="nf">limine_hhdm_available</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">hhdmRequest</span><span class="p">.</span><span class="n">response</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">uint64_t</span><span class="w"> </span><span class="nf">limine_usable_memory_bytes</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">limine_memory_bytes_by_type</span><span class="p">(</span><span class="n">LIMINE_MEMMAP_USABLE</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">uint64_t</span><span class="w"> </span><span class="nf">limine_tsc_frequency</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tscFrequencyRequest</span><span class="p">.</span><span class="n">response</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">tscFrequencyRequest</span><span class="p">.</span><span class="n">response</span><span class="o">-&gt;</span><span class="n">frequency</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int64_t</span><span class="w"> </span><span class="nf">limine_date_at_boot</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dateAtBootRequest</span><span class="p">.</span><span class="n">response</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">dateAtBootRequest</span><span class="p">.</span><span class="n">response</span><span class="o">-&gt;</span><span class="n">timestamp</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">flanterm_context</span><span class="w"> </span><span class="o">*</span><span class="n">flantermContext</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">terminalColumns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">terminalRows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">uint64_t</span><span class="w"> </span><span class="nf">limine_allocate_physical</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">size</span><span class="p">);</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">limine_terminal_init</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">preserve</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">flantermRequest</span><span class="p">.</span><span class="n">response</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span>
+<span class="w">        </span><span class="n">flantermRequest</span><span class="p">.</span><span class="n">response</span><span class="o">-&gt;</span><span class="n">entry_count</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span>
+<span class="w">        </span><span class="n">flantermRequest</span><span class="p">.</span><span class="n">response</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span>
+<span class="w">        </span><span class="n">framebufferRequest</span><span class="p">.</span><span class="n">response</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span>
+<span class="w">        </span><span class="n">framebufferRequest</span><span class="p">.</span><span class="n">response</span><span class="o">-&gt;</span><span class="n">framebuffer_count</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span>
+<span class="w">        </span><span class="n">framebufferRequest</span><span class="p">.</span><span class="n">response</span><span class="o">-&gt;</span><span class="n">framebuffers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">limine_flanterm_fb_init_params</span><span class="w"> </span><span class="o">*</span><span class="n">params</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">flantermRequest</span><span class="p">.</span><span class="n">response</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">limine_framebuffer</span><span class="w"> </span><span class="o">*</span><span class="n">framebuffer</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">framebufferRequest</span><span class="p">.</span><span class="n">response</span><span class="o">-&gt;</span><span class="n">framebuffers</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">snapshotSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">snapshot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">preserve</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">framebuffer</span><span class="o">-&gt;</span><span class="n">height</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">             </span><span class="n">framebuffer</span><span class="o">-&gt;</span><span class="n">pitch</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">SIZE_MAX</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">framebuffer</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">)</span><span class="w"> </span><span class="o">||</span>
+<span class="w">            </span><span class="o">!</span><span class="n">limine_hhdm_available</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">snapshotSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">framebuffer</span><span class="o">-&gt;</span><span class="n">pitch</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">framebuffer</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">snapshotPhysical</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">limine_allocate_physical</span><span class="p">(</span><span class="n">snapshotSize</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">snapshotPhysical</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">snapshot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="p">)(</span><span class="kt">uintptr_t</span><span class="p">)(</span>
+<span class="w">            </span><span class="n">snapshotPhysical</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">limine_hhdm_offset</span><span class="p">());</span>
+<span class="w">        </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">source</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">framebuffer</span><span class="o">-&gt;</span><span class="n">address</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">snapshotSize</span><span class="p">;</span><span class="w"> </span><span class="n">index</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">snapshot</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">source</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">flantermContext</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flanterm_fb_init</span><span class="p">(</span>
+<span class="w">        </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="n">framebuffer</span><span class="o">-&gt;</span><span class="n">address</span><span class="p">,</span>
+<span class="w">        </span><span class="n">framebuffer</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">,</span>
+<span class="w">        </span><span class="n">framebuffer</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">,</span>
+<span class="w">        </span><span class="n">framebuffer</span><span class="o">-&gt;</span><span class="n">pitch</span><span class="p">,</span>
+<span class="w">        </span><span class="n">framebuffer</span><span class="o">-&gt;</span><span class="n">red_mask_size</span><span class="p">,</span>
+<span class="w">        </span><span class="n">framebuffer</span><span class="o">-&gt;</span><span class="n">red_mask_shift</span><span class="p">,</span>
+<span class="w">        </span><span class="n">framebuffer</span><span class="o">-&gt;</span><span class="n">green_mask_size</span><span class="p">,</span>
+<span class="w">        </span><span class="n">framebuffer</span><span class="o">-&gt;</span><span class="n">green_mask_shift</span><span class="p">,</span>
+<span class="w">        </span><span class="n">framebuffer</span><span class="o">-&gt;</span><span class="n">blue_mask_size</span><span class="p">,</span>
+<span class="w">        </span><span class="n">framebuffer</span><span class="o">-&gt;</span><span class="n">blue_mask_shift</span><span class="p">,</span>
+<span class="w">        </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">canvas</span><span class="p">,</span>
+<span class="w">        </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">ansi_colours</span><span class="p">,</span>
+<span class="w">        </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">ansi_bright_colours</span><span class="p">,</span>
+<span class="w">        </span><span class="o">&amp;</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">default_bg</span><span class="p">,</span>
+<span class="w">        </span><span class="o">&amp;</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">default_fg</span><span class="p">,</span>
+<span class="w">        </span><span class="o">&amp;</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">default_bg_bright</span><span class="p">,</span>
+<span class="w">        </span><span class="o">&amp;</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">default_fg_bright</span><span class="p">,</span>
+<span class="w">        </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">font</span><span class="p">,</span>
+<span class="w">        </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">font_width</span><span class="p">,</span>
+<span class="w">        </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">font_height</span><span class="p">,</span>
+<span class="w">        </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">font_spacing</span><span class="p">,</span>
+<span class="w">        </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">font_scale_x</span><span class="p">,</span>
+<span class="w">        </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">font_scale_y</span><span class="p">,</span>
+<span class="w">        </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">margin</span><span class="p">,</span>
+<span class="w">        </span><span class="n">params</span><span class="o">-&gt;</span><span class="n">rotation</span><span class="p">,</span>
+<span class="w">        </span><span class="nb">true</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">preserve</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">flantermContext</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">source</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">framebuffer</span><span class="o">-&gt;</span><span class="n">address</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">snapshotSize</span><span class="p">;</span><span class="w"> </span><span class="n">index</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">source</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">snapshot</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">flantermContext</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">columns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">flanterm_get_dimensions</span><span class="p">(</span><span class="n">flantermContext</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">columns</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rows</span><span class="p">);</span>
+<span class="w">    </span><span class="n">terminalColumns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">columns</span><span class="p">;</span>
+<span class="w">    </span><span class="n">terminalRows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rows</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">uint64_t</span><span class="w"> </span><span class="nf">limine_terminal_columns</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">terminalColumns</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">uint64_t</span><span class="w"> </span><span class="nf">limine_terminal_rows</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">terminalRows</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">limine_terminal_write</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">flantermContext</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="n">length</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">'\0'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">length</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">flanterm_write</span><span class="p">(</span><span class="n">flantermContext</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">limine_terminal_set_cursor_position</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">column</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">row</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">flantermContext</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">flanterm_set_cursor_pos</span><span class="p">(</span><span class="n">flantermContext</span><span class="p">,</span><span class="w"> </span><span class="n">column</span><span class="p">,</span><span class="w"> </span><span class="n">row</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">__attribute__</span><span class="p">((</span><span class="n">used</span><span class="p">,</span><span class="w"> </span><span class="n">section</span><span class="p">(</span><span class="s">".limine_requests_start"</span><span class="p">)))</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">limine_requests_start_marker</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LIMINE_REQUESTS_START_MARKER</span><span class="p">;</span>
+
+<span class="n">__attribute__</span><span class="p">((</span><span class="n">used</span><span class="p">,</span><span class="w"> </span><span class="n">section</span><span class="p">(</span><span class="s">".limine_requests_end"</span><span class="p">)))</span>
+<span class="k">volatile</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">limine_requests_end_marker</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LIMINE_REQUESTS_END_MARKER</span><span class="p">;</span>
+
+
+<span class="cp">#define PAGE_SIZE 4096</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">allocation_entry_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">allocation_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">limine_allocator_reset</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">allocation_entry_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">allocation_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">allocation_state</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">entry_index</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">address</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">allocation_state</span><span class="w"> </span><span class="n">limine_get_allocation_state</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">allocation_state</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">.</span><span class="n">entry_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">allocation_entry_index</span><span class="p">,</span>
+<span class="w">        </span><span class="p">.</span><span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">allocation_address</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kt">uint64_t</span><span class="w"> </span><span class="n">limine_allocate_physical</span><span class="p">(</span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">memoryMapRequest</span><span class="p">.</span><span class="n">response</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">UINT64_MAX</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="n">PAGE_SIZE</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">PAGE_SIZE</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">~</span><span class="p">(</span><span class="n">PAGE_SIZE</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">allocation_entry_index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">memoryMapRequest</span><span class="p">.</span><span class="n">response</span><span class="o">-&gt;</span><span class="n">entry_count</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">limine_memmap_entry</span><span class="w"> </span><span class="o">*</span><span class="n">entry</span><span class="w"> </span><span class="o">=</span>
+<span class="w">            </span><span class="n">memoryMapRequest</span><span class="p">.</span><span class="n">response</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">[</span><span class="n">allocation_entry_index</span><span class="p">];</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">entry</span><span class="o">-&gt;</span><span class="n">type</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">LIMINE_MEMMAP_USABLE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">allocation_entry_index</span><span class="o">++</span><span class="p">;</span>
+<span class="w">            </span><span class="n">allocation_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">            </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">region_end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">entry</span><span class="o">-&gt;</span><span class="n">base</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">entry</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">region_end</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">entry</span><span class="o">-&gt;</span><span class="n">base</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">allocation_entry_index</span><span class="o">++</span><span class="p">;</span>
+<span class="w">            </span><span class="n">allocation_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">            </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">allocation_address</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">start</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">entry</span><span class="o">-&gt;</span><span class="n">base</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">entry</span><span class="o">-&gt;</span><span class="n">base</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">start</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">PAGE_SIZE</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">~</span><span class="p">(</span><span class="n">PAGE_SIZE</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">start</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">region_end</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">region_end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">allocation_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">size</span><span class="p">;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">start</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">allocation_entry_index</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="n">allocation_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+        </section>
+        
+    </div>
+    <div class="toc-list-container">
+        
+    </div>
+
+</article>
+
+
+
+    </main>
+</body>
+</html>

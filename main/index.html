@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>main | VOL Documentation</title>
+    <link rel="stylesheet" href="../style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body class="asset-file-doc file-detail file-lang-nim">
+    <main class="page-shell">
+        
+
+        <header class="site-header">
+            <a class="site-title" href="../">VOL kernel <span class="version">0.1.0</span></a>
+            <a class="github-link" href="https://github.com/Strangemother/vol-zero">GitHub</a>
+        </header>
+        
+<article class="document-page">
+    <div class="content">
+
+        <nav class="pre-header-navigation" aria-label="Page navigation">
+            <a href="../">Parent</a>
+        </nav>
+        <h1>main</h1>
+
+        
+        <section class="source-document">
+            <h2>Header</h2>
+            
+            <div class="documentation">
+                <p>Main kernel entry point for the VOL bootloader.</p>
+<p>Initializes serial communication, sets up the framebuffer,
+and halts the CPU if necessary.</p>
+
+            </div>
+            
+            
+        </section>
+        
+
+        <section class="imports-includes">
+            
+            <h2>Imports</h2>
+            
+            <ul class="import-list">
+                
+                <li>
+                    <!-- {&#39;name&#39;: &#39;core/memory/test&#39;, &#39;alias&#39;: &#39;mem_test&#39;, &#39;filename&#39;: &#39;core/memory/test.nim&#39;, &#39;line&#39;: 11} -->
+                    <span class="include-type">import</span>
+                    <a href="../core/memory/test.nim/">core/memory/test</a>
+                    <span class="alias">
+                        mem_test
+                    </span>
+                    <!-- <div class="line">line 11</div> -->
+                    
+                </li>
+                
+                <li>
+                    <!-- {&#39;name&#39;: &#39;core/memory/info&#39;, &#39;alias&#39;: &#39;mem_info&#39;, &#39;filename&#39;: &#39;core/memory/info.nim&#39;, &#39;line&#39;: 12} -->
+                    <span class="include-type">import</span>
+                    <a href="../core/memory/info.nim/">core/memory/info</a>
+                    <span class="alias">
+                        mem_info
+                    </span>
+                    <!-- <div class="line">line 12</div> -->
+                    
+                </li>
+                
+                <li>
+                    <!-- {&#39;name&#39;: &#39;core/memory/allocate&#39;, &#39;alias&#39;: &#39;mem_allocate&#39;, &#39;filename&#39;: &#39;core/memory/allocate.nim&#39;, &#39;line&#39;: 13} -->
+                    <span class="include-type">import</span>
+                    <a href="../core/memory/allocate.nim/">core/memory/allocate</a>
+                    <span class="alias">
+                        mem_allocate
+                    </span>
+                    <!-- <div class="line">line 13</div> -->
+                    
+                </li>
+                
+                <li>
+                    <!-- {&#39;name&#39;: &#39;core/serial&#39;, &#39;alias&#39;: None, &#39;filename&#39;: &#39;core/serial.nim&#39;, &#39;line&#39;: 14} -->
+                    <span class="include-type">import</span>
+                    <a href="../core/serial.nim/">core/serial</a>
+                    <span class="alias"></span>
+                    <!-- <div class="line">line 14</div> -->
+                    
+                </li>
+                
+                <li>
+                    <!-- {&#39;name&#39;: &#39;core/display/gradient&#39;, &#39;alias&#39;: None, &#39;filename&#39;: &#39;core/display/gradient.nim&#39;, &#39;line&#39;: 15} -->
+                    <span class="include-type">import</span>
+                    <a href="../core/display/gradient.nim/">core/display/gradient</a>
+                    <span class="alias"></span>
+                    <!-- <div class="line">line 15</div> -->
+                    
+                </li>
+                
+                <li>
+                    <!-- {&#39;name&#39;: &#39;core/terminal&#39;, &#39;alias&#39;: None, &#39;filename&#39;: &#39;core/terminal.nim&#39;, &#39;line&#39;: 16} -->
+                    <span class="include-type">import</span>
+                    <a href="../core/terminal.nim/">core/terminal</a>
+                    <span class="alias"></span>
+                    <!-- <div class="line">line 16</div> -->
+                    
+                </li>
+                
+                <li>
+                    <!-- {&#39;name&#39;: &#39;core/halt&#39;, &#39;alias&#39;: &#39;kernelHalt&#39;, &#39;filename&#39;: &#39;core/halt.nim&#39;, &#39;line&#39;: 17} -->
+                    <span class="include-type">import</span>
+                    <a href="../core/halt.nim/">core/halt</a>
+                    <span class="alias">
+                        kernelHalt
+                    </span>
+                    <!-- <div class="line">line 17</div> -->
+                    
+                </li>
+                
+                <li>
+                    <!-- {&#39;name&#39;: &#39;core/version&#39;, &#39;alias&#39;: &#39;kernelVersion&#39;, &#39;filename&#39;: &#39;core/version.nim&#39;, &#39;line&#39;: 18} -->
+                    <span class="include-type">import</span>
+                    <a href="../core/version.nim/">core/version</a>
+                    <span class="alias">
+                        kernelVersion
+                    </span>
+                    <!-- <div class="line">line 18</div> -->
+                    
+                </li>
+                
+                <li>
+                    <!-- {&#39;name&#39;: &#39;core/monotonic&#39;, &#39;alias&#39;: None, &#39;filename&#39;: &#39;core/monotonic.nim&#39;, &#39;line&#39;: 19} -->
+                    <span class="include-type">import</span>
+                    <a href="../core/monotonic.nim/">core/monotonic</a>
+                    <span class="alias"></span>
+                    <!-- <div class="line">line 19</div> -->
+                    
+                </li>
+                
+                <li>
+                    <!-- {&#39;name&#39;: &#39;core/tell&#39;, &#39;alias&#39;: None, &#39;filename&#39;: &#39;core/tell.nim&#39;, &#39;line&#39;: 20} -->
+                    <span class="include-type">import</span>
+                    <a href="../core/tell.nim/">core/tell</a>
+                    <span class="alias"></span>
+                    <!-- <div class="line">line 20</div> -->
+                    
+                </li>
+                
+                <li>
+                    <!-- {&#39;name&#39;: &#39;core/human/bytes_x&#39;, &#39;alias&#39;: &#39;human_bytes&#39;, &#39;filename&#39;: &#39;core/human/bytes_x.nim&#39;, &#39;line&#39;: 22} -->
+                    <span class="include-type">import</span>
+                    <a href="../core/human/bytes_x.nim/">core/human/bytes_x</a>
+                    <span class="alias">
+                        human_bytes
+                    </span>
+                    <!-- <div class="line">line 22</div> -->
+                    
+                </li>
+                
+            </ul>
+            <ul class="include-list">
+                
+            </ul>
+               
+        </section>
+        
+        <section class="metadata">
+            <h2>Declarations</h2>
+            
+            <ul class="declaration-list">
+                
+                <li id="declaration-25">
+                    <h3>
+                        
+                        print_allocation_state
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: False</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">print_allocation_state</span><span class="p">()</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        
+                    </div>
+                </li>
+                
+                <li id="declaration-31">
+                    <h3>
+                        
+                        print_clock_info
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: False</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">print_clock_info</span><span class="p">()</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        
+                    </div>
+                </li>
+                
+                <li id="declaration-40">
+                    <h3>
+                        
+                        perform_single_byte_memory_test
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: False</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">perform_single_byte_memory_test</span><span class="p">()</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        
+                    </div>
+                </li>
+                
+                <li id="declaration-56">
+                    <h3>
+                        
+                        kmain
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: False</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">kmain</span><span class="p">()</span><span class="w"> </span><span class="sx">{.exportc</span>:<span class="w"> </span><span class="sx">"kmain", noreturn.}</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>VOL through Limine enters the kernel through the C-compatible symbol kmain.</p>
+
+                    </div>
+                </li>
+                
+            </ul>
+        </section>
+        
+
+        
+        <section class="source-code">
+            <h2>Source</h2>
+            <div class="highlight"><pre><span></span><span class="cm">#[</span>
+<span class="cm">Main kernel entry point for the VOL bootloader.</span>
+
+<span class="cm">Initializes serial communication, sets up the framebuffer,</span>
+<span class="cm">and halts the CPU if necessary.</span>
+<span class="cm">]#</span>
+
+<span class="c"># Memory is included as low-level C ABI support; the other modules are</span>
+<span class="c"># imported for organization and namespacing, not as a runtime performance choice.</span>
+<span class="c"># include core/memory/pure</span>
+<span class="kn">import</span><span class="w"> </span><span class="n">core</span><span class="o">/</span><span class="n">memory</span><span class="o">/</span><span class="n">test</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">mem_test</span>
+<span class="kn">import</span><span class="w"> </span><span class="n">core</span><span class="o">/</span><span class="n">memory</span><span class="o">/</span><span class="n">info</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">mem_info</span>
+<span class="kn">import</span><span class="w"> </span><span class="n">core</span><span class="o">/</span><span class="n">memory</span><span class="o">/</span><span class="n">allocate</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">mem_allocate</span>
+<span class="kn">import</span><span class="w"> </span><span class="n">core</span><span class="o">/</span><span class="n">serial</span>
+<span class="kn">import</span><span class="w"> </span><span class="n">core</span><span class="o">/</span><span class="n">display</span><span class="o">/</span><span class="n">gradient</span>
+<span class="kn">import</span><span class="w"> </span><span class="n">core</span><span class="o">/</span><span class="n">terminal</span>
+<span class="kn">import</span><span class="w"> </span><span class="n">core</span><span class="o">/</span><span class="n">halt</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">kernelHalt</span>
+<span class="kn">import</span><span class="w"> </span><span class="n">core</span><span class="o">/</span><span class="n">version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">kernelVersion</span>
+<span class="kn">import</span><span class="w"> </span><span class="n">core</span><span class="o">/</span><span class="n">monotonic</span>
+<span class="kn">import</span><span class="w"> </span><span class="n">core</span><span class="o">/</span><span class="n">tell</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="n">core</span><span class="o">/</span><span class="n">human</span><span class="o">/</span><span class="n">bytes_x</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">human_bytes</span>
+
+
+<span class="k">proc</span><span class="w"> </span><span class="nf">print_allocation_state</span><span class="p">()</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">serial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"Allocation state: "</span><span class="p">)</span>
+<span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mem_allocate</span><span class="p">.</span><span class="n">current_state</span><span class="p">()</span>
+<span class="w">    </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="n">entryIndex</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p">.</span><span class="n">address</span><span class="p">)</span>
+
+
+<span class="k">proc</span><span class="w"> </span><span class="nf">print_clock_info</span><span class="p">()</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"Clock:"</span><span class="p">)</span>
+<span class="w">    </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"   Monotonic time:   "</span><span class="p">,</span><span class="w"> </span><span class="n">monotonic</span><span class="p">.</span><span class="n">delta</span><span class="p">())</span>
+<span class="w">    </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"   Monotonic time 2: "</span><span class="p">,</span><span class="w"> </span><span class="n">monotonic</span><span class="p">.</span><span class="n">delta</span><span class="p">())</span>
+<span class="w">    </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"   tsc:              "</span><span class="p">,</span><span class="w"> </span><span class="n">monotonic</span><span class="p">.</span><span class="n">read_tsc64</span><span class="p">())</span>
+<span class="w">    </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"   Date at boot:     "</span><span class="p">,</span><span class="w"> </span><span class="n">uint64</span><span class="p">(</span><span class="n">monotonic</span><span class="p">.</span><span class="n">date_at_boot</span><span class="p">()))</span>
+<span class="w">    </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"   Frequency:        "</span><span class="p">,</span><span class="w"> </span><span class="n">monotonic</span><span class="p">.</span><span class="n">tsc_frequency</span><span class="p">())</span>
+
+
+<span class="k">proc</span><span class="w"> </span><span class="nf">perform_single_byte_memory_test</span><span class="p">()</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"Performing single byte memory test"</span><span class="p">)</span>
+<span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">physical</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mem_allocate</span><span class="p">.</span><span class="n">allocate_physical_bytes</span><span class="p">(</span><span class="n">mem_allocate</span><span class="p">.</span><span class="n">pageSize</span><span class="p">)</span>
+<span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mem_allocate</span><span class="p">.</span><span class="n">physical_bytes</span><span class="p">(</span><span class="n">physical</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kp">nil</span><span class="p">:</span>
+<span class="w">        </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"Memory allocation or HHDM mapping failed"</span><span class="p">)</span>
+<span class="w">    </span><span class="k">else</span><span class="p">:</span>
+<span class="w">        </span><span class="n">bytes</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uint8</span><span class="p">(</span><span class="sc">'X'</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">bytes</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">uint8</span><span class="p">(</span><span class="sc">'X'</span><span class="p">):</span>
+<span class="w">            </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"Memory allocation and HHDM mapping succeeded"</span><span class="p">)</span>
+<span class="w">        </span><span class="k">else</span><span class="p">:</span>
+<span class="w">            </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"Memory allocation succeeded but HHDM mapping failed"</span><span class="p">)</span>
+
+
+<span class="sd">## VOL through Limine enters the kernel through the C-compatible symbol kmain.</span>
+<span class="k">proc</span><span class="w"> </span><span class="nf">kmain</span><span class="p">()</span><span class="w"> </span><span class="sx">{.exportc</span>:<span class="w"> </span><span class="sx">"kmain", noreturn.}</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">monotonic</span><span class="p">.</span><span class="n">record_start</span><span class="p">()</span>
+
+<span class="w">    </span><span class="n">serial</span><span class="p">.</span><span class="n">init</span><span class="p">()</span>
+
+<span class="w">    </span><span class="n">print_clock_info</span><span class="p">()</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">mem_test</span><span class="p">.</span><span class="n">quicktest_memory</span><span class="p">():</span>
+<span class="w">        </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"Memory routines: OK"</span><span class="p">)</span>
+<span class="w">    </span><span class="k">else</span><span class="p">:</span>
+<span class="w">        </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"Hosted memory check failed"</span><span class="p">)</span>
+<span class="w">        </span><span class="n">kernelHalt</span><span class="p">.</span><span class="n">halt</span><span class="p">()</span>
+
+<span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">umb</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mem_info</span><span class="p">.</span><span class="n">usable_memory_bytes</span><span class="p">()</span>
+<span class="w">    </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"Kernel version: "</span><span class="p">,</span><span class="w"> </span><span class="n">kernelVersion</span><span class="p">.</span><span class="n">get_version</span><span class="p">())</span>
+<span class="w">    </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"Usable memory: "</span><span class="p">,</span><span class="w"> </span><span class="n">umb</span><span class="p">,</span><span class="w"> </span><span class="n">human_bytes</span><span class="p">.</span><span class="n">human_bytes</span><span class="p">(</span><span class="n">umb</span><span class="p">))</span>
+<span class="w">    </span><span class="c"># discard umb</span>
+
+<span class="w">    </span><span class="n">print_allocation_state</span><span class="p">()</span>
+<span class="w">    </span><span class="n">perform_single_byte_memory_test</span><span class="p">()</span>
+<span class="w">    </span><span class="n">print_allocation_state</span><span class="p">()</span>
+
+<span class="w">    </span><span class="c"># if not gradient.renderAll():</span>
+<span class="w">        </span><span class="c">#     kernelHalt.halt()</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">terminal</span><span class="p">.</span><span class="n">init</span><span class="p">():</span>
+<span class="w">        </span><span class="n">terminal</span><span class="p">.</span><span class="n">set_xy</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="w">        </span><span class="n">terminal</span><span class="p">.</span><span class="n">write_line</span><span class="p">(</span><span class="s">"VOL kernel booted"</span><span class="p">)</span>
+<span class="w">        </span><span class="n">terminal</span><span class="p">.</span><span class="n">write_line</span><span class="p">(</span><span class="s">"Memory routines: OK"</span><span class="p">)</span>
+<span class="w">        </span><span class="n">terminal</span><span class="p">.</span><span class="n">write_line</span><span class="p">(</span><span class="s">"Framebuffer terminal: OK"</span><span class="p">)</span>
+
+<span class="w">    </span><span class="n">kernelHalt</span><span class="p">.</span><span class="n">halt</span><span class="p">()</span>
+</pre></div>
+
+        </section>
+        
+    </div>
+    <div class="toc-list-container">
+        
+        <ul class="toc-list">
+            
+            <li>
+                <a href="#declaration-25">
+                    
+                    print_allocation_state
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-31">
+                    
+                    print_clock_info
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-40">
+                    
+                    perform_single_byte_memory_test
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-56">
+                    
+                    kmain
+                </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+
+</article>
+
+
+
+    </main>
+</body>
+</html>
