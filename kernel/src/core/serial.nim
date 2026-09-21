@@ -95,7 +95,7 @@ proc write*(message: cstring) =
         inc index
 
 
-proc writeUInt64*(value: uint64) =
+proc write_uint64*(value: uint64) =
     var digits: array[20, char]
     var remaining = value
     var index = digits.len

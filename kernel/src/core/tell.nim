@@ -30,9 +30,9 @@ It handles _string_ and `uint64` types only and appends a newline `\r\n` by defa
     
 With Serial:
 
-    serial.writeUInt64(allocationState.entryIndex)
+    serial.write_uint64(allocationState.entryIndex)
     serial.write(" ")
-    serial.writeUInt64(allocationState.address)
+    serial.write_uint64(allocationState.address)
     serial.write("\r\n")
 
 ---
@@ -46,7 +46,7 @@ macro line*(args: varargs[untyped], newline: untyped = "\r\n"): untyped =
     for arg in args:
         result.add quote do:
             when typeof(`arg`) is uint64:
-                serial.writeUInt64(`arg`)
+                serial.write_uint64(`arg`)
             else:
                 serial.write(`arg`)
 
