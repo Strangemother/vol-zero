@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>core/memory/allocate | VOL Documentation</title>
+    <link rel="stylesheet" href="../../../style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body class="asset-file-doc file-detail file-lang-nim">
+    <main class="page-shell">
+        
+
+        <header class="site-header">
+            <a class="site-title" href="../../../">VOL kernel <span class="version">0.1.0</span></a>
+            <a class="github-link" href="https://github.com/Strangemother/vol-zero">GitHub</a>
+        </header>
+        
+<article class="document-page">
+    <div class="content">
+
+        <nav class="pre-header-navigation" aria-label="Page navigation">
+            <a href="../">Parent</a>
+        </nav>
+        <h1>core/memory/allocate</h1>
+
+        
+        <section class="source-document">
+            <h2>Header</h2>
+            
+            <div class="documentation">
+                <p>Low-level physical memory allocation and HHDM (Higher Half Direct Map) support.</p>
+<p>This module has two related responsibilities:</p>
+<ol>
+<li>Allocate a range of currently usable physical memory.</li>
+<li>Convert that physical address into a virtual address that the kernel can
+access through a Nim pointer.</li>
+</ol>
+<p>A physical address is a number describing a location in RAM. A Nim pointer is
+a virtual address that the CPU must translate through page tables. The HHDM is
+a bootloader-provided virtual mapping that makes this conversion simple:</p>
+<div class="highlight"><pre><span></span><span class="n">virtual</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">physical</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">HHDM</span><span class="w"> </span><span class="n">offset</span>
+</pre></div>
+<p>The physical allocator and HHDM do not provide a general-purpose heap. Memory
+returned by this module is not freed, and callers must not access more bytes
+than they requested.</p>
+
+            </div>
+            
+            
+        </section>
+        
+
+        <section class="imports-includes">
+            
+            <ul class="import-list">
+                
+            </ul>
+            <ul class="include-list">
+                
+            </ul>
+               
+        </section>
+        
+        <section class="metadata">
+            <h2>Declarations</h2>
+            
+            <ul class="declaration-list">
+                
+                <li id="declaration-34">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        current_state
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">current_state</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="n">AllocationState</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_get_allocation_state".}</span></div>
+                    </div>
+                    <div class="documentation">
+                        
+                    </div>
+                </li>
+                
+                <li id="declaration-50">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        reset
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">reset</span><span class="o">*</span><span class="p">()</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_allocator_reset".}</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Resets the physical allocator back to the beginning of the memory map.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><span class="n">reset</span><span class="p">()</span>
+<span class="k">let</span><span class="w"> </span><span class="n">physical</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">allocate_physical_bytes</span><span class="p">(</span><span class="n">pageSize</span><span class="p">)</span>
+</pre></div>
+<p>After the reset, the next allocation may reuse addresses returned before the
+reset. Every pointer and physical address allocated before <code>reset()</code> must
+therefore be considered invalid. Use this only when all earlier allocations
+are disposable. This is a whole-arena reset, not an individual deallocator.</p>
+
+                    </div>
+                </li>
+                
+                <li id="declaration-63">
+                    <h3>
+                        
+                        allocate_physical_bytes_raw
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: False</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">allocate_physical_bytes_raw</span><span class="p">(</span><span class="n">size</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span><span class="p">):</span><span class="w"> </span><span class="n">uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_allocate_physical".}</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Returns a physical address from the C implementation of the Limine-backed
+allocator.</p>
+<p>This is an internal ABI bridge. Nim code should call <code>allocate_physical_bytes</code>
+instead, because that function returns the type-safe <code>PhysicalAddress</code> type.</p>
+<p>The allocator rounds sizes up to whole pages and returns zero when allocation
+fails. The returned address is physical memory, not automatically a Nim
+pointer.</p>
+
+                    </div>
+                </li>
+                
+                <li id="declaration-72">
+                    <h3>
+                        
+                        hhdm_offset_raw
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: False</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">hhdm_offset_raw</span><span class="p">():</span><span class="w"> </span><span class="n">uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_hhdm_offset".}</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Returns the HHDM offset supplied by Limine.</p>
+<p>This is an internal ABI bridge. Nim code should normally call <code>hhdm_offset</code>
+instead. The value must not be guessed or hard-coded because Limine may choose
+a different offset on different boots or configurations.</p>
+
+                    </div>
+                </li>
+                
+                <li id="declaration-81">
+                    <h3>
+                        
+                        hhdm_available_raw
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: False</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">hhdm_available_raw</span><span class="p">():</span><span class="w"> </span><span class="n">uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_hhdm_available".}</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Reports whether Limine supplied an HHDM response.</p>
+<p>This is an internal ABI bridge. Nim code should call <code>hhdm_available</code> instead.
+The C function returns an integer because that is a simple C ABI
+representation of a boolean value.</p>
+
+                    </div>
+                </li>
+                
+                <li id="declaration-101">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        allocate_physical_bytes
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">allocate_physical_bytes</span><span class="o">*</span><span class="p">(</span><span class="n">size</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span><span class="p">):</span><span class="w"> </span><span class="n">PhysicalAddress</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Allocates a range of usable physical memory.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><span class="k">let</span><span class="w"> </span><span class="n">physical</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">allocate_physical_bytes</span><span class="p">(</span><span class="n">pageSize</span><span class="p">)</span>
+<span class="k">if</span><span class="w"> </span><span class="n">uint64</span><span class="p">(</span><span class="n">physical</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span>
+<span class="w">    </span><span class="n">serial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"Allocation failed</span><span class="se">\r\n</span><span class="s">"</span><span class="p">)</span>
+</pre></div>
+<p>The allocator rounds <code>size</code> up to a multiple of <code>pageSize</code>. For example, a
+request for 1 byte consumes one 4096-byte page, and a request for 4097 bytes
+consumes two pages. A result of zero means that allocation failed.</p>
+<p>The returned value is a <code>PhysicalAddress</code>, not a dereferenceable pointer. Use
+<code>physical_bytes</code> after confirming that an HHDM mapping is available. This first
+allocator is intentionally simple: it does not free memory and is not safe to
+call concurrently from multiple CPUs or interrupt handlers.</p>
+
+                    </div>
+                </li>
+                
+                <li id="declaration-118">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        hhdm_offset
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">hhdm_offset</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="n">uint64</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Returns the HHDM offset selected by Limine.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="n">hhdm_available</span><span class="p">():</span>
+<span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hhdm_offset</span><span class="p">()</span>
+<span class="w">    </span><span class="n">serial</span><span class="p">.</span><span class="n">writeUInt64</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span>
+</pre></div>
+<p>The offset is added to a physical address to produce the corresponding HHDM
+virtual address. Do not use this value unless <code>hhdm_available()</code> is true. A
+zero offset can be valid on some systems, so checking the offset alone is not
+a reliable availability test.</p>
+
+                    </div>
+                </li>
+                
+                <li id="declaration-134">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        hhdm_available
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">hhdm_available</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="nb">bool</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Reports whether Limine created the HHDM mapping requested by the kernel.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">hhdm_available</span><span class="p">():</span>
+<span class="w">    </span><span class="n">serial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"HHDM unavailable</span><span class="se">\r\n</span><span class="s">"</span><span class="p">)</span>
+</pre></div>
+<p>When this returns <code>false</code>, the kernel must not turn physical addresses into
+pointers with this module. A physical allocator can still return addresses,
+but those addresses need another virtual mapping before they can be read or
+written by Nim code.</p>
+
+                    </div>
+                </li>
+                
+                <li id="declaration-153">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        physical_to_virtual
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">physical_to_virtual</span><span class="o">*</span><span class="p">(</span><span class="n">physical</span><span class="p">:</span><span class="w"> </span><span class="n">PhysicalAddress</span><span class="p">,</span><span class="w"> </span><span class="n">offset</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span><span class="p">):</span><span class="w"> </span><span class="n">VirtualAddress</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Converts a physical address into its HHDM virtual address.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><span class="k">let</span><span class="w"> </span><span class="n">physical</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">allocate_physical_bytes</span><span class="p">(</span><span class="n">pageSize</span><span class="p">)</span>
+<span class="k">let</span><span class="w"> </span><span class="n">virtual</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">physical_to_virtual</span><span class="p">(</span><span class="n">physical</span><span class="p">,</span><span class="w"> </span><span class="n">hhdm_offset</span><span class="p">())</span>
+</pre></div>
+<p>The conversion is only meaningful when <code>hhdm_available()</code> is true. A zero
+physical address is treated as invalid because zero is also the allocator's
+failure value. The function returns zero if adding the offset would overflow
+the 64-bit address space.</p>
+<p>This function returns a <code>VirtualAddress</code> number, not a Nim pointer. Use
+<code>physical_bytes</code> when byte access is required.</p>
+
+                    </div>
+                </li>
+                
+                <li id="declaration-180">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        physical_bytes
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">physical_bytes</span><span class="o">*</span><span class="p">(</span><span class="n">physical</span><span class="p">:</span><span class="w"> </span><span class="n">PhysicalAddress</span><span class="p">):</span><span class="w"> </span><span class="k">ptr</span><span class="w"> </span><span class="n">UncheckedArray</span><span class="o">[</span><span class="n">uint8</span><span class="o">]</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Returns a byte-array pointer for a physical allocation through the HHDM.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><span class="k">let</span><span class="w"> </span><span class="n">physical</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">allocate_physical_bytes</span><span class="p">(</span><span class="n">pageSize</span><span class="p">)</span>
+<span class="k">let</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">physical_bytes</span><span class="p">(</span><span class="n">physical</span><span class="p">)</span>
+
+<span class="k">if</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kp">nil</span><span class="p">:</span>
+<span class="w">    </span><span class="n">bytes</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uint8</span><span class="p">(</span><span class="sc">'X'</span><span class="p">)</span>
+</pre></div>
+<p>The returned pointer can access the allocated memory through the HHDM. For a
+4096-byte allocation, valid indexes are 0 through 4095. Nim does not know the
+allocation length because <code>UncheckedArray</code> has no bounds checking, so callers
+must track the requested size themselves.</p>
+<p>This returns <code>nil</code> when the physical address is zero or when HHDM is
+unavailable. It does not validate that an arbitrary physical address belongs
+to an allocation made by this module. The pointer is also unsuitable for
+sharing between CPUs until the allocator is made concurrency-safe.</p>
+
+                    </div>
+                </li>
+                
+            </ul>
+        </section>
+        
+
+        
+        <section class="source-code">
+            <h2>Source</h2>
+            <div class="highlight"><pre><span></span><span class="cm">#[</span>
+<span class="cm">Low-level physical memory allocation and HHDM (Higher Half Direct Map) support.</span>
+
+<span class="cm">This module has two related responsibilities:</span>
+
+<span class="cm">1. Allocate a range of currently usable physical memory.</span>
+<span class="cm">2. Convert that physical address into a virtual address that the kernel can</span>
+<span class="cm">   access through a Nim pointer.</span>
+
+<span class="cm">A physical address is a number describing a location in RAM. A Nim pointer is</span>
+<span class="cm">a virtual address that the CPU must translate through page tables. The HHDM is</span>
+<span class="cm">a bootloader-provided virtual mapping that makes this conversion simple:</span>
+
+<span class="cm">    virtual address = physical address + HHDM offset</span>
+
+<span class="cm">The physical allocator and HHDM do not provide a general-purpose heap. Memory</span>
+<span class="cm">returned by this module is not freed, and callers must not access more bytes</span>
+<span class="cm">than they requested.</span>
+<span class="cm">]#</span>
+<span class="k">type</span>
+<span class="w">    </span><span class="n">PhysicalAddress</span><span class="o">*</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">distinct</span><span class="w"> </span><span class="n">uint64</span>
+<span class="w">    </span><span class="n">VirtualAddress</span><span class="o">*</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">distinct</span><span class="w"> </span><span class="n">uint64</span>
+<span class="w">    </span><span class="c"># The {.bycopy.} annotation</span>
+<span class="w">    </span><span class="c"># is important when Nim receives a C struct by value.</span>
+<span class="w">    </span><span class="n">AllocationState</span><span class="o">*</span><span class="w"> </span><span class="sx">{.bycopy.}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">object</span>
+<span class="w">        </span><span class="n">entryIndex</span><span class="o">*</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span>
+<span class="w">        </span><span class="n">address</span><span class="o">*</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span>
+
+<span class="k">const</span>
+<span class="w">    </span><span class="sd">## The x86-64 hardware page size used by the physical allocator.</span>
+<span class="w">    </span><span class="n">pageSize</span><span class="o">*</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4096</span><span class="sc">'u64</span>
+
+
+<span class="k">proc</span><span class="w"> </span><span class="nf">current_state</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="n">AllocationState</span>
+<span class="w">    </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_get_allocation_state".}</span>
+
+<span class="sx">#[</span>
+<span class="sx">Resets</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">physical</span><span class="w"> </span><span class="sx">allocator</span><span class="w"> </span><span class="sx">back</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">beginning</span><span class="w"> </span><span class="sx">of</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">memory</span><span class="w"> </span><span class="sx">map.</span>
+
+<span class="sx">Example</span>:
+
+<span class="w">    </span><span class="sx">reset()</span>
+<span class="sx">    let</span><span class="w"> </span><span class="sx">physical</span><span class="w"> </span><span class="sx">= allocate_physical_bytes(pageSize)</span>
+
+<span class="sx">After</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">reset</span>,<span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">next</span><span class="w"> </span><span class="sx">allocation</span><span class="w"> </span><span class="sx">may</span><span class="w"> </span><span class="sx">reuse</span><span class="w"> </span><span class="sx">addresses</span><span class="w"> </span><span class="sx">returned</span><span class="w"> </span><span class="sx">before</span><span class="w"> </span><span class="sx">the</span>
+<span class="sx">reset. Every</span><span class="w"> </span><span class="sx">pointer</span><span class="w"> </span><span class="sx">and</span><span class="w"> </span><span class="sx">physical</span><span class="w"> </span><span class="sx">address</span><span class="w"> </span><span class="sx">allocated</span><span class="w"> </span><span class="sx">before</span><span class="w"> </span><span class="sx">`reset()` must</span>
+<span class="sx">therefore</span><span class="w"> </span><span class="sx">be</span><span class="w"> </span><span class="sx">considered</span><span class="w"> </span><span class="sx">invalid. Use</span><span class="w"> </span><span class="sx">this</span><span class="w"> </span><span class="sx">only</span><span class="w"> </span><span class="sx">when</span><span class="w"> </span><span class="sx">all</span><span class="w"> </span><span class="sx">earlier</span><span class="w"> </span><span class="sx">allocations</span>
+<span class="sx">are</span><span class="w"> </span><span class="sx">disposable. This</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">whole-arena</span><span class="w"> </span><span class="sx">reset</span>,<span class="w"> </span><span class="sx">not</span><span class="w"> </span><span class="sx">an</span><span class="w"> </span><span class="sx">individual</span><span class="w"> </span><span class="sx">deallocator.</span>
+<span class="sx">]#</span>
+<span class="sx">proc</span><span class="w"> </span><span class="sx">reset*() {.importc</span>:<span class="w"> </span><span class="sx">"limine_allocator_reset".}</span>
+
+<span class="sx">#[</span>
+<span class="sx">Returns</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">physical</span><span class="w"> </span><span class="sx">address</span><span class="w"> </span><span class="sx">from</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">C</span><span class="w"> </span><span class="sx">implementation</span><span class="w"> </span><span class="sx">of</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">Limine-backed</span>
+<span class="sx">allocator.</span>
+
+<span class="sx">This</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">an</span><span class="w"> </span><span class="sx">internal</span><span class="w"> </span><span class="sx">ABI</span><span class="w"> </span><span class="sx">bridge. Nim</span><span class="w"> </span><span class="sx">code</span><span class="w"> </span><span class="sx">should</span><span class="w"> </span><span class="sx">call</span><span class="w"> </span><span class="sx">`allocate_physical_bytes`</span>
+<span class="sx">instead</span>,<span class="w"> </span><span class="sx">because</span><span class="w"> </span><span class="sx">that</span><span class="w"> </span><span class="sx">function</span><span class="w"> </span><span class="sx">returns</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">type-safe</span><span class="w"> </span><span class="sx">`PhysicalAddress` type.</span>
+
+<span class="sx">The</span><span class="w"> </span><span class="sx">allocator</span><span class="w"> </span><span class="sx">rounds</span><span class="w"> </span><span class="sx">sizes</span><span class="w"> </span><span class="sx">up</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">whole</span><span class="w"> </span><span class="sx">pages</span><span class="w"> </span><span class="sx">and</span><span class="w"> </span><span class="sx">returns</span><span class="w"> </span><span class="sx">zero</span><span class="w"> </span><span class="sx">when</span><span class="w"> </span><span class="sx">allocation</span>
+<span class="sx">fails. The</span><span class="w"> </span><span class="sx">returned</span><span class="w"> </span><span class="sx">address</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">physical</span><span class="w"> </span><span class="sx">memory</span>,<span class="w"> </span><span class="sx">not</span><span class="w"> </span><span class="sx">automatically</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">Nim</span>
+<span class="sx">pointer.</span>
+<span class="sx">]#</span>
+<span class="sx">proc</span><span class="w"> </span><span class="sx">allocate_physical_bytes_raw(size</span>:<span class="w"> </span><span class="sx">uint64): uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_allocate_physical".}</span>
+
+<span class="sx">#[</span>
+<span class="sx">Returns</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">HHDM</span><span class="w"> </span><span class="sx">offset</span><span class="w"> </span><span class="sx">supplied</span><span class="w"> </span><span class="sx">by</span><span class="w"> </span><span class="sx">Limine.</span>
+
+<span class="sx">This</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">an</span><span class="w"> </span><span class="sx">internal</span><span class="w"> </span><span class="sx">ABI</span><span class="w"> </span><span class="sx">bridge. Nim</span><span class="w"> </span><span class="sx">code</span><span class="w"> </span><span class="sx">should</span><span class="w"> </span><span class="sx">normally</span><span class="w"> </span><span class="sx">call</span><span class="w"> </span><span class="sx">`hhdm_offset`</span>
+<span class="sx">instead. The</span><span class="w"> </span><span class="sx">value</span><span class="w"> </span><span class="sx">must</span><span class="w"> </span><span class="sx">not</span><span class="w"> </span><span class="sx">be</span><span class="w"> </span><span class="sx">guessed</span><span class="w"> </span><span class="sx">or</span><span class="w"> </span><span class="sx">hard-coded</span><span class="w"> </span><span class="sx">because</span><span class="w"> </span><span class="sx">Limine</span><span class="w"> </span><span class="sx">may</span><span class="w"> </span><span class="sx">choose</span>
+<span class="sx">a</span><span class="w"> </span><span class="sx">different</span><span class="w"> </span><span class="sx">offset</span><span class="w"> </span><span class="sx">on</span><span class="w"> </span><span class="sx">different</span><span class="w"> </span><span class="sx">boots</span><span class="w"> </span><span class="sx">or</span><span class="w"> </span><span class="sx">configurations.</span>
+<span class="sx">]#</span>
+<span class="sx">proc</span><span class="w"> </span><span class="sx">hhdm_offset_raw(): uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_hhdm_offset".}</span>
+
+<span class="sx">#[</span>
+<span class="sx">Reports</span><span class="w"> </span><span class="sx">whether</span><span class="w"> </span><span class="sx">Limine</span><span class="w"> </span><span class="sx">supplied</span><span class="w"> </span><span class="sx">an</span><span class="w"> </span><span class="sx">HHDM</span><span class="w"> </span><span class="sx">response.</span>
+
+<span class="sx">This</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">an</span><span class="w"> </span><span class="sx">internal</span><span class="w"> </span><span class="sx">ABI</span><span class="w"> </span><span class="sx">bridge. Nim</span><span class="w"> </span><span class="sx">code</span><span class="w"> </span><span class="sx">should</span><span class="w"> </span><span class="sx">call</span><span class="w"> </span><span class="sx">`hhdm_available` instead.</span>
+<span class="sx">The</span><span class="w"> </span><span class="sx">C</span><span class="w"> </span><span class="sx">function</span><span class="w"> </span><span class="sx">returns</span><span class="w"> </span><span class="sx">an</span><span class="w"> </span><span class="sx">integer</span><span class="w"> </span><span class="sx">because</span><span class="w"> </span><span class="sx">that</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">simple</span><span class="w"> </span><span class="sx">C</span><span class="w"> </span><span class="sx">ABI</span>
+<span class="sx">representation</span><span class="w"> </span><span class="sx">of</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">boolean</span><span class="w"> </span><span class="sx">value.</span>
+<span class="sx">]#</span>
+<span class="sx">proc</span><span class="w"> </span><span class="sx">hhdm_available_raw(): uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_hhdm_available".}</span>
+
+<span class="sx">#[</span>
+<span class="sx">Allocates</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">range</span><span class="w"> </span><span class="sx">of</span><span class="w"> </span><span class="sx">usable</span><span class="w"> </span><span class="sx">physical</span><span class="w"> </span><span class="sx">memory.</span>
+
+<span class="sx">Example</span>:
+
+<span class="w">    </span><span class="sx">let</span><span class="w"> </span><span class="sx">physical</span><span class="w"> </span><span class="sx">= allocate_physical_bytes(pageSize)</span>
+<span class="sx">    if</span><span class="w"> </span><span class="sx">uint64(physical) == 0</span>:
+<span class="w">        </span><span class="sx">serial.write("Allocation</span><span class="w"> </span><span class="sx">failed\r\n")</span>
+
+<span class="sx">The</span><span class="w"> </span><span class="sx">allocator</span><span class="w"> </span><span class="sx">rounds</span><span class="w"> </span><span class="sx">`size` up</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">multiple</span><span class="w"> </span><span class="sx">of</span><span class="w"> </span><span class="sx">`pageSize`. For</span><span class="w"> </span><span class="sx">example</span>,<span class="w"> </span><span class="sx">a</span>
+<span class="sx">request</span><span class="w"> </span><span class="sx">for</span><span class="w"> </span><span class="sx">1</span><span class="w"> </span><span class="sx">byte</span><span class="w"> </span><span class="sx">consumes</span><span class="w"> </span><span class="sx">one</span><span class="w"> </span><span class="sx">4096-byte</span><span class="w"> </span><span class="sx">page</span>,<span class="w"> </span><span class="sx">and</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">request</span><span class="w"> </span><span class="sx">for</span><span class="w"> </span><span class="sx">4097</span><span class="w"> </span><span class="sx">bytes</span>
+<span class="sx">consumes</span><span class="w"> </span><span class="sx">two</span><span class="w"> </span><span class="sx">pages. A</span><span class="w"> </span><span class="sx">result</span><span class="w"> </span><span class="sx">of</span><span class="w"> </span><span class="sx">zero</span><span class="w"> </span><span class="sx">means</span><span class="w"> </span><span class="sx">that</span><span class="w"> </span><span class="sx">allocation</span><span class="w"> </span><span class="sx">failed.</span>
+
+<span class="sx">The</span><span class="w"> </span><span class="sx">returned</span><span class="w"> </span><span class="sx">value</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">`PhysicalAddress`, not</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">dereferenceable</span><span class="w"> </span><span class="sx">pointer. Use</span>
+<span class="sx">`physical_bytes` after</span><span class="w"> </span><span class="sx">confirming</span><span class="w"> </span><span class="sx">that</span><span class="w"> </span><span class="sx">an</span><span class="w"> </span><span class="sx">HHDM</span><span class="w"> </span><span class="sx">mapping</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">available. This</span><span class="w"> </span><span class="sx">first</span>
+<span class="sx">allocator</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">intentionally</span><span class="w"> </span><span class="sx">simple</span>:<span class="w"> </span><span class="sx">it</span><span class="w"> </span><span class="sx">does</span><span class="w"> </span><span class="sx">not</span><span class="w"> </span><span class="sx">free</span><span class="w"> </span><span class="sx">memory</span><span class="w"> </span><span class="sx">and</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">not</span><span class="w"> </span><span class="sx">safe</span><span class="w"> </span><span class="sx">to</span>
+<span class="sx">call</span><span class="w"> </span><span class="sx">concurrently</span><span class="w"> </span><span class="sx">from</span><span class="w"> </span><span class="sx">multiple</span><span class="w"> </span><span class="sx">CPUs</span><span class="w"> </span><span class="sx">or</span><span class="w"> </span><span class="sx">interrupt</span><span class="w"> </span><span class="sx">handlers.</span>
+<span class="sx">]#</span>
+<span class="sx">proc</span><span class="w"> </span><span class="sx">allocate_physical_bytes*(size</span>:<span class="w"> </span><span class="sx">uint64): PhysicalAddress</span><span class="w"> </span><span class="sx">=</span>
+<span class="sx">    PhysicalAddress(allocate_physical_bytes_raw(size))</span>
+
+<span class="sx">#[</span>
+<span class="sx">Returns</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">HHDM</span><span class="w"> </span><span class="sx">offset</span><span class="w"> </span><span class="sx">selected</span><span class="w"> </span><span class="sx">by</span><span class="w"> </span><span class="sx">Limine.</span>
+
+<span class="sx">Example</span>:
+
+<span class="w">    </span><span class="sx">if</span><span class="w"> </span><span class="sx">hhdm_available():</span>
+<span class="sx">        let</span><span class="w"> </span><span class="sx">offset</span><span class="w"> </span><span class="sx">= hhdm_offset()</span>
+<span class="sx">        serial.writeUInt64(offset)</span>
+
+<span class="sx">The</span><span class="w"> </span><span class="sx">offset</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">added</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">physical</span><span class="w"> </span><span class="sx">address</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">produce</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">corresponding</span><span class="w"> </span><span class="sx">HHDM</span>
+<span class="sx">virtual</span><span class="w"> </span><span class="sx">address. Do</span><span class="w"> </span><span class="sx">not</span><span class="w"> </span><span class="sx">use</span><span class="w"> </span><span class="sx">this</span><span class="w"> </span><span class="sx">value</span><span class="w"> </span><span class="sx">unless</span><span class="w"> </span><span class="sx">`hhdm_available()` is</span><span class="w"> </span><span class="sx">true. A</span>
+<span class="sx">zero</span><span class="w"> </span><span class="sx">offset</span><span class="w"> </span><span class="sx">can</span><span class="w"> </span><span class="sx">be</span><span class="w"> </span><span class="sx">valid</span><span class="w"> </span><span class="sx">on</span><span class="w"> </span><span class="sx">some</span><span class="w"> </span><span class="sx">systems</span>,<span class="w"> </span><span class="sx">so</span><span class="w"> </span><span class="sx">checking</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">offset</span><span class="w"> </span><span class="sx">alone</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">not</span>
+<span class="sx">a</span><span class="w"> </span><span class="sx">reliable</span><span class="w"> </span><span class="sx">availability</span><span class="w"> </span><span class="sx">test.</span>
+<span class="sx">]#</span>
+<span class="sx">proc</span><span class="w"> </span><span class="sx">hhdm_offset*(): uint64</span><span class="w"> </span><span class="sx">=</span>
+<span class="sx">    hhdm_offset_raw()</span>
+
+<span class="sx">#[</span>
+<span class="sx">Reports</span><span class="w"> </span><span class="sx">whether</span><span class="w"> </span><span class="sx">Limine</span><span class="w"> </span><span class="sx">created</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">HHDM</span><span class="w"> </span><span class="sx">mapping</span><span class="w"> </span><span class="sx">requested</span><span class="w"> </span><span class="sx">by</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">kernel.</span>
+
+<span class="sx">Example</span>:
+
+<span class="w">    </span><span class="sx">if</span><span class="w"> </span><span class="sx">not</span><span class="w"> </span><span class="sx">hhdm_available():</span>
+<span class="sx">        serial.write("HHDM</span><span class="w"> </span><span class="sx">unavailable\r\n")</span>
+
+<span class="sx">When</span><span class="w"> </span><span class="sx">this</span><span class="w"> </span><span class="sx">returns</span><span class="w"> </span><span class="sx">`false`, the</span><span class="w"> </span><span class="sx">kernel</span><span class="w"> </span><span class="sx">must</span><span class="w"> </span><span class="sx">not</span><span class="w"> </span><span class="sx">turn</span><span class="w"> </span><span class="sx">physical</span><span class="w"> </span><span class="sx">addresses</span><span class="w"> </span><span class="sx">into</span>
+<span class="sx">pointers</span><span class="w"> </span><span class="sx">with</span><span class="w"> </span><span class="sx">this</span><span class="w"> </span><span class="sx">module. A</span><span class="w"> </span><span class="sx">physical</span><span class="w"> </span><span class="sx">allocator</span><span class="w"> </span><span class="sx">can</span><span class="w"> </span><span class="sx">still</span><span class="w"> </span><span class="sx">return</span><span class="w"> </span><span class="sx">addresses</span>,
+<span class="sx">but</span><span class="w"> </span><span class="sx">those</span><span class="w"> </span><span class="sx">addresses</span><span class="w"> </span><span class="sx">need</span><span class="w"> </span><span class="sx">another</span><span class="w"> </span><span class="sx">virtual</span><span class="w"> </span><span class="sx">mapping</span><span class="w"> </span><span class="sx">before</span><span class="w"> </span><span class="sx">they</span><span class="w"> </span><span class="sx">can</span><span class="w"> </span><span class="sx">be</span><span class="w"> </span><span class="sx">read</span><span class="w"> </span><span class="sx">or</span>
+<span class="sx">written</span><span class="w"> </span><span class="sx">by</span><span class="w"> </span><span class="sx">Nim</span><span class="w"> </span><span class="sx">code.</span>
+<span class="sx">]#</span>
+<span class="sx">proc</span><span class="w"> </span><span class="sx">hhdm_available*(): bool</span><span class="w"> </span><span class="sx">=</span>
+<span class="sx">    hhdm_available_raw() != 0</span>
+
+<span class="sx">#[</span>
+<span class="sx">Converts</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">physical</span><span class="w"> </span><span class="sx">address</span><span class="w"> </span><span class="sx">into</span><span class="w"> </span><span class="sx">its</span><span class="w"> </span><span class="sx">HHDM</span><span class="w"> </span><span class="sx">virtual</span><span class="w"> </span><span class="sx">address.</span>
+
+<span class="sx">Example</span>:
+
+<span class="w">    </span><span class="sx">let</span><span class="w"> </span><span class="sx">physical</span><span class="w"> </span><span class="sx">= allocate_physical_bytes(pageSize)</span>
+<span class="sx">    let</span><span class="w"> </span><span class="sx">virtual</span><span class="w"> </span><span class="sx">= physical_to_virtual(physical</span>,<span class="w"> </span><span class="sx">hhdm_offset())</span>
+
+<span class="sx">The</span><span class="w"> </span><span class="sx">conversion</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">only</span><span class="w"> </span><span class="sx">meaningful</span><span class="w"> </span><span class="sx">when</span><span class="w"> </span><span class="sx">`hhdm_available()` is</span><span class="w"> </span><span class="sx">true. A</span><span class="w"> </span><span class="sx">zero</span>
+<span class="sx">physical</span><span class="w"> </span><span class="sx">address</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">treated</span><span class="w"> </span><span class="sx">as</span><span class="w"> </span><span class="sx">invalid</span><span class="w"> </span><span class="sx">because</span><span class="w"> </span><span class="sx">zero</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">also</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">allocator's</span>
+<span class="sx">failure</span><span class="w"> </span><span class="sx">value. The</span><span class="w"> </span><span class="sx">function</span><span class="w"> </span><span class="sx">returns</span><span class="w"> </span><span class="sx">zero</span><span class="w"> </span><span class="sx">if</span><span class="w"> </span><span class="sx">adding</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">offset</span><span class="w"> </span><span class="sx">would</span><span class="w"> </span><span class="sx">overflow</span>
+<span class="sx">the</span><span class="w"> </span><span class="sx">64-bit</span><span class="w"> </span><span class="sx">address</span><span class="w"> </span><span class="sx">space.</span>
+
+<span class="sx">This</span><span class="w"> </span><span class="sx">function</span><span class="w"> </span><span class="sx">returns</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">`VirtualAddress` number</span>,<span class="w"> </span><span class="sx">not</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">Nim</span><span class="w"> </span><span class="sx">pointer. Use</span>
+<span class="sx">`physical_bytes` when</span><span class="w"> </span><span class="sx">byte</span><span class="w"> </span><span class="sx">access</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">required.</span>
+<span class="sx">]#</span>
+<span class="sx">proc</span><span class="w"> </span><span class="sx">physical_to_virtual*(physical</span>:<span class="w"> </span><span class="sx">PhysicalAddress</span>,<span class="w"> </span><span class="sx">offset</span>:<span class="w"> </span><span class="sx">uint64): VirtualAddress</span><span class="w"> </span><span class="sx">=</span>
+<span class="sx">    let</span><span class="w"> </span><span class="sx">address</span><span class="w"> </span><span class="sx">= uint64(physical)</span>
+<span class="sx">    if</span><span class="w"> </span><span class="sx">address</span><span class="w"> </span><span class="sx">== 0</span><span class="w"> </span><span class="sx">or</span><span class="w"> </span><span class="sx">offset</span><span class="w"> </span><span class="sx">&gt; high(uint64) - address</span>:
+<span class="w">        </span><span class="sx">return</span><span class="w"> </span><span class="sx">VirtualAddress(0)</span>
+<span class="sx">    VirtualAddress(address</span><span class="w"> </span><span class="sx">+ offset)</span>
+
+<span class="sx">#[</span>
+<span class="sx">Returns</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">byte-array</span><span class="w"> </span><span class="sx">pointer</span><span class="w"> </span><span class="sx">for</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">physical</span><span class="w"> </span><span class="sx">allocation</span><span class="w"> </span><span class="sx">through</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">HHDM.</span>
+
+<span class="sx">Example</span>:
+
+<span class="w">    </span><span class="sx">let</span><span class="w"> </span><span class="sx">physical</span><span class="w"> </span><span class="sx">= allocate_physical_bytes(pageSize)</span>
+<span class="sx">    let</span><span class="w"> </span><span class="sx">bytes</span><span class="w"> </span><span class="sx">= physical_bytes(physical)</span>
+
+<span class="sx">    if</span><span class="w"> </span><span class="sx">bytes</span><span class="w"> </span><span class="sx">!= nil</span>:
+<span class="w">        </span><span class="sx">bytes[3] = uint8('X')</span>
+
+<span class="sx">The</span><span class="w"> </span><span class="sx">returned</span><span class="w"> </span><span class="sx">pointer</span><span class="w"> </span><span class="sx">can</span><span class="w"> </span><span class="sx">access</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">allocated</span><span class="w"> </span><span class="sx">memory</span><span class="w"> </span><span class="sx">through</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">HHDM. For</span><span class="w"> </span><span class="sx">a</span>
+<span class="sx">4096-byte</span><span class="w"> </span><span class="sx">allocation</span>,<span class="w"> </span><span class="sx">valid</span><span class="w"> </span><span class="sx">indexes</span><span class="w"> </span><span class="sx">are</span><span class="w"> </span><span class="sx">0</span><span class="w"> </span><span class="sx">through</span><span class="w"> </span><span class="sx">4095. Nim</span><span class="w"> </span><span class="sx">does</span><span class="w"> </span><span class="sx">not</span><span class="w"> </span><span class="sx">know</span><span class="w"> </span><span class="sx">the</span>
+<span class="sx">allocation</span><span class="w"> </span><span class="sx">length</span><span class="w"> </span><span class="sx">because</span><span class="w"> </span><span class="sx">`UncheckedArray` has</span><span class="w"> </span><span class="sx">no</span><span class="w"> </span><span class="sx">bounds</span><span class="w"> </span><span class="sx">checking</span>,<span class="w"> </span><span class="sx">so</span><span class="w"> </span><span class="sx">callers</span>
+<span class="sx">must</span><span class="w"> </span><span class="sx">track</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">requested</span><span class="w"> </span><span class="sx">size</span><span class="w"> </span><span class="sx">themselves.</span>
+
+<span class="sx">This</span><span class="w"> </span><span class="sx">returns</span><span class="w"> </span><span class="sx">`nil` when</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">physical</span><span class="w"> </span><span class="sx">address</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">zero</span><span class="w"> </span><span class="sx">or</span><span class="w"> </span><span class="sx">when</span><span class="w"> </span><span class="sx">HHDM</span><span class="w"> </span><span class="sx">is</span>
+<span class="sx">unavailable. It</span><span class="w"> </span><span class="sx">does</span><span class="w"> </span><span class="sx">not</span><span class="w"> </span><span class="sx">validate</span><span class="w"> </span><span class="sx">that</span><span class="w"> </span><span class="sx">an</span><span class="w"> </span><span class="sx">arbitrary</span><span class="w"> </span><span class="sx">physical</span><span class="w"> </span><span class="sx">address</span><span class="w"> </span><span class="sx">belongs</span>
+<span class="sx">to</span><span class="w"> </span><span class="sx">an</span><span class="w"> </span><span class="sx">allocation</span><span class="w"> </span><span class="sx">made</span><span class="w"> </span><span class="sx">by</span><span class="w"> </span><span class="sx">this</span><span class="w"> </span><span class="sx">module. The</span><span class="w"> </span><span class="sx">pointer</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">also</span><span class="w"> </span><span class="sx">unsuitable</span><span class="w"> </span><span class="sx">for</span>
+<span class="sx">sharing</span><span class="w"> </span><span class="sx">between</span><span class="w"> </span><span class="sx">CPUs</span><span class="w"> </span><span class="sx">until</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">allocator</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">made</span><span class="w"> </span><span class="sx">concurrency-safe.</span>
+<span class="sx">]#</span>
+<span class="sx">proc</span><span class="w"> </span><span class="sx">physical_bytes*(physical</span>:<span class="w"> </span><span class="sx">PhysicalAddress): ptr</span><span class="w"> </span><span class="sx">UncheckedArray[uint8] =</span>
+<span class="sx">    if</span><span class="w"> </span><span class="sx">not</span><span class="w"> </span><span class="sx">hhdm_available():</span>
+<span class="sx">        return</span><span class="w"> </span><span class="sx">nil</span>
+<span class="w">    </span><span class="sx">let</span><span class="w"> </span><span class="sx">virtual</span><span class="w"> </span><span class="sx">= physical_to_virtual(physical</span>,<span class="w"> </span><span class="sx">hhdm_offset_raw())</span>
+<span class="sx">    if</span><span class="w"> </span><span class="sx">uint64(virtual) == 0</span>:
+<span class="w">        </span><span class="sx">return</span><span class="w"> </span><span class="sx">nil</span>
+<span class="w">    </span><span class="sx">cast[ptr</span><span class="w"> </span><span class="sx">UncheckedArray[uint8]](uint64(virtual))</span>
+</pre></div>
+
+        </section>
+        
+    </div>
+    <div class="toc-list-container">
+        
+        <ul class="toc-list">
+            
+            <li>
+                <a href="#declaration-34">
+                    
+                    <span class="exported">public</span>
+                    
+                    current_state
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-50">
+                    
+                    <span class="exported">public</span>
+                    
+                    reset
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-63">
+                    
+                    allocate_physical_bytes_raw
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-72">
+                    
+                    hhdm_offset_raw
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-81">
+                    
+                    hhdm_available_raw
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-101">
+                    
+                    <span class="exported">public</span>
+                    
+                    allocate_physical_bytes
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-118">
+                    
+                    <span class="exported">public</span>
+                    
+                    hhdm_offset
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-134">
+                    
+                    <span class="exported">public</span>
+                    
+                    hhdm_available
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-153">
+                    
+                    <span class="exported">public</span>
+                    
+                    physical_to_virtual
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-180">
+                    
+                    <span class="exported">public</span>
+                    
+                    physical_bytes
+                </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+
+</article>
+
+
+
+    </main>
+</body>
+</html>

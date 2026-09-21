@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ext/flanterm/README.md | VOL Documentation</title>
+    <link rel="stylesheet" href="../../../style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body class="asset-file-doc file-detail file-lang-md">
+    <main class="page-shell">
+        
+
+        <header class="site-header">
+            <a class="site-title" href="../../../">VOL kernel <span class="version">0.1.0</span></a>
+            <a class="github-link" href="https://github.com/Strangemother/vol-zero">GitHub</a>
+        </header>
+        
+<article class="document-page">
+    <div class="content">
+
+        <nav class="pre-header-navigation" aria-label="Page navigation">
+            <a href="../">Parent</a>
+        </nav>
+        <h1>ext/flanterm/README.md</h1>
+
+        
+
+        <section class="imports-includes">
+            
+            <ul class="import-list">
+                
+            </ul>
+            <ul class="include-list">
+                
+            </ul>
+               
+        </section>
+        
+
+        
+        <section class="source-code">
+            <h2>Source</h2>
+            <div class="highlight"><pre><span></span><span class="gh"># Flanterm</span>
+
+A fast, reasonably complete terminal emulator with multiple output backends;
+a framebuffer backend is included. Freestanding C99 - suitable for kernels,
+bootloaders, and other bare-metal environments.
+
+Flanterm implements a partial subset/superset of the Linux console/VT100
+vocabulary described in
+[<span class="nt">console_codes(4)</span>](<span class="na">https://man7.org/linux/man-pages/man4/console_codes.4.html</span>).
+
+<span class="gu">## Quick start</span>
+
+Framebuffer context initialisation:
+
+<span class="sb">```c</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;flanterm.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;flanterm_backends/fb.h&gt;</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">flanterm_context</span><span class="w"> </span><span class="o">*</span><span class="n">ft_ctx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flanterm_fb_init</span><span class="p">(</span>
+<span class="w">    </span><span class="nb">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="nb">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">framebuffer_ptr</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">pitch</span><span class="p">,</span>
+<span class="w">    </span><span class="n">red_mask_size</span><span class="p">,</span><span class="w"> </span><span class="n">red_mask_shift</span><span class="p">,</span>
+<span class="w">    </span><span class="n">green_mask_size</span><span class="p">,</span><span class="w"> </span><span class="n">green_mask_shift</span><span class="p">,</span>
+<span class="w">    </span><span class="n">blue_mask_size</span><span class="p">,</span><span class="w"> </span><span class="n">blue_mask_shift</span><span class="p">,</span>
+<span class="w">    </span><span class="nb">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="nb">true</span>
+<span class="p">);</span>
+<span class="sb">```</span>
+
+<span class="sb">`framebuffer_ptr`</span>, <span class="sb">`width`</span>, <span class="sb">`height`</span>, <span class="sb">`pitch`</span>, and the six <span class="sb">`*_mask_*`</span>
+arguments describe the framebuffer; the rest are covered in
+[<span class="nt">BACKEND_FB.md</span>](<span class="na">BACKEND_FB.md</span>).
+
+Terminal output:
+
+<span class="sb">```c</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">msg</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"Hello world</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="n">flanterm_write</span><span class="p">(</span><span class="n">ft_ctx</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">msg</span><span class="p">));</span>
+<span class="sb">```</span>
+
+<span class="gu">## Documentation</span>
+
+<span class="k">-</span><span class="w"> </span>[<span class="nt">FRONTEND.md</span>](<span class="na">FRONTEND.md</span>) -- frontend API.
+<span class="k">-</span><span class="w"> </span>[<span class="nt">BACKEND_FB.md</span>](<span class="na">BACKEND_FB.md</span>) -- framebuffer backend.
+</pre></div>
+
+        </section>
+        
+    </div>
+    <div class="toc-list-container">
+        
+    </div>
+
+</article>
+
+
+
+    </main>
+</body>
+</html>

@@ -1,0 +1,550 @@
+:root {
+    color-scheme: dark;
+    --background: #101216;
+    --surface: #181b23;
+    --border: #303642;
+    --text: #7d7d7d;
+    --muted: #9ca5b5;
+    --accent: #3ab7b1;
+    --code-text: #d6deeb;
+    --code-comment: #6f7f8f;
+    --code-keyword: #c792ea;
+    --code-name: #82aaff;
+    --code-string: #c3e88d;
+    --code-number: #f78c6c;
+    --code-operator: #89ddff;
+    --code-class: #ffcb6b;
+}
+
+
+.public-sans, body {
+  font-family: "Public Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body p, body ul, body ol {
+    line-height: 1.5em;
+    font-size: 1.2rem;
+}
+
+.ibm-plex-sans {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+.ibm-plex-serif-thin {
+  font-family: "IBM Plex Serif", serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.ibm-plex-serif-extralight {
+  font-family: "IBM Plex Serif", serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.ibm-plex-serif-light {
+  font-family: "IBM Plex Serif", serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.ibm-plex-serif-regular, h1 {
+  font-family: "IBM Plex Serif", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.ibm-plex-serif-medium {
+  font-family: "IBM Plex Serif", serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.ibm-plex-serif-semibold {
+  font-family: "IBM Plex Serif", serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.ibm-plex-serif-bold {
+  font-family: "IBM Plex Serif", serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.ibm-plex-serif-thin-italic {
+  font-family: "IBM Plex Serif", serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.ibm-plex-serif-extralight-italic {
+  font-family: "IBM Plex Serif", serif;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.ibm-plex-serif-light-italic {
+  font-family: "IBM Plex Serif", serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.ibm-plex-serif-regular-italic {
+  font-family: "IBM Plex Serif", serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.ibm-plex-serif-medium-italic {
+  font-family: "IBM Plex Serif", serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.ibm-plex-serif-semibold-italic {
+  font-family: "IBM Plex Serif", serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.ibm-plex-serif-bold-italic {
+  font-family: "IBM Plex Serif", serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+
+.jetbrains-mono,
+.header .sig,
+pre code,
+.monospace-font {
+  font-family: "JetBrains Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    /* font-family: Georgia, "Times New Roman", serif; */
+}
+
+.page-shell {
+    display: grid;
+    min-height: 100vh;
+    /* justify-items: stretch; */
+    gap: 1rem;
+    padding: 0rem;
+    align-content: start;
+}
+
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: min(100%, 70rem);
+    margin: 0 auto;
+    padding: 2em 0;
+    /* outline: solid; */
+}
+
+.site-title {
+    color: var(--text);
+    font-family: monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.version {
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 400;
+}
+
+.github-link,
+.pre-header-navigation a,
+.page-navigation a {
+    padding: 0.45rem 0.75rem;
+    border: 1px solid var(--border);
+    color: var(--text);
+    text-decoration: none;
+    font: inherit;
+}
+
+.github-link:hover,
+.pre-header-navigation a:hover,
+.page-navigation a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.pre-header-navigation {
+    /* width: min(100%, 64rem); */
+    /* margin: 0 auto; */
+}
+
+.welcome-panel {
+    width: min(100%, 70rem);
+    padding: clamp(2rem, 6vw, 5rem);
+    /* border: 1px solid var(--border); */
+    background: hsl(224 19% 7% / 1);
+    /* box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 24%); */
+    margin: auto;
+    padding: 1em 5em 5em;
+}
+
+.document-page .content {
+    width: min(100%, 64rem);
+    /* width: 59em; */
+    padding: 0 0rem;
+    /* border: 1px solid var(--border); */
+    /* background: var(--surface); */
+    /* box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 24%); */
+    margin: 0;
+    /* flex-grow: 1; */
+    border-radius: 0.3em;
+}
+
+.document-page .content > h1 {
+/* .document-page .content > h1:first-child { */
+    /* max-width: none; */
+    /* overflow-wrap: anywhere; */
+    /* font-family: inherit; */
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    line-height: 1.2;
+    margin: 3rem;
+    text-align: center;
+}
+
+.page-navigation {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+.page-navigation a {
+    display: inline-block;
+}
+
+h2 {
+    margin: 1rem 0 1em;
+    color: var(--accent);
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+pre {
+    max-width: 100%;
+    margin: 0;
+    overflow-x: auto;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    /* background: #0c0e12; */
+    color: var(--text);
+    /* font-family: monospace; */
+    font-size: 0.9rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.highlight pre {
+    white-space: pre;
+}
+
+.highlight {
+    color: var(--code-text);
+}
+
+.highlight .c,
+.highlight .ch,
+.highlight .cm,
+.highlight .cpf,
+.highlight .c1,
+.highlight .cs {
+    color: var(--code-comment);
+}
+
+.highlight .k,
+.highlight .kc,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr,
+.highlight .kt {
+    color: var(--code-keyword);
+}
+
+.highlight .nf,
+.highlight .nb,
+.highlight .nx {
+    color: var(--code-name);
+}
+
+.highlight .s,
+.highlight .sa,
+.highlight .sb,
+.highlight .sc,
+.highlight .dl,
+.highlight .sd,
+.highlight .s2,
+.highlight .se,
+.highlight .sh,
+.highlight .si,
+.highlight .sx,
+.highlight .sr,
+.highlight .ss {
+    color: var(--code-string);
+}
+
+.highlight .m,
+.highlight .mb,
+.highlight .mf,
+.highlight .mh,
+.highlight .mi,
+.highlight .mo {
+    color: var(--code-number);
+}
+
+.highlight .o,
+.highlight .ow {
+    color: var(--code-operator);
+}
+
+.highlight .nc,
+.highlight .nn,
+.highlight .no {
+    color: var(--code-class);
+}
+
+.eyebrow {
+    margin: 0 0 1rem;
+    color: var(--accent);
+    font-family: monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+h1 {
+    /* max-width: 12ch; */
+    margin: 0;
+    font-size: clamp(2.5rem, 8vw, 2rem);
+    line-height: 0.98;
+    font-weight: 500;
+}
+
+.intro {
+    max-width: 34rem;
+    margin: 1.5rem 0 0;
+    color: var(--muted);
+    font-size: 1.15rem;
+    line-height: 1.6;
+}
+
+section.metadata ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+section.metadata ul.declaration-list li {
+    margin: 0;
+    padding: 3em 0 3em;
+    border-bottom: solid 2px #0a0c0e;
+}
+
+.metadata li .documentation {
+    margin: 0 1em;
+}
+
+.file-detail  article.document-page {
+    display: flex;
+    /* display: grid; */
+    margin: 0 auto;
+    gap: 3em;
+    /* flex-grow: 1; */
+    width: 70em;
+    /* outline: solid; */
+}
+
+ul.toc-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    top: 11em;
+    position: sticky;
+}
+
+ul.super-sheet-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: "JetBrains Mono", monospace;
+    /* line-height: 1.8; */
+}
+
+ul.super-sheet-list li.module {
+    margin-top: 1rem;
+}
+
+ul.super-sheet-list li.declaration {
+    padding-left: 2rem;
+}
+
+
+.toc-list-container {
+    flex-basis: 18%;
+}
+
+.document-page nav.pre-header-navigation {
+    display: flex;
+}
+
+
+.directory-list .content {
+    margin: auto;
+    padding-bottom: 2em;
+}
+
+
+.toc-list li a {
+    text-decoration: none;
+    color: inherit;
+    padding: 0.2em 0;
+    display: inline-flex;
+    gap: 0.3em;
+}
+
+.toc-list li a .exported, h3 .exported {
+    color: #444;
+}
+
+.toc-list li a:hover, .toc-list li a:focus {
+    text-decoration: underline;
+}
+
+
+.header .sig {
+    /* border: solid 1px #333; */
+    padding: 1em 0.9em;
+    background: hsl(220 17% 11% / 1);
+    margin: 0.1em;
+    border-radius: 0.1em;
+    font-size: 0.9rem;
+    /* font-family: 'IBM Plex Serif'; */
+}
+
+
+.content > section {/* background: hsl(210 15% 12% / 1); */padding: 1em 2em;margin: 2em 0;}
+
+.declaration-list h3 {
+    font-weight: 500;
+    font-size: 1.3em;
+    margin: 0 0 1em;
+    color: #b7a93a;
+    /* color: hsl(53 51% 43% / 1); */
+}
+
+p code {
+    background: #0a0a0a;
+    padding: 0.1em 0.3em;
+    font-family: inherit;
+    font-size: 1rem;
+    color: hsl(177 44% 54% / 1);
+}
+
+
+.super-sheet-page .content {
+    /* outline: solid; */
+    margin: auto;
+}
+
+.super-sheet-list a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul.super-sheet-list li.dir {
+    margin-top: 1em;
+    /* border-top: solid; */
+}
+
+.super-sheet-list a:hover, .super-sheet-list a:focus {
+    text-decoration: underline;
+}
+
+.welcome-panel h1 {
+    text-align: center;
+    font-size: 3em;
+    margin: 1.5em 0 1.5em;
+}
+
+.asset-markdown-doc li .documentation pre {
+    padding: 1.5em;
+    font-size: 1rem;
+}
+
+.asset-markdown-doc  .documentation h1 {
+    text-align: center;
+    margin: 4rem;
+}
+
+.asset-markdown-doc h2, .asset-markdown-doc h3 {
+    margin: 2em 0 1.4em;
+    text-transform: none;
+    font-size: 2em;
+    color: inherit;
+    letter-spacing: unset;
+}
+
+.asset-markdown-doc h3 {
+    margin: 2em 0 1.5em;
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+ul.file-list a:visited,
+ul.import-list a:visited {
+    color: inherit;
+}
+
+ul.file-list a, ul.import-list a {
+    text-decoration-color: #353535;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.1em;
+}
+
+.documentation blockquote {
+    /* border-left: solid 3px #444; */
+    padding: 0.1rem 2rem;
+    margin: 2em 0 3rem 0em;
+    background: #0c0e11;
+}
+
+.documentation hr {
+    border: none;
+    border-top: solid 3px #222;
+}
+
+.import-list .include-type {
+    display: none;
+}

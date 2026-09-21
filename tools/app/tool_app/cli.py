@@ -19,6 +19,8 @@ from tools.nim import NIM_BIN_DIR, USER_BIN_DIR, configure_nim, ensure_nim
 from tools.run_compiled_no_display import main as run_no_display_main
 from tools.run_oraclebox import main as run_oraclebox_main
 from tools.run_hosted import main as run_hosted_main
+from tools.site_deploy import main as site_deploy_main
+from tools.site_export import main as site_export_main
 from tools.tail_serial import main as tail_serial_main
 
 
@@ -103,6 +105,61 @@ def build_parser() -> argparse.ArgumentParser:
         help="wait for and stream the VirtualBox TCP serial console",
     )
 
+    site = subparsers.add_parser(
+        "site",
+        aliases=["s"],
+        help="manage the static documentation site",
+    )
+    site_subparsers = site.add_subparsers(dest="site_command", metavar="COMMAND")
+    site_export = site_subparsers.add_parser(
+        "export",
+        help="export the Flask documentation site as static files",
+    )
+    site_export.add_argument(
+        "config",
+        nargs="?",
+        help="JSON export configuration file",
+    )
+    site_export.add_argument("--base-url", help="override the configured Flask docs site URL")
+    site_export.add_argument("--output-dir", help="override the configured output directory")
+    site_export.add_argument("--max-pages", type=int, help="override the configured crawl page limit")
+    site_deploy = site_subparsers.add_parser(
+        "deploy",
+        help="export and publish the static documentation site",
+    )
+    site_deploy.add_argument(
+        "config",
+        nargs="?",
+        help="JSON export configuration file",
+    )
+    site_deploy.add_argument("--base-url", help="override the configured Flask docs site URL")
+    site_deploy.add_argument("--output-dir", help="override the configured output directory")
+    site_deploy.add_argument("--max-pages", type=int, help="override the configured crawl page limit")
+    site_deploy.add_argument("--remote", default="origin", help="git remote to push (default: origin)")
+    site_deploy.add_argument("--branch", default="gh-pages", help="deployment branch (default: gh-pages)")
+    site_deploy.add_argument("--message", default="Deploy static site", help="deployment commit message")
+    site_deploy.add_argument("--dry-run", action="store_true", help="export and create a commit without updating refs or pushing")
+    site_run = site_subparsers.add_parser(
+        "run",
+        help="run the Flask documentation site",
+    )
+    site_run.add_argument(
+        "--host",
+        default="127.0.0.1",
+        help="host interface to bind (default: 127.0.0.1)",
+    )
+    site_run.add_argument(
+        "--port",
+        type=int,
+        default=9050,
+        help="port to bind (default: 9050)",
+    )
+    site_run.add_argument(
+        "--no-debug",
+        action="store_true",
+        help="disable Flask debug mode",
+    )
+
     for command, help_text in (("lcr", "cleanup, compile, then run"), ("cr", "compile, then run")):
         parser_for_command = subparsers.add_parser(command, help=help_text)
         parser_for_command.add_argument(
@@ -160,6 +217,13 @@ def run_target(
     return run_command(display)
 
 
+def run_site(host: str, port: int, debug: bool) -> int:
+    from doc_site.app import main as site_run_main
+
+    site_run_main(host=host, port=port, debug=debug)
+    return 0
+
+
 def main(arguments: list[str] | None = None) -> int:
     arguments = sys.argv[1:] if arguments is None else arguments
     if arguments and arguments[0] in {"compile", "c"}:
@@ -187,6 +251,37 @@ def main(arguments: list[str] | None = None) -> int:
         return run_target(parsed.target, parsed.display)
     if parsed.command in {"tail", "t"}:
         return tail_serial_main()
+    if parsed.command == "site":
+        if parsed.site_command == "export":
+            site_arguments = []
+            if parsed.config:
+                site_arguments.append(parsed.config)
+            if parsed.base_url:
+                site_arguments.extend(["--base-url", parsed.base_url])
+            if parsed.output_dir:
+                site_arguments.extend(["--output-dir", parsed.output_dir])
+            if parsed.max_pages:
+                site_arguments.extend(["--max-pages", str(parsed.max_pages)])
+            return site_export_main(site_arguments)
+        if parsed.site_command == "deploy":
+            site_arguments = []
+            if parsed.config:
+                site_arguments.append(parsed.config)
+            if parsed.base_url:
+                site_arguments.extend(["--base-url", parsed.base_url])
+            if parsed.output_dir:
+                site_arguments.extend(["--output-dir", parsed.output_dir])
+            if parsed.max_pages:
+                site_arguments.extend(["--max-pages", str(parsed.max_pages)])
+            site_arguments.extend(["--remote", parsed.remote])
+            site_arguments.extend(["--branch", parsed.branch])
+            site_arguments.extend(["--message", parsed.message])
+            if parsed.dry_run:
+                site_arguments.append("--dry-run")
+            return site_deploy_main(site_arguments)
+        if parsed.site_command == "run":
+            return run_site(parsed.host, parsed.port, not parsed.no_debug)
+        parser.error("site requires a command: export, deploy, run")
     if parsed.command in {"lcr", "cr"}:
         target = parsed.target
     elif parsed.command in {"alcr", "arc", "acr", "car"}:

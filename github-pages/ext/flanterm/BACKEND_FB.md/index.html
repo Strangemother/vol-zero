@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ext/flanterm/BACKEND_FB.md | VOL Documentation</title>
+    <link rel="stylesheet" href="../../../style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body class="asset-file-doc file-detail file-lang-md">
+    <main class="page-shell">
+        
+
+        <header class="site-header">
+            <a class="site-title" href="../../../">VOL kernel <span class="version">0.1.0</span></a>
+            <a class="github-link" href="https://github.com/Strangemother/vol-zero">GitHub</a>
+        </header>
+        
+<article class="document-page">
+    <div class="content">
+
+        <nav class="pre-header-navigation" aria-label="Page navigation">
+            <a href="../">Parent</a>
+        </nav>
+        <h1>ext/flanterm/BACKEND_FB.md</h1>
+
+        
+
+        <section class="imports-includes">
+            
+            <ul class="import-list">
+                
+            </ul>
+            <ul class="include-list">
+                
+            </ul>
+               
+        </section>
+        
+
+        
+        <section class="source-code">
+            <h2>Source</h2>
+            <div class="highlight"><pre><span></span><span class="gh"># Flanterm framebuffer backend</span>
+
+Flanterm's framebuffer output backend. See [<span class="nt">README</span>](<span class="na">README.md</span>) for a quick
+start and [<span class="nt">FRONTEND.md</span>](<span class="na">FRONTEND.md</span>) for the frontend API.
+
+Add <span class="sb">`flanterm_backends/fb.c`</span> to the build and include
+<span class="sb">`&lt;flanterm_backends/fb.h&gt;`</span> alongside <span class="sb">`&lt;flanterm.h&gt;`</span>.
+
+<span class="gu">## Table of contents</span>
+
+<span class="k">-</span><span class="w"> </span>[<span class="sb">`flanterm_fb_init`</span>](#flanterm_fb_init)
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Rotation</span>](<span class="na">#rotation</span>)
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Fonts</span>](<span class="na">#fonts</span>)
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Allocator and the built-in bump allocator</span>](<span class="na">#allocator-and-the-built-in-bump-allocator</span>)
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Flush callback</span>](<span class="na">#flush-callback</span>)
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Build-time configuration</span>](<span class="na">#build-time-configuration</span>)
+
+<span class="gu">## `flanterm_fb_init`</span>
+
+<span class="sb">```c</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">flanterm_context</span><span class="w"> </span><span class="o">*</span><span class="n">flanterm_fb_init</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">_malloc</span><span class="p">)(</span><span class="kt">size_t</span><span class="p">),</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">_free</span><span class="p">)(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">),</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">framebuffer</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">pitch</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">red_mask_size</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">red_mask_shift</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">green_mask_size</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">green_mask_shift</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">blue_mask_size</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">blue_mask_shift</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">canvas</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">ansi_colours</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">ansi_bright_colours</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">default_bg</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">default_fg</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">default_bg_bright</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="n">default_fg_bright</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">font</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">font_width</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">font_height</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">font_spacing</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">font_scale_x</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">font_scale_y</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">margin</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">rotation</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">autoflush</span>
+<span class="p">);</span>
+<span class="sb">```</span>
+
+Returns a context on success, or <span class="sb">`NULL`</span> on failure (allocator failure,
+invalid framebuffer geometry, unsupported pixel format, etc.).
+
+| Parameter | Meaning |
+| --- | --- |
+| <span class="sb">`_malloc`</span>, <span class="sb">`_free`</span> | Client allocator. If both are <span class="sb">`NULL`</span>, the built-in bump allocator is used (only one live instance at a time; see [<span class="nt">below</span>](<span class="na">#allocator-and-the-built-in-bump-allocator</span>)). |
+| <span class="sb">`framebuffer`</span> | The 32-bit framebuffer, writable as <span class="sb">`uint32_t *`</span>. |
+| <span class="sb">`width`</span>, <span class="sb">`height`</span> | Physical framebuffer dimensions in pixels. Swapped internally for <span class="sb">`ROTATE_90`</span>/<span class="sb">`ROTATE_270`</span> (see [<span class="nt">Rotation</span>](<span class="na">#rotation</span>)). |
+| <span class="sb">`pitch`</span> | Physical scanline stride in bytes. Must be a multiple of <span class="sb">`sizeof(uint32_t)`</span> and at least <span class="sb">`width * 4`</span>. |
+| <span class="sb">`red/green/blue_mask_size`</span> | Channel bit-widths. Each must be at least 8, and all three must match. |
+| <span class="sb">`red/green/blue_mask_shift`</span> | Low bit position of each channel. <span class="sb">`shift + size &lt;= 32`</span> for every channel. |
+| <span class="sb">`canvas`</span> | Optional background image: one <span class="sb">`0x00RRGGBB`</span> pixel per terminal pixel, sized <span class="sb">`logical_width x logical_height`</span>. <span class="sb">`NULL`</span> falls back to a solid <span class="sb">`default_bg`</span>. Forced to <span class="sb">`NULL`</span> under the built-in bump allocator. |
+| <span class="sb">`ansi_colours`</span> | Optional 8-entry base ANSI palette (<span class="sb">`0x00RRGGBB`</span>, order: black, red, green, brown, blue, magenta, cyan, grey). <span class="sb">`NULL`</span> uses the default. |
+| <span class="sb">`ansi_bright_colours`</span> | Optional 8-entry bright palette (same format). <span class="sb">`NULL`</span> uses the default. |
+| <span class="sb">`default_bg`</span>, <span class="sb">`default_fg`</span> | Normal-intensity default colours (<span class="sb">`0x00RRGGBB`</span>). <span class="sb">`NULL`</span> uses black/grey. |
+| <span class="sb">`default_bg_bright`</span>, <span class="sb">`default_fg_bright`</span> | Defaults when the bold/bright flag is active. <span class="sb">`NULL`</span> uses dark grey/white. |
+| <span class="sb">`font`</span> | Optional VGA-style bitmap font (one byte per scanline, 256 consecutive glyphs). <span class="sb">`NULL`</span> uses the built-in 8x16 font. |
+| <span class="sb">`font_width`</span>, <span class="sb">`font_height`</span> | Glyph dimensions when <span class="sb">`font`</span> is non-`NULL`. See [<span class="nt">Fonts</span>](<span class="na">#fonts</span>). |
+| <span class="sb">`font_spacing`</span> | Extra pixels after each glyph; see [<span class="nt">Fonts</span>](<span class="na">#fonts</span>). |
+| <span class="sb">`font_scale_x`</span>, <span class="sb">`font_scale_y`</span> | Integer glyph scale. <span class="sb">`0`</span>, <span class="sb">`0`</span> enables auto-scale: <span class="sb">`2x`</span> at logical dimensions &gt;= 2560x1440, <span class="sb">`4x`</span> at &gt;= 5120x2880. |
+| <span class="sb">`margin`</span> | Margin pixels on each side of the text area. <span class="sb">`margin * 2 &lt; logical_width`</span> and <span class="sb">`margin * 2 &lt; logical_height`</span> must hold, or init fails. |
+| <span class="sb">`rotation`</span> | One of <span class="sb">`FLANTERM_FB_ROTATE_0`</span>, <span class="sb">`FLANTERM_FB_ROTATE_90`</span>, <span class="sb">`FLANTERM_FB_ROTATE_180`</span>, <span class="sb">`FLANTERM_FB_ROTATE_270`</span>. |
+| <span class="sb">`autoflush`</span> | Initial autoflush state. <span class="sb">`false`</span> also defers the initial full refresh, leaving the framebuffer as it was found until the first flush paints it. |
+
+Palettes, <span class="sb">`default_*`</span> colours, <span class="sb">`font`</span> data, and <span class="sb">`canvas`</span> pixels are copied
+into the context during init; the input buffers do not need to outlive the
+call.
+
+<span class="gu">## Rotation</span>
+
+<span class="sb">`rotation`</span> rotates the rendered terminal relative to the physical
+framebuffer. <span class="sb">`width`</span>, <span class="sb">`height`</span>, and <span class="sb">`pitch`</span> always describe the physical
+framebuffer; for <span class="sb">`ROTATE_90`</span>/<span class="sb">`ROTATE_270`</span> the library swaps <span class="sb">`width`</span> and
+<span class="sb">`height`</span> internally to derive the logical dimensions used for cell layout
+(so a physical 1920x1080 with <span class="sb">`ROTATE_90`</span> yields a logical 1080x1920
+terminal).
+
+<span class="gu">## Fonts</span>
+
+The built-in font is 8x16 VGA-style. User fonts follow the same packed
+layout: one byte per scanline, <span class="sb">`font_height`</span> scanlines per glyph, 256
+consecutive glyphs. The source is therefore always 8 pixels wide;
+<span class="sb">`font_width`</span> and <span class="sb">`font_spacing`</span> only widen the on-screen cell.
+
+Cell columns past the 8 source pixels (from <span class="sb">`font_width &gt; 8`</span> or
+<span class="sb">`font_spacing &gt; 0`</span>) follow the VGA 9-dot line-graphics rule: glyphs
+<span class="sb">`0xC0`</span>-<span class="sb">`0xDF`</span> replicate their rightmost source pixel into the extra columns
+(keeping box-drawing characters connected); other glyphs leave those
+columns blank.
+
+<span class="gu">## Allocator and the built-in bump allocator</span>
+
+When both <span class="sb">`_malloc`</span> and <span class="sb">`_free`</span> are <span class="sb">`NULL`</span>, Flanterm uses a static bump pool
+sized by <span class="sb">`FLANTERM_FB_BUMP_ALLOC_POOL_SIZE`</span> (default 873000 bytes, enough
+for a 1920x1200 terminal on typical 32-bit and 64-bit targets). In that
+mode:
+
+<span class="k">-</span><span class="w"> </span>Only one instance may be live; later <span class="sb">`flanterm_fb_init`</span> calls return
+  <span class="sb">`NULL`</span> until the previous instance is deinitialised.
+<span class="k">-</span><span class="w"> </span>The canvas is forced off.
+<span class="k">-</span><span class="w"> </span>Logical-dimension limits are derived from the pool size as the largest
+  <span class="sb">`FLANTERM_FB_BUMP_ALLOC_ASPECT_WIDTH:FLANTERM_FB_BUMP_ALLOC_ASPECT_HEIGHT`</span>
+  rectangle (default 16:10) that fits assuming the built-in 8x16 font.
+  Framebuffers exceeding those limits have the usable area clipped and
+  centred.
+
+With a custom allocator, <span class="sb">`_malloc`</span> is used for every allocation and the
+paired <span class="sb">`_free`</span> runs when freeing. <span class="sb">`_free`</span> receives the allocation
+size as its second argument.
+
+<span class="gu">## Flush callback</span>
+
+<span class="sb">```c</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">flanterm_fb_set_flush_callback</span><span class="p">(</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">flanterm_context</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">flush_callback</span><span class="p">)(</span><span class="k">volatile</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">address</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">length</span><span class="p">)</span>
+<span class="p">);</span>
+<span class="sb">```</span>
+
+When set, the framebuffer backend invokes the callback at the end of every
+double-buffer flush (after <span class="sb">`flanterm_flush`</span>, <span class="sb">`flanterm_full_refresh`</span>, and
+any autoflush). Arguments are the framebuffer base address and
+<span class="sb">`pitch * physical_height`</span> -- the full physical framebuffer extent, not just
+the dirty region -- suitable for driving CPU cache maintenance.
+
+The callback must be installed after <span class="sb">`flanterm_fb_init`</span> returns; the
+init-time refresh runs before any context exists to register it on.
+
+<span class="gu">## Build-time configuration</span>
+
+Macros that can be defined when compiling <span class="sb">`fb.c`</span>:
+
+| Macro | Default | Effect |
+| --- | --- | --- |
+| <span class="sb">`FLANTERM_FB_DISABLE_BUMP_ALLOC`</span> | undefined | Compiles out the built-in bump allocator. <span class="sb">`flanterm_fb_init`</span> with <span class="sb">`_malloc == NULL`</span> then always returns <span class="sb">`NULL`</span>. Saves roughly <span class="sb">`FLANTERM_FB_BUMP_ALLOC_POOL_SIZE`</span> bytes of <span class="sb">`.bss`</span>. |
+| <span class="sb">`FLANTERM_FB_BUMP_ALLOC_POOL_SIZE`</span> | <span class="sb">`873000`</span> | Static bump pool size. Clipping limits for framebuffers that exceed the pool are derived from this value and the aspect ratio as the largest fitting rectangle under the built-in 8x16 (+ 1px spacing) cell. Default size accommodates 1920x1200 at 16:10. |
+| <span class="sb">`FLANTERM_FB_BUMP_ALLOC_ASPECT_WIDTH`</span> | <span class="sb">`16`</span> | Aspect numerator for the bump pool's clipping limits. |
+| <span class="sb">`FLANTERM_FB_BUMP_ALLOC_ASPECT_HEIGHT`</span> | <span class="sb">`10`</span> | Aspect denominator for the bump pool's clipping limits. |
+</pre></div>
+
+        </section>
+        
+    </div>
+    <div class="toc-list-container">
+        
+    </div>
+
+</article>
+
+
+
+    </main>
+</body>
+</html>

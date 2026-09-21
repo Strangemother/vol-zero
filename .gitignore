@@ -5,6 +5,7 @@
 /iso_root
 /dist
 tools/app/*.egg-info/
+asm_tool/src/*.egg-info/
 *.iso
 *.hdd
 tools/__pycache__/

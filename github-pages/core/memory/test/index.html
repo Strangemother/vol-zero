@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>core/memory/test | VOL Documentation</title>
+    <link rel="stylesheet" href="../../../style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body class="asset-file-doc file-detail file-lang-nim">
+    <main class="page-shell">
+        
+
+        <header class="site-header">
+            <a class="site-title" href="../../../">VOL kernel <span class="version">0.1.0</span></a>
+            <a class="github-link" href="https://github.com/Strangemother/vol-zero">GitHub</a>
+        </header>
+        
+<article class="document-page">
+    <div class="content">
+
+        <nav class="pre-header-navigation" aria-label="Page navigation">
+            <a href="../">Parent</a>
+        </nav>
+        <h1>core/memory/test</h1>
+
+        
+
+        <section class="imports-includes">
+            
+            <h2>Imports</h2>
+            
+            <ul class="import-list">
+                
+            </ul>
+            <ul class="include-list">
+                
+                <li>
+                    <!-- {&#39;name&#39;: &#39;pure&#39;, &#39;alias&#39;: None, &#39;filename&#39;: &#39;pure.nim&#39;, &#39;line&#39;: 2} -->
+                    <span class="include-type">include</span>
+                    <a href="../../../pure.nim/">pure</a>
+                    <span class="alias"></span>
+                    <!-- <div class="line">line 2</div> -->
+                    
+                </li>
+                
+            </ul>
+               
+        </section>
+        
+        <section class="metadata">
+            <h2>Declarations</h2>
+            
+            <ul class="declaration-list">
+                
+                <li id="declaration-9">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        quicktest_memory
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">quicktest_memory</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="nb">bool</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Quick memory test for the VOL kernel.</p>
+<p>This test verifies that memory can be copied correctly using memcpy and compared using memcmp.</p>
+
+                    </div>
+                </li>
+                
+            </ul>
+        </section>
+        
+
+        
+        <section class="source-code">
+            <h2>Source</h2>
+            <div class="highlight"><pre><span></span><span class="kn">include</span><span class="w"> </span><span class="n">pure</span>
+
+<span class="cm">#[</span>
+<span class="cm">Quick memory test for the VOL kernel.</span>
+
+<span class="cm">This test verifies that memory can be copied correctly using memcpy and compared using memcmp.</span>
+<span class="cm">]#</span>
+<span class="k">proc</span><span class="w"> </span><span class="nf">quicktest_memory</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="nb">bool</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="n">source</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">uint8</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">]</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="n">destination</span><span class="p">:</span><span class="w"> </span><span class="nb">array</span><span class="o">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">uint8</span><span class="o">]</span>
+
+<span class="w">    </span><span class="k">discard</span><span class="w"> </span><span class="n">memcpy</span><span class="p">(</span><span class="n">destination</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="n">source</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="n">csize_t</span><span class="p">(</span><span class="n">source</span><span class="p">.</span><span class="n">len</span><span class="p">))</span>
+
+<span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">comparison</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">memcmp</span><span class="p">(</span><span class="n">source</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="n">destination</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="n">csize_t</span><span class="p">(</span><span class="n">source</span><span class="p">.</span><span class="n">len</span><span class="p">))</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">comparison</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span>
+</pre></div>
+
+        </section>
+        
+    </div>
+    <div class="toc-list-container">
+        
+        <ul class="toc-list">
+            
+            <li>
+                <a href="#declaration-9">
+                    
+                    <span class="exported">public</span>
+                    
+                    quicktest_memory
+                </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+
+</article>
+
+
+
+    </main>
+</body>
+</html>

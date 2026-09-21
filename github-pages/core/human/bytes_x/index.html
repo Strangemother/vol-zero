@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>core/human/bytes_x | VOL Documentation</title>
+    <link rel="stylesheet" href="../../../style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body class="asset-file-doc file-detail file-lang-nim">
+    <main class="page-shell">
+        
+
+        <header class="site-header">
+            <a class="site-title" href="../../../">VOL kernel <span class="version">0.1.0</span></a>
+            <a class="github-link" href="https://github.com/Strangemother/vol-zero">GitHub</a>
+        </header>
+        
+<article class="document-page">
+    <div class="content">
+
+        <nav class="pre-header-navigation" aria-label="Page navigation">
+            <a href="../">Parent</a>
+        </nav>
+        <h1>core/human/bytes_x</h1>
+
+        
+
+        <section class="imports-includes">
+            
+            <ul class="import-list">
+                
+            </ul>
+            <ul class="include-list">
+                
+            </ul>
+               
+        </section>
+        
+        <section class="metadata">
+            <h2>Declarations</h2>
+            
+            <ul class="declaration-list">
+                
+                <li id="declaration-2">
+                    <h3>
+                        
+                        humanBytesBuffer
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: False</div> -->
+                        <!-- <div class="kind">var</div> -->
+                        <div class="sig highlight monospace-font"><span class="kd">var</span><span class="w"> </span><span class="n">humanBytesBuffer</span><span class="p">:</span><span class="w"> </span><span class="nb">array</span><span class="o">[</span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="nb">char</span><span class="o">]</span></div>
+                    </div>
+                    <div class="documentation">
+                        
+                    </div>
+                </li>
+                
+                <li id="declaration-4">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        human_bytes
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">human_bytes</span><span class="o">*</span><span class="p">(</span><span class="n">bytes</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span><span class="p">):</span><span class="w"> </span><span class="n">cstring</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        
+                    </div>
+                </li>
+                
+            </ul>
+        </section>
+        
+
+        
+        <section class="source-code">
+            <h2>Source</h2>
+            <div class="highlight"><pre><span></span><span class="kd">var</span><span class="w"> </span><span class="n">humanBytesBuffer</span><span class="p">:</span><span class="w"> </span><span class="nb">array</span><span class="o">[</span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="nb">char</span><span class="o">]</span>
+
+<span class="k">proc</span><span class="w"> </span><span class="nf">human_bytes</span><span class="o">*</span><span class="p">(</span><span class="n">bytes</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span><span class="p">):</span><span class="w"> </span><span class="n">cstring</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="k">let</span>
+<span class="w">        </span><span class="n">kb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1024</span><span class="sc">'u64</span>
+<span class="w">        </span><span class="n">mb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kb</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span>
+<span class="w">        </span><span class="n">gb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mb</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bytes</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="n">unitLength</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="n">unitFirst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">' '</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="n">unitSecond</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">'B'</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">gb</span><span class="p">:</span>
+<span class="w">        </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="ow">div</span><span class="w"> </span><span class="n">gb</span>
+<span class="w">        </span><span class="n">unitLength</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">        </span><span class="n">unitFirst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">'G'</span>
+<span class="w">        </span><span class="n">unitSecond</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">'B'</span>
+<span class="w">    </span><span class="k">elif</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">mb</span><span class="p">:</span>
+<span class="w">        </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="ow">div</span><span class="w"> </span><span class="n">mb</span>
+<span class="w">        </span><span class="n">unitLength</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">        </span><span class="n">unitFirst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">'M'</span>
+<span class="w">        </span><span class="n">unitSecond</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">'B'</span>
+<span class="w">    </span><span class="k">elif</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">kb</span><span class="p">:</span>
+<span class="w">        </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="ow">div</span><span class="w"> </span><span class="n">kb</span>
+<span class="w">        </span><span class="n">unitLength</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">        </span><span class="n">unitFirst</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">'K'</span>
+<span class="w">        </span><span class="n">unitSecond</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">'B'</span>
+
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="n">endIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">humanBytesBuffer</span><span class="p">.</span><span class="n">len</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="n">humanBytesBuffer</span><span class="o">[</span><span class="n">endIndex</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">'</span><span class="se">\0</span><span class="sc">'</span>
+<span class="w">    </span><span class="n">dec</span><span class="w"> </span><span class="n">endIndex</span>
+<span class="w">    </span><span class="n">humanBytesBuffer</span><span class="o">[</span><span class="n">endIndex</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unitSecond</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">unitLength</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">3</span><span class="p">:</span>
+<span class="w">        </span><span class="n">dec</span><span class="w"> </span><span class="n">endIndex</span>
+<span class="w">        </span><span class="n">humanBytesBuffer</span><span class="o">[</span><span class="n">endIndex</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unitFirst</span>
+<span class="w">        </span><span class="n">dec</span><span class="w"> </span><span class="n">endIndex</span>
+<span class="w">        </span><span class="n">humanBytesBuffer</span><span class="o">[</span><span class="n">endIndex</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">' '</span>
+<span class="w">    </span><span class="k">else</span><span class="p">:</span>
+<span class="w">        </span><span class="n">dec</span><span class="w"> </span><span class="n">endIndex</span>
+<span class="w">        </span><span class="n">humanBytesBuffer</span><span class="o">[</span><span class="n">endIndex</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">unitFirst</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span>
+<span class="w">        </span><span class="n">dec</span><span class="w"> </span><span class="n">endIndex</span>
+<span class="w">        </span><span class="n">humanBytesBuffer</span><span class="o">[</span><span class="n">endIndex</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">'0'</span>
+<span class="w">    </span><span class="k">else</span><span class="p">:</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span>
+<span class="w">            </span><span class="n">dec</span><span class="w"> </span><span class="n">endIndex</span>
+<span class="w">            </span><span class="n">humanBytesBuffer</span><span class="o">[</span><span class="n">endIndex</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">char</span><span class="p">(</span><span class="n">ord</span><span class="p">(</span><span class="sc">'0'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="ow">mod</span><span class="w"> </span><span class="mi">10</span><span class="p">))</span>
+<span class="w">            </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="ow">div</span><span class="w"> </span><span class="mi">10</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">cast</span><span class="o">[</span><span class="n">cstring</span><span class="o">]</span><span class="p">(</span><span class="n">humanBytesBuffer</span><span class="o">[</span><span class="n">endIndex</span><span class="o">]</span><span class="p">.</span><span class="k">addr</span><span class="p">)</span>
+</pre></div>
+
+        </section>
+        
+    </div>
+    <div class="toc-list-container">
+        
+        <ul class="toc-list">
+            
+            <li>
+                <a href="#declaration-2">
+                    
+                    humanBytesBuffer
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-4">
+                    
+                    <span class="exported">public</span>
+                    
+                    human_bytes
+                </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+
+</article>
+
+
+
+    </main>
+</body>
+</html>

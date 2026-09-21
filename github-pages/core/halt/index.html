@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>core/halt | VOL Documentation</title>
+    <link rel="stylesheet" href="../../style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body class="asset-file-doc file-detail file-lang-nim">
+    <main class="page-shell">
+        
+
+        <header class="site-header">
+            <a class="site-title" href="../../">VOL kernel <span class="version">0.1.0</span></a>
+            <a class="github-link" href="https://github.com/Strangemother/vol-zero">GitHub</a>
+        </header>
+        
+<article class="document-page">
+    <div class="content">
+
+        <nav class="pre-header-navigation" aria-label="Page navigation">
+            <a href="../">Parent</a>
+        </nav>
+        <h1>core/halt</h1>
+
+        
+        <section class="source-document">
+            <h2>Header</h2>
+            
+            <div class="documentation">
+                <p>Stops execution permanently.</p>
+<p>The <code>hlt</code> instruction places the CPU in a halted state until an interrupt
+arrives. Because interrupts are not disabled here, an interrupt could wake
+the CPU and allow the loop to execute again; the loop makes the halt state
+permanent from the kernel's point of view. The <code>noreturn</code> pragma documents
+that this procedure never returns to its caller.</p>
+<p>Use this for an unrecoverable boot failure or when the kernel has completed
+its work and has no scheduler or idle loop to run.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><span class="n">halt</span><span class="p">()</span>
+</pre></div>
+
+            </div>
+            
+            
+        </section>
+        
+
+        <section class="imports-includes">
+            
+            <ul class="import-list">
+                
+            </ul>
+            <ul class="include-list">
+                
+            </ul>
+               
+        </section>
+        
+        <section class="metadata">
+            <h2>Declarations</h2>
+            
+            <ul class="declaration-list">
+                
+                <li id="declaration-21">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        halt
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">halt</span><span class="o">*</span><span class="p">()</span><span class="w"> </span><span class="sx">{.noreturn.}</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>In kernel mode, calling <code>hlt</code> in a loop halts the CPU permanently.</p>
+
+                    </div>
+                </li>
+                
+                <li id="declaration-26">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        halt
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">halt</span><span class="o">*</span><span class="p">()</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>In hosted mode, we simply call app exit.</p>
+
+                    </div>
+                </li>
+                
+            </ul>
+        </section>
+        
+
+        
+        <section class="source-code">
+            <h2>Source</h2>
+            <div class="highlight"><pre><span></span><span class="cm">#[</span>
+<span class="cm">  Stops execution permanently.</span>
+
+<span class="cm">  The `hlt` instruction places the CPU in a halted state until an interrupt</span>
+<span class="cm">  arrives. Because interrupts are not disabled here, an interrupt could wake</span>
+<span class="cm">  the CPU and allow the loop to execute again; the loop makes the halt state</span>
+<span class="cm">  permanent from the kernel's point of view. The `noreturn` pragma documents</span>
+<span class="cm">  that this procedure never returns to its caller.</span>
+
+<span class="cm">  Use this for an unrecoverable boot failure or when the kernel has completed</span>
+<span class="cm">  its work and has no scheduler or idle loop to run.</span>
+
+<span class="cm">  Example:</span>
+<span class="cm">    </span>
+<span class="cm">    halt()</span>
+<span class="cm">]#</span>
+
+
+<span class="k">when</span><span class="w"> </span><span class="n">defined</span><span class="p">(</span><span class="n">freestanding</span><span class="p">):</span>
+<span class="w">    </span><span class="cm">#[  In kernel mode, calling `hlt` in a loop halts the CPU permanently. ]#</span>
+<span class="w">    </span><span class="k">proc</span><span class="w"> </span><span class="nf">halt</span><span class="o">*</span><span class="p">()</span><span class="w"> </span><span class="sx">{.noreturn.}</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="kp">true</span><span class="p">:</span>
+<span class="w">            </span><span class="k">asm</span><span class="w"> </span><span class="s">"hlt"</span>
+<span class="k">else</span><span class="p">:</span>
+<span class="w">    </span><span class="cm">#[  In hosted mode, we simply call app exit. ]#</span>
+<span class="w">    </span><span class="k">proc</span><span class="w"> </span><span class="nf">halt</span><span class="o">*</span><span class="p">()</span><span class="w"> </span><span class="o">=</span>
+<span class="w">        </span><span class="n">quit</span><span class="w"> </span><span class="s">"Hosted halt called"</span>
+</pre></div>
+
+        </section>
+        
+    </div>
+    <div class="toc-list-container">
+        
+        <ul class="toc-list">
+            
+            <li>
+                <a href="#declaration-21">
+                    
+                    <span class="exported">public</span>
+                    
+                    halt
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-26">
+                    
+                    <span class="exported">public</span>
+                    
+                    halt
+                </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+
+</article>
+
+
+
+    </main>
+</body>
+</html>

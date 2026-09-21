@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ext/flanterm/FRONTEND.md | VOL Documentation</title>
+    <link rel="stylesheet" href="../../../style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body class="asset-file-doc file-detail file-lang-md">
+    <main class="page-shell">
+        
+
+        <header class="site-header">
+            <a class="site-title" href="../../../">VOL kernel <span class="version">0.1.0</span></a>
+            <a class="github-link" href="https://github.com/Strangemother/vol-zero">GitHub</a>
+        </header>
+        
+<article class="document-page">
+    <div class="content">
+
+        <nav class="pre-header-navigation" aria-label="Page navigation">
+            <a href="../">Parent</a>
+        </nav>
+        <h1>ext/flanterm/FRONTEND.md</h1>
+
+        
+
+        <section class="imports-includes">
+            
+            <ul class="import-list">
+                
+            </ul>
+            <ul class="include-list">
+                
+            </ul>
+               
+        </section>
+        
+
+        
+        <section class="source-code">
+            <h2>Source</h2>
+            <div class="highlight"><pre><span></span><span class="gh"># Flanterm frontend</span>
+
+Flanterm's frontend API. See [<span class="nt">README</span>](<span class="na">README.md</span>) for a quick start and
+[<span class="nt">BACKEND_FB.md</span>](<span class="na">BACKEND_FB.md</span>) for the framebuffer backend.
+
+<span class="gu">## Table of contents</span>
+
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Build integration</span>](<span class="na">#build-integration</span>)
+<span class="w">  </span><span class="k">-</span><span class="w"> </span>[<span class="nt">Required functions</span>](<span class="na">#required-functions</span>)
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Core API</span>](<span class="na">#core-api</span>)
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Event callback</span>](<span class="na">#event-callback</span>)
+
+<span class="gu">## Build integration</span>
+
+Add <span class="sb">`flanterm.c`</span> plus the desired backend source(s) (e.g.
+<span class="sb">`flanterm_backends/fb.c`</span>) to the build, and put <span class="sb">`src/`</span> on the include path.
+C99 or newer is required.
+
+<span class="gu">### Required functions</span>
+
+The environment Flanterm is linked into must provide standards-compliant
+<span class="sb">`memset`</span>, <span class="sb">`memcpy`</span>, <span class="sb">`memmove`</span>, and <span class="sb">`memcmp`</span>.
+
+<span class="gu">## Core API</span>
+
+Declared in <span class="sb">`&lt;flanterm.h&gt;`</span>.
+
+<span class="sb">```c</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">flanterm_write</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">flanterm_context</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">count</span><span class="p">);</span>
+<span class="sb">```</span>
+Feeds <span class="sb">`count`</span> bytes through the parser. Flushes at the end if autoflush is on
+(the default).
+
+<span class="sb">```c</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">flanterm_flush</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">flanterm_context</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">);</span>
+<span class="sb">```</span>
+Flushes any pending output. Relevant when autoflush is off.
+
+<span class="sb">```c</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">flanterm_full_refresh</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">flanterm_context</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">);</span>
+<span class="sb">```</span>
+Redraws from the cell grid, bypassing the dirty-queue. Appropriate after the
+backing surface has been clobbered.
+
+<span class="sb">```c</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">flanterm_deinit</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">flanterm_context</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">_free</span><span class="p">)(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">));</span>
+<span class="sb">```</span>
+Tears down the context. <span class="sb">`_free`</span> must match the allocator passed at init or
+be <span class="sb">`NULL`</span> if applicable.
+
+<span class="sb">```c</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">flanterm_get_dimensions</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">flanterm_context</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="o">*</span><span class="n">cols</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="o">*</span><span class="n">rows</span><span class="p">);</span>
+<span class="sb">```</span>
+Returns the terminal size in character cells.
+
+<span class="sb">```c</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">flanterm_set_autoflush</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">flanterm_context</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">state</span><span class="p">);</span>
+<span class="sb">```</span>
+Enables/disables autoflush (on by default). With autoflush off, explicit
+<span class="sb">`flanterm_flush`</span> calls are required to commit writes.
+
+<span class="sb">```c</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">flanterm_set_callback</span><span class="p">(</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">flanterm_context</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">callback</span><span class="p">)(</span><span class="k">struct</span><span class="w"> </span><span class="nc">flanterm_context</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="p">)</span>
+<span class="p">);</span>
+<span class="sb">```</span>
+Installs the event callback (see [<span class="nt">Event callback</span>](<span class="na">#event-callback</span>)).
+
+<span class="sb">```c</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">flanterm_get_cursor_pos</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">flanterm_context</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="o">*</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="o">*</span><span class="n">y</span><span class="p">);</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">flanterm_set_cursor_pos</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">flanterm_context</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+<span class="sb">```</span>
+Queries or sets the cursor position (zero-based; <span class="sb">`set_cursor_pos`</span> clamps to
+the terminal bounds).
+
+<span class="sb">```c</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">flanterm_set_text_fg</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">flanterm_context</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">colour</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bright</span><span class="p">);</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">flanterm_set_text_bg</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">flanterm_context</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">colour</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bright</span><span class="p">);</span>
+<span class="sb">```</span>
+Sets the foreground/background colour. <span class="sb">`colour`</span> is 0-7 (values outside are
+ignored); <span class="sb">`bright`</span> selects the bright palette slot.
+
+<span class="sb">```c</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">flanterm_reset_text_fg</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">flanterm_context</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">);</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">flanterm_reset_text_bg</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">flanterm_context</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">);</span>
+<span class="sb">```</span>
+Resets the foreground/background to the configured default (honouring the
+bold/bright state).
+
+<span class="sb">```c</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">flanterm_clear</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">flanterm_context</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">move</span><span class="p">);</span>
+<span class="sb">```</span>
+Clears the screen; <span class="sb">`move=true`</span> also homes the cursor.
+
+<span class="gu">## Event callback</span>
+
+The event callback function has the signature
+<span class="sb">`void fn(struct flanterm_context *, uint64_t, uint64_t, uint64_t, uint64_t)`</span>.
+The first <span class="sb">`uint64_t`</span> is the event ID (defined in <span class="sb">`&lt;flanterm.h&gt;`</span>); the other
+three are event-specific:
+
+| ID | Symbol | Trigger | Remaining arguments |
+| --- | --- | --- | --- |
+| 10 | <span class="sb">`FLANTERM_CB_DEC`</span>           | Every DEC private mode set/reset (<span class="sb">`CSI ? ... h`</span>/<span class="sb">`l`</span>), including library-handled ones. | parameter count; pointer to the <span class="sb">`uint32_t`</span> parameter array; final byte (<span class="sb">`'h'`</span> or <span class="sb">`'l'`</span>). |
+| 20 | <span class="sb">`FLANTERM_CB_BELL`</span>          | BEL (<span class="sb">`0x07`</span>). | all zero. |
+| 30 | <span class="sb">`FLANTERM_CB_PRIVATE_ID`</span>    | Device attributes (<span class="sb">`CSI c`</span>) or ID request (<span class="sb">`ESC Z`</span>). | all zero. |
+| 40 | <span class="sb">`FLANTERM_CB_STATUS_REPORT`</span> | Status report (<span class="sb">`CSI 5 n`</span>). | all zero. |
+| 50 | <span class="sb">`FLANTERM_CB_POS_REPORT`</span>    | Cursor position report (<span class="sb">`CSI 6 n`</span>). | cursor column (1-based); cursor row (1-based); 0. |
+| 60 | <span class="sb">`FLANTERM_CB_KBD_LEDS`</span>      | Keyboard LED command (<span class="sb">`CSI q`</span>). | LED code; 0; 0. |
+| 70 | <span class="sb">`FLANTERM_CB_MODE`</span>          | Unhandled ANSI set/reset (<span class="sb">`CSI ... h`</span>/<span class="sb">`l`</span>); only insert mode (<span class="sb">`CSI 4 h`</span>/<span class="sb">`l`</span>) is handled internally. | parameter count; parameter array pointer; final byte. |
+| 80 | <span class="sb">`FLANTERM_CB_LINUX`</span>         | Linux-console private sequence (<span class="sb">`CSI Pn1 ; Pn2 ; ... ]`</span>). | parameter count; parameter array pointer; 0. |
+| 90 | <span class="sb">`FLANTERM_CB_OSC`</span>           | Complete OSC sequence (<span class="sb">`OSC Pt ST`</span>/<span class="sb">`OSC Pt BEL`</span>). | parsed OSC number (digits before the first <span class="sb">`;`</span>, or 0 if none); payload length in bytes; payload pointer (not NUL-terminated). |
+
+Parameter arrays and OSC payloads are valid only for the callback's
+duration; anything that must outlive it has to be copied. Flanterm does not
+emit responses itself, so the event callback is the hook for device-attribute
+replies, LED state, OSC 52 clipboard handling, and the like.
+</pre></div>
+
+        </section>
+        
+    </div>
+    <div class="toc-list-container">
+        
+    </div>
+
+</article>
+
+
+
+    </main>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101417">
+    <title>VOL Memory Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SN+Pro:ital,wght@0,200..900;1,200..900&family=Staatliches&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app" v-cloak>
+        <header class="topbar">
+            <div class="brand-lockup">
+                <span class="brand-mark">VOL</span>
+                <div>
+                    <p class="eyebrow">kernel / memory lab</p>
+                    <h1>Physical memory, made visible.</h1>
+                </div>
+            </div>
+            <div class="topbar-actions">
+                <span class="status-dot" :class="model.hhdmAvailable ? 'is-live' : ''"></span>
+                <span>{{ model.hhdmAvailable ? 'HHDM mapped' : 'HHDM unavailable' }}</span>
+                <button class="button button-quiet" @click="reset">Reset arena</button>
+            </div>
+        </header>
+
+        <main class="workspace">
+            <aside class="control-rail">
+                <section class="panel intro-panel">
+                    <p class="eyebrow">interactive proxy</p>
+                    <p class="intro-copy">Trace the same page-rounded allocation and byte operations used by VOL, without touching real RAM.</p>
+                </section>
+
+                <section class="panel">
+                    <div class="panel-heading"><span>01</span><h2>Memory map</h2></div>
+                    <label class="field-label" for="page-count">Usable pages</label>
+                    <input id="page-count" v-model.number="pageCount" class="field-input" type="number" min="1" max="256">
+                    <label class="field-label" for="hhdm-offset">HHDM offset</label>
+                    <input id="hhdm-offset" v-model="hhdmOffsetInput" class="field-input mono" type="text">
+                    <label class="toggle-row"><input v-model="model.hhdmAvailable" type="checkbox"><span>HHDM response available</span></label>
+                    <button class="button button-primary full-width" @click="rebuild">Rebuild map</button>
+                </section>
+
+                <section class="panel">
+                    <div class="panel-heading"><span>02</span><h2>Allocate</h2></div>
+                    <label class="field-label" for="allocation-size">Requested bytes</label>
+                    <input id="allocation-size" v-model.number="allocationSize" class="field-input mono" type="number" min="1" step="1">
+                    <button class="button button-accent full-width" @click="allocate">allocate_physical_bytes</button>
+                    <p class="field-hint">Requests round up to 4096-byte pages. Allocation never frees.</p>
+                </section>
+
+                <section class="panel">
+                    <div class="panel-heading"><span>03</span><h2>Pure operations</h2></div>
+                    <select v-model="operation" class="field-input">
+                        <option value="memset">memset</option>
+                        <option value="memcpy">memcpy</option>
+                        <option value="memmove">memmove</option>
+                        <option value="memcmp">memcmp</option>
+                    </select>
+                    <div class="operation-grid">
+                        <label class="field-label">Address<input v-model="operationAddress" class="field-input mono" type="text"></label>
+                        <label class="field-label">Size<input v-model.number="operationSize" class="field-input mono" type="number" min="0"></label>
+                        <label v-if="operation === 'memset'" class="field-label">Value<input v-model.number="operationValue" class="field-input mono" type="number" min="0" max="255"></label>
+                        <label v-if="operation === 'memcpy' || operation === 'memmove'" class="field-label">Source<input v-model="operationSource" class="field-input mono" type="text"></label>
+                    </div>
+                    <button class="button button-outline full-width" @click="runOperation">Run {{ operation }}</button>
+                </section>
+
+                <section class="panel">
+                    <div class="panel-heading"><span>04</span><h2>Scenarios</h2></div>
+                    <select v-model.number="selectedScenarioIndex" class="field-input">
+                        <option v-for="(scenario, index) in scenarios" :key="index" :value="index">{{ scenario.name() }}</option>
+                    </select>
+                    <p class="field-hint scenario-description">{{ selectedScenario.desc() }}</p>
+                    <button class="button button-primary full-width" @click="runSelectedScenario">Run selected scenario</button>
+                </section>
+
+                <section class="panel panel-actions">
+                    <button class="button button-quiet" @click="exportSnapshot">Export snapshot</button>
+                </section>
+            </aside>
+
+            <section class="main-stage">
+                <section class="hero-stats">
+                    <div><span>allocated pages</span><strong>{{ model.allocatedPageCount }}</strong></div>
+                    <div><span>bytes reserved</span><strong>{{ formatBytes(model.allocatedBytes) }}</strong></div>
+                    <div><span>next physical</span><strong class="mono">{{ formatAddress(model.nextAddress) }}</strong></div>
+                </section>
+
+                <section class="panel map-panel">
+                    <div class="section-heading">
+                        <div><p class="eyebrow">physical address space</p><h2>Page map</h2></div>
+                        <span class="legend"><i class="legend-swatch free"></i> free <i class="legend-swatch used"></i> allocated</span>
+                    </div>
+                    <div class="page-map">
+                        <button v-for="page in model.pages" :key="page.base" class="page-cell" :class="{selected: selectedPage && selectedPage.base === page.base, used: page.allocated}" @click="selectPage(page)">
+                            <span class="page-index">P{{ page.index.toString().padStart(2, '0') }}</span>
+                            <strong>{{ formatAddress(page.base) }}</strong>
+                            <span>{{ page.allocated ? 'allocated' : 'usable' }}</span>
+                            <b class="page-fill" :style="{width: pageFill(page) + '%'}"></b>
+                        </button>
+                    </div>
+                </section>
+
+                <section class="detail-grid">
+                    <section class="panel inspector-panel">
+                        <div class="section-heading"><div><p class="eyebrow">selected page</p><h2>{{ selectedPage ? formatAddress(selectedPage.base) : 'Select a page' }}</h2></div><span v-if="selectedPage" class="chip" :class="selectedPage.allocated ? 'chip-used' : ''">{{ selectedPage.allocated ? 'allocated' : 'free' }}</span></div>
+                        <div v-if="selectedPage" class="address-details">
+                            <div><span>physical base</span><strong class="mono">{{ formatAddress(selectedPage.base) }}</strong></div>
+                            <div><span>virtual view</span><strong class="mono">{{ virtualAddress(selectedPage.base) }}</strong></div>
+                            <div><span>page size</span><strong>4096 bytes</strong></div>
+                            <div><span>allocation</span><strong>{{ selectedPage.allocationLabel }}</strong></div>
+                        </div>
+                        <div v-if="selectedPage" class="byte-grid">
+                            <template v-for="(value, index) in selectedPage.bytes" :key="index">
+                                <input v-if="editingByte === index" v-model="byteEditValue" class="byte-cell byte-editor mono" type="text" inputmode="numeric" :title="byteAddress(index)" @click.stop @dblclick.stop @keydown.enter.prevent="commitByteEdit(index)" @keydown.esc.prevent="cancelByteEdit" @blur="commitByteEdit(index)">
+                                <button v-else class="byte-cell" :class="{changed: changedBytes.has(selectedPage.base + BigInt(index))}" :data-address="byteAddress(index)" :title="byteAddress(index)" @click="copyByteAddress(index)" @dblclick.prevent="beginByteEdit(index)">{{ value.toString(16).padStart(2, '0') }}</button>
+                            </template>
+                        </div>
+                        <p v-else class="empty-state">Choose a page above to inspect its byte contents.</p>
+                    </section>
+
+                    <section class="panel log-panel">
+                        <div class="section-heading"><div><p class="eyebrow">execution trace</p><h2>Events</h2></div><span class="log-count">{{ visibleEvents.length }} events</span></div>
+                        <div class="event-toolbar">
+                            <button class="button button-record" :class="{active: recording}" @click="toggleRecording"><span class="record-dot"></span>{{ recording ? 'Recording' : 'Record' }}</button>
+                            <button class="button button-quiet" :disabled="!recordedActions.length || replaying" @click="replay">Replay {{ recordedActions.length ? `(${recordedActions.length})` : '' }}</button>
+                            <button class="button button-quiet" :disabled="!log.length" @click="clearEvents">Clear</button>
+                            <button class="button button-quiet" :class="{active: showFunctionsOnly}" @click="showFunctionsOnly = !showFunctionsOnly">{{ showFunctionsOnly ? 'Show events' : 'Functions only' }}</button>
+                            <button class="button button-quiet" :disabled="!recordedActions.length" @click="copyFunctions">Copy</button>
+                            <button class="button button-quiet" :disabled="!recordedActions.length" @click="downloadFunctions">Download</button>
+                        </div>
+                        <div class="log-list">
+                            <div v-for="entry in visibleEvents" :key="entry.id" class="log-entry" :class="entry.kind">
+                                <span class="log-time">{{ entry.id.toString().padStart(2, '0') }}</span>
+                                <div><code class="event-call">{{ entry.call }}</code><p v-if="!showFunctionsOnly">{{ entry.detail }}</p><small v-if="!showFunctionsOnly && entry.result">{{ entry.result }}</small></div>
+                                <button class="event-remove" title="Remove event" @click="removeEvent(entry)">×</button>
+                            </div>
+                            <p v-if="!visibleEvents.length" class="empty-state">{{ showFunctionsOnly ? 'Record actions to build a callable function list.' : 'Operations will appear here as you work.' }}</p>
+                        </div>
+                    </section>
+                </section>
+            </section>
+        </main>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="src/model.js"></script>
+    <script src="src/scenarios.js"></script>
+    <script src="src/app.js"></script>
+</body>
+</html>

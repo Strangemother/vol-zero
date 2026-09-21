@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>core/panicoverride | VOL Documentation</title>
+    <link rel="stylesheet" href="../../style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body class="asset-file-doc file-detail file-lang-nim">
+    <main class="page-shell">
+        
+
+        <header class="site-header">
+            <a class="site-title" href="../../">VOL kernel <span class="version">0.1.0</span></a>
+            <a class="github-link" href="https://github.com/Strangemother/vol-zero">GitHub</a>
+        </header>
+        
+<article class="document-page">
+    <div class="content">
+
+        <nav class="pre-header-navigation" aria-label="Page navigation">
+            <a href="../">Parent</a>
+        </nav>
+        <h1>core/panicoverride</h1>
+
+        
+
+        <section class="imports-includes">
+            
+            <ul class="import-list">
+                
+            </ul>
+            <ul class="include-list">
+                
+            </ul>
+               
+        </section>
+        
+        <section class="metadata">
+            <h2>Declarations</h2>
+            
+            <ul class="declaration-list">
+                
+                <li id="declaration-17">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        panic
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">panic</span><span class="o">*</span><span class="p">(</span><span class="n">message</span><span class="p">:</span><span class="w"> </span><span class="nb">string</span><span class="p">)</span><span class="w"> </span><span class="sx">{.nimcall</span>,<span class="w"> </span><span class="sx">noreturn.}</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Replaces Nim's default panic handler for the freestanding kernel.</p>
+<p>A hosted application can print an error and ask the operating system to
+terminate. A kernel has no operating system available to do that, so this
+handler disables interrupts with <code>cli</code> and permanently stops the CPU with
+<code>hlt</code>. The <code>noreturn</code> pragma tells the compiler that execution never comes
+back to the caller. <code>message</code> is currently accepted for API compatibility,
+but this implementation does not display it.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><span class="n">panic</span><span class="p">(</span><span class="s">"unrecoverable kernel error"</span><span class="p">)</span>
+</pre></div>
+
+                    </div>
+                </li>
+                
+                <li id="declaration-33">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        rawoutput
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">rawoutput</span><span class="o">*</span><span class="p">(</span><span class="n">message</span><span class="p">:</span><span class="w"> </span><span class="nb">string</span><span class="p">)</span><span class="w"> </span><span class="sx">{.nimcall.}</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Provides the raw-output hook expected by some Nim runtime paths.</p>
+<p>This freestanding implementation intentionally does nothing. It keeps code
+that requests runtime output linkable without introducing a dependency on a
+hosted terminal or file system. <code>message</code> is therefore ignored.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><span class="n">rawoutput</span><span class="p">(</span><span class="s">"diagnostic text"</span><span class="p">)</span>
+</pre></div>
+
+                    </div>
+                </li>
+                
+            </ul>
+        </section>
+        
+
+        
+        <section class="source-code">
+            <h2>Source</h2>
+            <div class="highlight"><pre><span></span><span class="cm">#[</span>
+<span class="cm">Replaces Nim's default panic handler for the freestanding kernel.</span>
+
+<span class="cm">A hosted application can print an error and ask the operating system to</span>
+<span class="cm">terminate. A kernel has no operating system available to do that, so this</span>
+<span class="cm">handler disables interrupts with `cli` and permanently stops the CPU with</span>
+<span class="cm">`hlt`. The `noreturn` pragma tells the compiler that execution never comes</span>
+<span class="cm">back to the caller. `message` is currently accepted for API compatibility,</span>
+<span class="cm">but this implementation does not display it.</span>
+
+<span class="cm">Example:</span>
+<span class="cm">    </span>
+<span class="cm">    panic("unrecoverable kernel error")</span>
+<span class="cm">        </span>
+<span class="cm">]#</span>
+<span class="k">proc</span><span class="w"> </span><span class="nf">panic</span><span class="o">*</span><span class="p">(</span><span class="n">message</span><span class="p">:</span><span class="w"> </span><span class="nb">string</span><span class="p">)</span><span class="w"> </span><span class="sx">{.nimcall</span>,<span class="w"> </span><span class="sx">noreturn.}</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="kp">true</span><span class="p">:</span>
+<span class="w">        </span><span class="k">asm</span><span class="w"> </span><span class="s">"cli"</span>
+<span class="w">        </span><span class="k">asm</span><span class="w"> </span><span class="s">"hlt"</span>
+
+<span class="cm">#[</span>
+<span class="cm">Provides the raw-output hook expected by some Nim runtime paths.</span>
+
+<span class="cm">This freestanding implementation intentionally does nothing. It keeps code</span>
+<span class="cm">that requests runtime output linkable without introducing a dependency on a</span>
+<span class="cm">hosted terminal or file system. `message` is therefore ignored.</span>
+
+<span class="cm">Example:</span>
+<span class="cm">    </span>
+<span class="cm">    rawoutput("diagnostic text")</span>
+<span class="cm">]#</span>
+<span class="k">proc</span><span class="w"> </span><span class="nf">rawoutput</span><span class="o">*</span><span class="p">(</span><span class="n">message</span><span class="p">:</span><span class="w"> </span><span class="nb">string</span><span class="p">)</span><span class="w"> </span><span class="sx">{.nimcall.}</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="k">discard</span>
+</pre></div>
+
+        </section>
+        
+    </div>
+    <div class="toc-list-container">
+        
+        <ul class="toc-list">
+            
+            <li>
+                <a href="#declaration-17">
+                    
+                    <span class="exported">public</span>
+                    
+                    panic
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-33">
+                    
+                    <span class="exported">public</span>
+                    
+                    rawoutput
+                </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+
+</article>
+
+
+
+    </main>
+</body>
+</html>

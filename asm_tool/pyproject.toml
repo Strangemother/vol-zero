@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "literal-asm-transpiler"
+version = "0.1.0"
+description = "A small Python API for recording and rendering literal assembly."
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [
+    {name = "VOL project"},
+]
+dependencies = []
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

@@ -264,8 +264,8 @@ def file_view(requested_path: str):
 	)
 
 
-def main():
-	app.run(debug=True, host="127.0.0.1", port=9050)
+def main(host: str = "127.0.0.1", port: int = 9050, debug: bool = True):
+	app.run(debug=debug, host=host, port=port)
 
 
 if __name__ == "__main__":
