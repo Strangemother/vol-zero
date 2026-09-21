@@ -18,16 +18,17 @@ In the repository settings, configure GitHub Pages to deploy from:
 Render the Flask documentation site as static files:
 
 ```sh
-tool site export github-pages/config.json
+tool site run
+tool site export
 ```
 
 The compatibility command `python convert.py` delegates to the same exporter.
 
-Commit changes to this folder on `main`, then publish them to the `gh-pages`
-branch when you want the public page to update:
+Publish the generated files to the `gh-pages` branch when you want the public
+page to update:
 
 ```sh
-git subtree push --prefix github-pages origin gh-pages
+tool site deploy
 ```
 
 The public site is served at <https://strangemother.github.io/vol-zero/>.
