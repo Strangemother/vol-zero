@@ -10,12 +10,18 @@ GitHub Actions workflow.
 In the repository settings, configure GitHub Pages to deploy from:
 
 - Source: `Deploy from a branch`
-- Branch: `main`
-- Folder: `/docs`
+- Branch: `gh-pages`
+- Folder: `/ (root)`
 
 ## Publish
 
-Commit and push changes to this folder when you want the public page to update.
+Commit changes to this folder on `main`, then publish them to the `gh-pages`
+branch when you want the public page to update:
+
+```sh
+git subtree push --prefix github-pages origin gh-pages
+```
+
 The public site is served at <https://strangemother.github.io/vol-zero/>.
 
 ## Local preview
