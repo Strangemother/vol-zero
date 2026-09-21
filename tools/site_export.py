@@ -15,10 +15,14 @@ from urllib.request import Request, urlopen
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_BASE_URL = "https://animated-broccoli-6wx47wpqpf494w-9050.app.github.dev/"
+DEFAULT_BASE_URL = "http://127.0.0.1:9050/"
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "github-pages"
-DEFAULT_CONFIG_PATH = DEFAULT_OUTPUT_DIR / "config.json"
+DEFAULT_CONFIG_PATH = PROJECT_ROOT / "doc_site" / "config.json"
 LINK_PATTERN = re.compile(r"\b(?P<attr>href|src)=(?P<quote>['\"])(?P<url>.*?)(?P=quote)", re.IGNORECASE)
+
+
+class SiteExportError(Exception):
+    pass
 
 
 @dataclass(frozen=True)
@@ -51,6 +55,21 @@ def fetch_text(url: str) -> str:
     with urlopen(request, timeout=30) as response:
         charset = response.headers.get_content_charset() or "utf-8"
         return response.read().decode(charset)
+
+
+def fetch_required_text(url: str) -> str:
+    try:
+        return fetch_text(url)
+    except HTTPError as error:
+        raise SiteExportError(f"Could not fetch {url}: HTTP {error.code} {error.reason}") from error
+    except URLError as error:
+        if isinstance(error.reason, ConnectionRefusedError):
+            raise SiteExportError(
+                f"Connection refused for {url}.\n"
+                "Have you run the docs site? Start it with: tool site run\n"
+                "Then retry: tool site export or tool site deploy"
+            ) from error
+        raise SiteExportError(f"Could not fetch {url}: {error.reason}") from error
 
 
 def path_from_config(value: str | None, config_path: Path | None) -> Path:
@@ -251,11 +270,13 @@ def export_site(config: ExportConfig) -> list[Path]:
     pending: deque[Route] = deque([Route("/")])
     written: list[Path] = []
 
+    css = fetch_required_text(urljoin(base_url, config.stylesheet_path))
+    first_page = fetch_required_text(base_url)
+
     config.output_root.mkdir(parents=True, exist_ok=True)
     cleanup_previous_run(config)
     cleanup_ignored_paths(config)
 
-    css = fetch_text(urljoin(base_url, config.stylesheet_path))
     stylesheet_path = config.output_root / config.stylesheet_output
     stylesheet_path.parent.mkdir(parents=True, exist_ok=True)
     stylesheet_path.write_text(css, encoding="utf-8")
@@ -267,12 +288,15 @@ def export_site(config: ExportConfig) -> list[Path]:
             continue
 
         url = urljoin(base_url, route.path.lstrip("/"))
-        try:
-            html = fetch_text(url)
-        except (HTTPError, URLError) as error:
-            print(f"skip {route.path}: {error}")
-            seen.add(route.path)
-            continue
+        if route.path == "/":
+            html = first_page
+        else:
+            try:
+                html = fetch_text(url)
+            except (HTTPError, URLError) as error:
+                print(f"skip {route.path}: {error}")
+                seen.add(route.path)
+                continue
 
         seen.add(route.path)
         written.append(write_page(route, html, base_url, config))
@@ -309,7 +333,11 @@ def main(arguments: list[str] | None = None) -> int:
     if parsed.max_pages:
         config = ExportConfig(**{**config.__dict__, "max_pages": parsed.max_pages})
 
-    written = export_site(config)
+    try:
+        written = export_site(config)
+    except SiteExportError as error:
+        print(error)
+        return 1
     for path in written:
         print(relative_to_output(path, config))
     print(f"wrote {len(written)} files")

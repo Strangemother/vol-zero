@@ -64,16 +64,24 @@ By default the site runs at <http://127.0.0.1:9050/>. Use `--host`, `--port`,
 or `--no-debug` to override the defaults.
 
 `tool site export` renders the hosted Flask documentation site as static files
-for GitHub Pages. By default it reads `github-pages/config.json` when that file
-exists.
+for GitHub Pages. By default it reads `doc_site/config.json`.
 
 ```sh
-tool site export github-pages/config.json
+tool site export
 ```
 
-The config controls the source `base_url`, output directory, crawl limit,
+Export and publish the generated files to the `gh-pages` branch:
+
+```sh
+tool site deploy
+```
+
+Use `--dry-run` to verify the export and deployment commit without pushing.
+
+The `doc_site/config.json` config controls the source `base_url`, output directory, crawl limit,
 stylesheet path, manifest filename, and ignored file patterns such as `.git`
 folders.
+The default `base_url` is the local `tool site run` server.
 
 The compatibility command still works from the repository root:
 
