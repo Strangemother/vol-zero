@@ -1,0 +1,910 @@
+# x86 Instruction Catalog
+
+This flat list is de-duplicated and can be regenerated with `python tools/build_instruction_reference.py`.
+
+- **AAA**: ASCII Adjust After Addition
+- **AAD**: ASCII Adjust AX Before Division
+- **AAM**: ASCII Adjust AX After Multiply
+- **AAS**: ASCII Adjust AL After Subtraction
+- **ADC**: Add With Carry
+- **ADCX**: Unsigned Integer Addition of Two Operands With Carry Flag
+- **ADD**: Add
+- **ADDPD**: Add Packed Double Precision Floating-Point Values
+- **ADDPS**: Add Packed Single Precision Floating-Point Values
+- **ADDSD**: Add Scalar Double Precision Floating-Point Values
+- **ADDSS**: Add Scalar Single Precision Floating-Point Values
+- **ADDSUBPD**: Packed Double Precision Floating-Point Add/Subtract
+- **ADDSUBPS**: Packed Single Precision Floating-Point Add/Subtract
+- **ADOX**: Unsigned Integer Addition of Two Operands With Overflow Flag
+- **AESDEC**: Perform One Round of an AES Decryption Flow
+- **AESDEC128KL**: Perform Ten Rounds of AES Decryption Flow With Key Locker Using 128-BitKey
+- **AESDEC256KL**: Perform 14 Rounds of AES Decryption Flow With Key Locker Using 256-Bit Key
+- **AESDECLAST**: Perform Last Round of an AES Decryption Flow
+- **AESDECWIDE128KL**: Perform Ten Rounds of AES Decryption Flow With Key Locker on 8 BlocksUsing 128-Bit Key
+- **AESDECWIDE256KL**: Perform 14 Rounds of AES Decryption Flow With Key Locker on 8 BlocksUsing 256-Bit Key
+- **AESENC**: Perform One Round of an AES Encryption Flow
+- **AESENC128KL**: Perform Ten Rounds of AES Encryption Flow With Key Locker Using 128-Bit Key
+- **AESENC256KL**: Perform 14 Rounds of AES Encryption Flow With Key Locker Using 256-Bit Key
+- **AESENCLAST**: Perform Last Round of an AES Encryption Flow
+- **AESENCWIDE128KL**: Perform Ten Rounds of AES Encryption Flow With Key Locker on 8 BlocksUsing 128-Bit Key
+- **AESENCWIDE256KL**: Perform 14 Rounds of AES Encryption Flow With Key Locker on 8 BlocksUsing 256-Bit Key
+- **AESIMC**: Perform the AES InvMixColumn Transformation
+- **AESKEYGENASSIST**: AES Round Key Generation Assist
+- **AND**: Logical AND
+- **ANDN**: Logical AND NOT
+- **ANDNPD**: Bitwise Logical AND NOT of Packed Double Precision Floating-Point Values
+- **ANDNPS**: Bitwise Logical AND NOT of Packed Single Precision Floating-Point Values
+- **ANDPD**: Bitwise Logical AND of Packed Double Precision Floating-Point Values
+- **ANDPS**: Bitwise Logical AND of Packed Single Precision Floating-Point Values
+- **ARPL**: Adjust RPL Field of Segment Selector
+- **BEXTR**: Bit Field Extract
+- **BLENDPD**: Blend Packed Double Precision Floating-Point Values
+- **BLENDPS**: Blend Packed Single Precision Floating-Point Values
+- **BLENDVPD**: Variable Blend Packed Double Precision Floating-Point Values
+- **BLENDVPS**: Variable Blend Packed Single Precision Floating-Point Values
+- **BLSI**: Extract Lowest Set Isolated Bit
+- **BLSMSK**: Get Mask Up to Lowest Set Bit
+- **BLSR**: Reset Lowest Set Bit
+- **BNDCL**: Check Lower Bound
+- **BNDCU:BNDCN**: Check Upper Bound
+- **BNDLDX**: Load Extended Bounds Using Address Translation
+- **BNDMK**: Make Bounds
+- **BNDMOV**: Move Bounds
+- **BNDSTX**: Store Extended Bounds Using Address Translation
+- **BOUND**: Check Array Index Against Bounds
+- **BSF**: Bit Scan Forward
+- **BSR**: Bit Scan Reverse
+- **BSWAP**: Byte Swap
+- **BT**: Bit Test
+- **BTC**: Bit Test and Complement
+- **BTR**: Bit Test and Reset
+- **BTS**: Bit Test and Set
+- **BZHI**: Zero High Bits Starting with Specified Bit Position
+- **CALL**: Call Procedure
+- **CAPABILITIES**: Report the SMX Capabilities
+- **CBW/CWDE**: Convert Byte to Word/Convert Word to Doubleword
+- **CBW:CWDE:CDQE**: Convert Byte to Word/Convert Word to Doubleword/Convert Doubleword toQuadword
+- **CLAC**: Clear AC Flag in EFLAGS Register
+- **CLC**: Clear Carry Flag
+- **CLD**: Clear Direction Flag
+- **CLDEMOTE**: Cache Line Demote
+- **CLFLUSH**: Flush Cache Line
+- **CLFLUSHOPT**: Flush Cache Line Optimized
+- **CLI**: Clear Interrupt Flag
+- **CLRSSBSY**: Clear Busy Flag in a Supervisor Shadow Stack Token
+- **CLTS**: Clear Task-Switched Flag in CR0
+- **CLUI**: Clear User Interrupt Flag
+- **CLWB**: Cache Line Write Back
+- **CMC**: Complement Carry Flag
+- **CMOVCC**: Conditional Move
+- **CMP**: Compare Two Operands
+- **CMPPD**: Compare Packed Double Precision Floating-Point Values
+- **CMPPS**: Compare Packed Single Precision Floating-Point Values
+- **CMPS/CMPSB/CMPSW/CMPSD**: Compare String Operands
+- **CMPS:CMPSB:CMPSW:CMPSD:CMPSQ**: Compare String Operands
+- **CMPSD**: Compare Scalar Double Precision Floating-Point Value
+- **CMPSS**: Compare Scalar Single Precision Floating-Point Value
+- **CMPXCHG**: Compare and Exchange
+- **CMPXCHG8B**: Compare and Exchange 8 Bytes
+- **CMPXCHG8B:CMPXCHG16B**: Compare and Exchange Bytes
+- **COMISD**: Compare Scalar Ordered Double Precision Floating-Point Values and Set EFLAGS
+- **COMISS**: Compare Scalar Ordered Single Precision Floating-Point Values and Set EFLAGS
+- **CPUID**: CPU Identification
+- **CRC32**: Accumulate CRC32 Value
+- **CVTDQ2PD**: Convert Packed Doubleword Integers to Packed Double Precision Floating-PointValues
+- **CVTDQ2PS**: Convert Packed Doubleword Integers to Packed Single Precision Floating-PointValues
+- **CVTPD2DQ**: Convert Packed Double Precision Floating-Point Values to Packed DoublewordIntegers
+- **CVTPD2PI**: Convert Packed Double Precision Floating-Point Values to Packed Dword Integers
+- **CVTPD2PS**: Convert Packed Double Precision Floating-Point Values to Packed Single PrecisionFloating-Point Values
+- **CVTPI2PD**: Convert Packed Dword Integers to Packed Double Precision Floating-Point Values
+- **CVTPI2PS**: Convert Packed Dword Integers to Packed Single Precision Floating-Point Values
+- **CVTPS2DQ**: Convert Packed Single Precision Floating-Point Values to Packed SignedDoubleword Integer Values
+- **CVTPS2PD**: Convert Packed Single Precision Floating-Point Values to Packed Double PrecisionFloating-Point Values
+- **CVTPS2PI**: Convert Packed Single Precision Floating-Point Values to Packed Dword Integers
+- **CVTSD2SI**: Convert Scalar Double Precision Floating-Point Value to Doubleword Integer
+- **CVTSD2SS**: Convert Scalar Double Precision Floating-Point Value to Scalar Single PrecisionFloating-Point Value
+- **CVTSI2SD**: Convert Doubleword Integer to Scalar Double Precision Floating-Point Value
+- **CVTSI2SS**: Convert Doubleword Integer to Scalar Single Precision Floating-Point Value
+- **CVTSS2SD**: Convert Scalar Single Precision Floating-Point Value to Scalar Double PrecisionFloating-Point Value
+- **CVTSS2SI**: Convert Scalar Single Precision Floating-Point Value to Doubleword Integer
+- **CVTTPD2DQ**: Convert with Truncation Packed Double Precision Floating-Point Values toPacked Doubleword Integers
+- **CVTTPD2PI**: Convert With Truncation Packed Double Precision Floating-Point Values to PackedDword Integers
+- **CVTTPS2DQ**: Convert With Truncation Packed Single Precision Floating-Point Values to PackedSigned Doubleword Integer Values
+- **CVTTPS2PI**: Convert With Truncation Packed Single Precision Floating-Point Values to PackedDword Integers
+- **CVTTSD2SI**: Convert With Truncation Scalar Double Precision Floating-Point Value to SignedInteger
+- **CVTTSS2SI**: Convert With Truncation Scalar Single Precision Floating-Point Value to Integer
+- **CWD/CDQ**: Convert Word to Doubleword/Convert Doubleword to Quadword
+- **CWD:CDQ:CQO**: Convert Word to Doubleword/Convert Doubleword to Quadword
+- **DAA**: Decimal Adjust AL After Addition
+- **DAS**: Decimal Adjust AL After Subtraction
+- **DEC**: Decrement by 1
+- **DIV**: Unsigned Divide
+- **DIVPD**: Divide Packed Double Precision Floating-Point Values
+- **DIVPS**: Divide Packed Single Precision Floating-Point Values
+- **DIVSD**: Divide Scalar Double Precision Floating-Point Value
+- **DIVSS**: Divide Scalar Single Precision Floating-Point Values
+- **DPPD**: Dot Product of Packed Double Precision Floating-Point Values
+- **DPPS**: Dot Product of Packed Single Precision Floating-Point Values
+- **EACCEPT**: Accept Changes to an EPC Page
+- **EACCEPTCOPY**: Initialize a Pending Page
+- **EADD**: Add a Page to an Uninitialized Enclave
+- **EAUG**: Add a Page to an Initialized Enclave
+- **EBLOCK**: Mark a page in EPC as Blocked
+- **ECREATE**: Create an SECS page in the Enclave Page Cache
+- **EDBGRD**: Read From a Debug Enclave
+- **EDBGWR**: Write to a Debug Enclave
+- **EDECCSSA**: Decrements TCS.CSSA
+- **EDECVIRTCHILD**: Decrement VIRTCHILDCNT in SECS
+- **EENTER**: Enters an Enclave
+- **EEXIT**: Exits an Enclave
+- **EEXTEND**: Extend Uninitialized Enclave Measurement by 256 Bytes
+- **EGETKEY**: Retrieves a Cryptographic Key
+- **EINCVIRTCHILD**: Increment VIRTCHILDCNT in SECS
+- **EINIT**: Initialize an Enclave for Execution
+- **ELDB:ELDU:ELDBC:ELDUC**: Load an EPC Page and Mark its State
+- **EMMS**: Empty MMX Technology State
+- **EMODPE**: Extend an EPC Page Permissions
+- **EMODPR**: Restrict the Permissions of an EPC Page
+- **EMODT**: Change the Type of an EPC Page
+- **ENCLS**: Execute an Enclave System Function of Specified Leaf Number
+- **ENCLU**: Execute an Enclave User Function of Specified Leaf Number
+- **ENCLV**: Execute an Enclave VMM Function of Specified Leaf Number
+- **ENCODEKEY128**: Encode 128-Bit Key With Key Locker
+- **ENCODEKEY256**: Encode 256-Bit Key With Key Locker
+- **ENDBR32**: Terminate an Indirect Branch in 32-bit and Compatibility Mode
+- **ENDBR64**: Terminate an Indirect Branch in 64-bit Mode
+- **ENQCMD**: Enqueue Command
+- **ENQCMDS**: Enqueue Command Supervisor
+- **ENTER**: Make Stack Frame for Procedure Parameters
+- **ENTERACCS**: Execute Authenticated Chipset Code
+- **EPA**: Add Version Array
+- **ERDINFO**: Read Type and Status Information About an EPC Page
+- **EREMOVE**: Remove a page from the EPC
+- **EREPORT**: Create a Cryptographic Report of the Enclave
+- **ERESUME**: Re-Enters an Enclave
+- **ESETCONTEXT**: Set the ENCLAVECONTEXT Field in SECS
+- **ETRACK**: Activates EBLOCK Checks
+- **ETRACKC**: Activates EBLOCK Checks
+- **EWB**: Invalidate an EPC Page and Write out to Main Memory
+- **EXITAC**: Exit Authenticated Code Execution Mode
+- **EXTRACTPS**: Extract Packed Floating-Point Values
+- **F2XM1**: Compute 2x–1
+- **FABS**: Absolute Value
+- **FADD/FADDP/FIADD**: Add
+- **FADD:FADDP:FIADD**: Add
+- **FBLD**: Load Binary Coded Decimal
+- **FBSTP**: Store BCD Integer and Pop
+- **FCHS**: Change Sign
+- **FCLEX/FNCLEX**: Clear Exceptions
+- **FCLEX:FNCLEX**: Clear Exceptions
+- **FCMOVCC**: Floating-Point Conditional Move
+- **FCOM/FCOMP/FCOMPP**: Compare Floating Point Values
+- **FCOM:FCOMP:FCOMPP**: Compare Floating-Point Values
+- **FCOMI/FCOMIP/FUCOMI/FUCOMIP**: Compare Floating Point Values and Set EFLAGS
+- **FCOMI:FCOMIP:FUCOMI:FUCOMIP**: Compare Floating-Point Values and Set EFLAGS
+- **FCOS**: Cosine
+- **FDECSTP**: Decrement Stack-Top Pointer
+- **FDIV/FDIVP/FIDIV**: Divide
+- **FDIV:FDIVP:FIDIV**: Divide
+- **FDIVR/FDIVRP/FIDIVR**: Reverse Divide
+- **FDIVR:FDIVRP:FIDIVR**: Reverse Divide
+- **FFREE**: Free Floating-Point Register
+- **FICOM/FICOMP**: Compare Integer
+- **FICOM:FICOMP**: Compare Integer
+- **FILD**: Load Integer
+- **FINCSTP**: Increment Stack-Top Pointer
+- **FINIT/FNINIT**: Initialize Floating-Point Unit
+- **FINIT:FNINIT**: Initialize Floating-Point Unit
+- **FIST/FISTP**: Store Integer
+- **FIST:FISTP**: Store Integer
+- **FISTTP**: Store Integer With Truncation
+- **FLD**: Load Floating-Point Value
+- **FLD1/FLDL2T/FLDL2E/FLDPI/FLDLG2/FLDLN2/FLDZ**: Load Constant
+- **FLD1:FLDL2T:FLDL2E:FLDPI:FLDLG2:FLDLN2:FLDZ**: Load Constant
+- **FLDCW**: Load x87 FPU Control Word
+- **FLDENV**: Load x87 FPU Environment
+- **FMUL/FMULP/FIMUL**: Multiply
+- **FMUL:FMULP:FIMUL**: Multiply
+- **FNOP**: No Operation
+- **FPATAN**: Partial Arctangent
+- **FPREM**: Partial Remainder
+- **FPREM1**: Partial Remainder
+- **FPTAN**: Partial Tangent
+- **FRNDINT**: Round to Integer
+- **FRSTOR**: Restore x87 FPU State
+- **FSAVE/FNSAVE**: Store x87 FPU State
+- **FSAVE:FNSAVE**: Store x87 FPU State
+- **FSCALE**: Scale
+- **FSIN**: Sine
+- **FSINCOS**: Sine and Cosine
+- **FSQRT**: Square Root
+- **FST/FSTP**: Store Floating Point Value
+- **FST:FSTP**: Store Floating-Point Value
+- **FSTCW/FNSTCW**: Store x87 FPU Control Word
+- **FSTCW:FNSTCW**: Store x87 FPU Control Word
+- **FSTENV/FNSTENV**: Store x87 FPU Environment
+- **FSTENV:FNSTENV**: Store x87 FPU Environment
+- **FSTSW/FNSTSW**: Store x87 FPU Status Word
+- **FSTSW:FNSTSW**: Store x87 FPU Status Word
+- **FSUB/FSUBP/FISUB**: Subtract
+- **FSUB:FSUBP:FISUB**: Subtract
+- **FSUBR/FSUBRP/FISUBR**: Reverse Subtract
+- **FSUBR:FSUBRP:FISUBR**: Reverse Subtract
+- **FTST**: TEST
+- **FUCOM/FUCOMP/FUCOMPP**: Unordered Compare Floating Point Values
+- **FUCOM:FUCOMP:FUCOMPP**: Unordered Compare Floating-Point Values
+- **FXAM**: Examine Floating-Point
+- **FXCH**: Exchange Register Contents
+- **FXRSTOR**: Restore x87 FPU, MMX, XMM, and MXCSR State
+- **FXSAVE**: Save x87 FPU, MMX Technology, and SSE State
+- **FXTRACT**: Extract Exponent and Significand
+- **FYL2X**: Compute y ∗ log2x
+- **FYL2XP1**: Compute y ∗ log2(x +1)
+- **GF2P8AFFINEINVQB**: Galois Field Affine Transformation Inverse
+- **GF2P8AFFINEQB**: Galois Field Affine Transformation
+- **GF2P8MULB**: Galois Field Multiply Bytes
+- **HADDPD**: Packed Double Precision Floating-Point Horizontal Add
+- **HADDPS**: Packed Single Precision Floating-Point Horizontal Add
+- **HLT**: Halt
+- **HRESET**: History Reset
+- **HSUBPD**: Packed Double Precision Floating-Point Horizontal Subtract
+- **HSUBPS**: Packed Single Precision Floating-Point Horizontal Subtract
+- **IDIV**: Signed Divide
+- **IMUL**: Signed Multiply
+- **IN**: Input From Port
+- **INC**: Increment by 1
+- **INCSSPD:INCSSPQ**: Increment Shadow Stack Pointer
+- **INS/INSB/INSW/INSD**: Input from Port to String
+- **INS:INSB:INSW:INSD**: Input from Port to String
+- **INSERTPS**: Insert Scalar Single Precision Floating-Point Value
+- **INTN/INTO/INT3**: Call to Interrupt Procedure
+- **INTN:INTO:INT3:INT1**: Call to Interrupt Procedure
+- **INVD**: Invalidate Internal Caches
+- **INVEPT**: Invalidate Translations Derived from EPT
+- **INVLPG**: Invalidate TLB Entries
+- **INVPCID**: Invalidate Process-Context Identifier
+- **INVVPID**: Invalidate Translations Based on VPID
+- **IRET/IRETD**: Interrupt Return
+- **IRET:IRETD:IRETQ**: Interrupt Return
+- **JCC**: Jump if Condition Is Met
+- **JMP**: Jump
+- **KADDW:KADDB:KADDQ:KADDD**: ADD Two Masks
+- **KANDNW:KANDNB:KANDNQ:KANDND**: Bitwise Logical AND NOT Masks
+- **KANDW:KANDB:KANDQ:KANDD**: Bitwise Logical AND Masks
+- **KMOVW:KMOVB:KMOVQ:KMOVD**: Move From and to Mask Registers
+- **KNOTW:KNOTB:KNOTQ:KNOTD**: NOT Mask Register
+- **KORTESTW:KORTESTB:KORTESTQ:KORTESTD**: OR Masks and Set Flags
+- **KORW:KORB:KORQ:KORD**: Bitwise Logical OR Masks
+- **KSHIFTLW:KSHIFTLB:KSHIFTLQ:KSHIFTLD**: Shift Left Mask Registers
+- **KSHIFTRW:KSHIFTRB:KSHIFTRQ:KSHIFTRD**: Shift Right Mask Registers
+- **KTESTW:KTESTB:KTESTQ:KTESTD**: Packed Bit Test Masks and Set Flags
+- **KUNPCKBW:KUNPCKWD:KUNPCKDQ**: Unpack for Mask Registers
+- **KXNORW:KXNORB:KXNORQ:KXNORD**: Bitwise Logical XNOR Masks
+- **KXORW:KXORB:KXORQ:KXORD**: Bitwise Logical XOR Masks
+- **LAHF**: Load Status Flags Into AH Register
+- **LAR**: Load Access Rights Byte
+- **LDDQU**: Load Unaligned Integer 128 Bits
+- **LDMXCSR**: Load MXCSR Register
+- **LDS/LES/LFS/LGS/LSS**: Load Far Pointer
+- **LDS:LES:LFS:LGS:LSS**: Load Far Pointer
+- **LDTILECFG**: Load Tile Configuration
+- **LEA**: Load Effective Address
+- **LEAVE**: High Level Procedure Exit
+- **LFENCE**: Load Fence
+- **LGDT/LIDT**: Load Global/Interrupt Descriptor Table Register
+- **LGDT:LIDT**: Load Global/Interrupt Descriptor Table Register
+- **LLDT**: Load Local Descriptor Table Register
+- **LMSW**: Load Machine Status Word
+- **LOADIWKEY**: Load Internal Wrapping Key With Key Locker
+- **LOCK**: Assert LOCK# Signal Prefix
+- **LODS/LODSB/LODSW/LODSD**: Load String
+- **LODS:LODSB:LODSW:LODSD:LODSQ**: Load String
+- **LOOP/LOOPCC**: Loop According to ECX Counter
+- **LOOP:LOOPCC**: Loop According to ECX Counter
+- **LSL**: Load Segment Limit
+- **LTR**: Load Task Register
+- **LZCNT**: Count the Number of Leading Zero Bits
+- **MASKMOVDQU**: Store Selected Bytes of Double Quadword
+- **MASKMOVQ**: Store Selected Bytes of Quadword
+- **MAXPD**: Maximum of Packed Double Precision Floating-Point Values
+- **MAXPS**: Maximum of Packed Single Precision Floating-Point Values
+- **MAXSD**: Return Maximum Scalar Double Precision Floating-Point Value
+- **MAXSS**: Return Maximum Scalar Single Precision Floating-Point Value
+- **MFENCE**: Memory Fence
+- **MINPD**: Minimum of Packed Double Precision Floating-Point Values
+- **MINPS**: Minimum of Packed Single Precision Floating-Point Values
+- **MINSD**: Return Minimum Scalar Double Precision Floating-Point Value
+- **MINSS**: Return Minimum Scalar Single Precision Floating-Point Value
+- **MONITOR**: Set Up Monitor Address
+- **MOV**: Move
+- **MOV-1**: Move to/from Control Registers
+- **MOV-2**: Move to/from Debug Registers
+- **MOVAPD**: Move Aligned Packed Double Precision Floating-Point Values
+- **MOVAPS**: Move Aligned Packed Single Precision Floating-Point Values
+- **MOVBE**: Move Data After Swapping Bytes
+- **MOVD**: Move Doubleword
+- **MOVD:MOVQ**: Move Doubleword/Move Quadword
+- **MOVDDUP**: Replicate Double Precision Floating-Point Values
+- **MOVDIR64B**: Move 64 Bytes as Direct Store
+- **MOVDIRI**: Move Doubleword as Direct Store
+- **MOVDQ2Q**: Move Quadword from XMM to MMX Technology Register
+- **MOVDQA**: Move Aligned Double Quadword
+- **MOVDQA:VMOVDQA32:VMOVDQA64**: Move Aligned Packed Integer Values
+- **MOVDQU**: Move Unaligned Double Quadword
+- **MOVDQU:VMOVDQU8:VMOVDQU16:VMOVDQU32:VMOVDQU64**: Move Unaligned Packed Integer Values
+- **MOVHLPS**: Move Packed Single Precision Floating-Point Values High to Low
+- **MOVHPD**: Move High Packed Double Precision Floating-Point Value
+- **MOVHPS**: Move High Packed Single Precision Floating-Point Values
+- **MOVLHPS**: Move Packed Single Precision Floating-Point Values Low to High
+- **MOVLPD**: Move Low Packed Double Precision Floating-Point Value
+- **MOVLPS**: Move Low Packed Single Precision Floating-Point Values
+- **MOVMSKPD**: Extract Packed Double Precision Floating-Point Sign Mask
+- **MOVMSKPS**: Extract Packed Single Precision Floating-Point Sign Mask
+- **MOVNTDQ**: Store Packed Integers Using Non-Temporal Hint
+- **MOVNTDQA**: Load Double Quadword Non-Temporal Aligned Hint
+- **MOVNTI**: Store Doubleword Using Non-Temporal Hint
+- **MOVNTPD**: Store Packed Double Precision Floating-Point Values Using Non-Temporal Hint
+- **MOVNTPS**: Store Packed Single Precision Floating-Point Values Using Non-Temporal Hint
+- **MOVNTQ**: Store of Quadword Using Non-Temporal Hint
+- **MOVQ**: Move Quadword
+- **MOVQ2DQ**: Move Quadword from MMX Technology to XMM Register
+- **MOVS/MOVSB/MOVSW/MOVSD**: Move Data from String to String
+- **MOVS:MOVSB:MOVSW:MOVSD:MOVSQ**: Move Data From String to String
+- **MOVSD**: Move or Merge Scalar Double Precision Floating-Point Value
+- **MOVSHDUP**: Replicate Single Precision Floating-Point Values
+- **MOVSLDUP**: Replicate Single Precision Floating-Point Values
+- **MOVSS**: Move or Merge Scalar Single Precision Floating-Point Value
+- **MOVSX**: Move with Sign-Extension
+- **MOVSX:MOVSXD**: Move With Sign-Extension
+- **MOVUPD**: Move Unaligned Packed Double Precision Floating-Point Values
+- **MOVUPS**: Move Unaligned Packed Single Precision Floating-Point Values
+- **MOVZX**: Move With Zero-Extend
+- **MPSADBW**: Compute Multiple Packed Sums of Absolute Difference
+- **MUL**: Unsigned Multiply
+- **MULPD**: Multiply Packed Double Precision Floating-Point Values
+- **MULPS**: Multiply Packed Single Precision Floating-Point Values
+- **MULSD**: Multiply Scalar Double Precision Floating-Point Value
+- **MULSS**: Multiply Scalar Single Precision Floating-Point Values
+- **MULX**: Unsigned Multiply Without Affecting Flags
+- **MWAIT**: Monitor Wait
+- **NEG**: Two's Complement Negation
+- **NOP**: No Operation
+- **NOT**: One's Complement Negation
+- **OR**: Logical Inclusive OR
+- **ORPD**: Bitwise Logical OR of Packed Double Precision Floating-Point Values
+- **ORPS**: Bitwise Logical OR of Packed Single Precision Floating-Point Values
+- **OUT**: Output to Port
+- **OUTS/OUTSB/OUTSW/OUTSD**: Output String to Port
+- **OUTS:OUTSB:OUTSW:OUTSD**: Output String to Port
+- **PABSB:PABSW:PABSD:PABSQ**: Packed Absolute Value
+- **PACKSSWB/PACKSSDW**: Pack with Signed Saturation
+- **PACKSSWB:PACKSSDW**: Pack With Signed Saturation
+- **PACKUSDW**: Pack With Unsigned Saturation
+- **PACKUSWB**: Pack With Unsigned Saturation
+- **PADDB/PADDW/PADDD**: Add Packed Integers
+- **PADDB:PADDW:PADDD:PADDQ**: Add Packed Integers
+- **PADDQ**: Add Packed Quadword Integers
+- **PADDSB/PADDSW**: Add Packed Signed Integers with Signed Saturation
+- **PADDSB:PADDSW**: Add Packed Signed Integers with Signed Saturation
+- **PADDUSB/PADDUSW**: Add Packed Unsigned Integers with Unsigned Saturation
+- **PADDUSB:PADDUSW**: Add Packed Unsigned Integers With Unsigned Saturation
+- **PALIGNR**: Packed Align Right
+- **PAND**: Logical AND
+- **PANDN**: Logical AND NOT
+- **PARAMETERS**: Report the SMX Parameters
+- **PAUSE**: Spin Loop Hint
+- **PAVGB/PAVGW**: Average Packed Integers
+- **PAVGB:PAVGW**: Average Packed Integers
+- **PBLENDVB**: Variable Blend Packed Bytes
+- **PBLENDW**: Blend Packed Words
+- **PCLMULQDQ**: Carry-Less Multiplication Quadword
+- **PCMPEQB/PCMPEQW/PCMPEQD**: Compare Packed Data for Equal
+- **PCMPEQB:PCMPEQW:PCMPEQD**: Compare Packed Data for Equal
+- **PCMPEQQ**: Compare Packed Qword Data for Equal
+- **PCMPESTRI**: Packed Compare Explicit Length Strings, Return Index
+- **PCMPESTRM**: Packed Compare Explicit Length Strings, Return Mask
+- **PCMPGTB/PCMPGTW/PCMPGTD**: Compare Packed Signed Integers for Greater Than
+- **PCMPGTB:PCMPGTW:PCMPGTD**: Compare Packed Signed Integers for Greater Than
+- **PCMPGTQ**: Compare Packed Data for Greater Than
+- **PCMPISTRI**: Packed Compare Implicit Length Strings, Return Index
+- **PCMPISTRM**: Packed Compare Implicit Length Strings, Return Mask
+- **PCONFIG**: Platform Configuration
+- **PDEP**: Parallel Bits Deposit
+- **PEXT**: Parallel Bits Extract
+- **PEXTRB:PEXTRD:PEXTRQ**: Extract Byte/Dword/Qword
+- **PEXTRW**: Extract Word
+- **PHADDSW**: Packed Horizontal Add and Saturate
+- **PHADDW:PHADDD**: Packed Horizontal Add
+- **PHMINPOSUW**: Packed Horizontal Word Minimum
+- **PHSUBSW**: Packed Horizontal Subtract and Saturate
+- **PHSUBW:PHSUBD**: Packed Horizontal Subtract
+- **PINSRB:PINSRD:PINSRQ**: Insert Byte/Dword/Qword
+- **PINSRW**: Insert Word
+- **PMADDUBSW**: Multiply and Add Packed Signed and Unsigned Bytes
+- **PMADDWD**: Multiply and Add Packed Integers
+- **PMAXSB:PMAXSW:PMAXSD:PMAXSQ**: Maximum of Packed Signed Integers
+- **PMAXSW**: Maximum of Packed Signed Word Integers
+- **PMAXUB**: Maximum of Packed Unsigned Byte Integers
+- **PMAXUB:PMAXUW**: Maximum of Packed Unsigned Integers
+- **PMAXUD:PMAXUQ**: Maximum of Packed Unsigned Integers
+- **PMINSB:PMINSW**: Minimum of Packed Signed Integers
+- **PMINSD:PMINSQ**: Minimum of Packed Signed Integers
+- **PMINSW**: Minimum of Packed Signed Word Integers
+- **PMINUB**: Minimum of Packed Unsigned Byte Integers
+- **PMINUB:PMINUW**: Minimum of Packed Unsigned Integers
+- **PMINUD:PMINUQ**: Minimum of Packed Unsigned Integers
+- **PMOVMSKB**: Move Byte Mask
+- **PMOVSX**: Packed Move With Sign Extend
+- **PMOVZX**: Packed Move With Zero Extend
+- **PMULDQ**: Multiply Packed Doubleword Integers
+- **PMULHRSW**: Packed Multiply High With Round and Scale
+- **PMULHUW**: Multiply Packed Unsigned Integers and Store High Result
+- **PMULHW**: Multiply Packed Signed Integers and Store High Result
+- **PMULLD:PMULLQ**: Multiply Packed Integers and Store Low Result
+- **PMULLW**: Multiply Packed Signed Integers and Store Low Result
+- **PMULUDQ**: Multiply Packed Unsigned Doubleword Integers
+- **POP**: Pop a Value From the Stack
+- **POPA/POPAD**: Pop All General-Purpose Registers
+- **POPA:POPAD**: Pop All General-Purpose Registers
+- **POPCNT**: Return the Count of Number of Bits Set to 1
+- **POPF/POPFD**: Pop Stack into EFLAGS Register
+- **POPF:POPFD:POPFQ**: Pop Stack Into EFLAGS Register
+- **POR**: Bitwise Logical OR
+- **PREFETCHH**: Prefetch Data Into Caches
+- **PREFETCHW**: Prefetch Data Into Caches in Anticipation of a Write
+- **PREFETCHWT1**: Prefetch Vector Data Into Caches With Intent to Write and T1 Hint
+- **PSADBW**: Compute Sum of Absolute Differences
+- **PSHUFB**: Packed Shuffle Bytes
+- **PSHUFD**: Shuffle Packed Doublewords
+- **PSHUFHW**: Shuffle Packed High Words
+- **PSHUFLW**: Shuffle Packed Low Words
+- **PSHUFW**: Shuffle Packed Words
+- **PSIGNB:PSIGNW:PSIGND**: Packed SIGN
+- **PSLLDQ**: Shift Double Quadword Left Logical
+- **PSLLW/PSLLD/PSLLQ**: Shift Packed Data Left Logical
+- **PSLLW:PSLLD:PSLLQ**: Shift Packed Data Left Logical
+- **PSRAW/PSRAD**: Shift Packed Data Right Arithmetic
+- **PSRAW:PSRAD:PSRAQ**: Shift Packed Data Right Arithmetic
+- **PSRLDQ**: Shift Double Quadword Right Logical
+- **PSRLW/PSRLD/PSRLQ**: Shift Packed Data Right Logical
+- **PSRLW:PSRLD:PSRLQ**: Shift Packed Data Right Logical
+- **PSUBB/PSUBW/PSUBD**: Subtract Packed Integers
+- **PSUBB:PSUBW:PSUBD**: Subtract Packed Integers
+- **PSUBQ**: Subtract Packed Quadword Integers
+- **PSUBSB/PSUBSW**: Subtract Packed Signed Integers with Signed Saturation
+- **PSUBSB:PSUBSW**: Subtract Packed Signed Integers With Signed Saturation
+- **PSUBUSB/PSUBUSW**: Subtract Packed Unsigned Integers with Unsigned Saturation
+- **PSUBUSB:PSUBUSW**: Subtract Packed Unsigned Integers With Unsigned Saturation
+- **PTEST**: Logical Compare
+- **PTWRITE**: Write Data to a Processor Trace Packet
+- **PUNPCKHBW/PUNPCKHWD/PUNPCKHDQ/PUNPCKHQDQ**: Unpack High Data
+- **PUNPCKHBW:PUNPCKHWD:PUNPCKHDQ:PUNPCKHQDQ**: Unpack High Data
+- **PUNPCKLBW/PUNPCKLWD/PUNPCKLDQ/PUNPCKLQDQ**: Unpack Low Data
+- **PUNPCKLBW:PUNPCKLWD:PUNPCKLDQ:PUNPCKLQDQ**: Unpack Low Data
+- **PUSH**: Push Word, Doubleword, or Quadword Onto the Stack
+- **PUSHA/PUSHAD**: Push All General-Purpose Registers
+- **PUSHA:PUSHAD**: Push All General-Purpose Registers
+- **PUSHF/PUSHFD**: Push EFLAGS Register onto the Stack
+- **PUSHF:PUSHFD:PUSHFQ**: Push EFLAGS Register Onto the Stack
+- **PXOR**: Logical Exclusive OR
+- **RCL/RCR/ROL/ROR**: Rotate
+- **RCL:RCR:ROL:ROR**: Rotate
+- **RCPPS**: Compute Reciprocals of Packed Single Precision Floating-Point Values
+- **RCPSS**: Compute Reciprocal of Scalar Single Precision Floating-Point Values
+- **RDFSBASE:RDGSBASE**: Read FS/GS Segment Base
+- **RDMSR**: Read From Model Specific Register
+- **RDPID**: Read Processor ID
+- **RDPKRU**: Read Protection Key Rights for User Pages
+- **RDPMC**: Read Performance-Monitoring Counters
+- **RDRAND**: Read Random Number
+- **RDSEED**: Read Random SEED
+- **RDSSPD:RDSSPQ**: Read Shadow Stack Pointer
+- **RDTSC**: Read Time-Stamp Counter
+- **RDTSCP**: Read Time-Stamp Counter and Processor ID
+- **REP/REPE/REPZ/REPNE/REPNZ**: Repeat String Operation Prefix
+- **REP:REPE:REPZ:REPNE:REPNZ**: Repeat String Operation Prefix
+- **RET**: Return From Procedure
+- **RORX**: Rotate Right Logical Without Affecting Flags
+- **ROUNDPD**: Round Packed Double Precision Floating-Point Values
+- **ROUNDPS**: Round Packed Single Precision Floating-Point Values
+- **ROUNDSD**: Round Scalar Double Precision Floating-Point Values
+- **ROUNDSS**: Round Scalar Single Precision Floating-Point Values
+- **RSM**: Resume From System Management Mode
+- **RSQRTPS**: Compute Reciprocals of Square Roots of Packed Single Precision Floating-PointValues
+- **RSQRTSS**: Compute Reciprocal of Square Root of Scalar Single Precision Floating-Point Value
+- **RSTORSSP**: Restore Saved Shadow Stack Pointer
+- **SAHF**: Store AH Into Flags
+- **SAL/SAR/SHL/SHR**: Shift
+- **SAL:SAR:SHL:SHR**: Shift
+- **SARX:SHLX:SHRX**: Shift Without Affecting Flags
+- **SAVEPREVSSP**: Save Previous Shadow Stack Pointer
+- **SBB**: Integer Subtraction With Borrow
+- **SCAS/SCASB/SCASW/SCASD**: Scan String
+- **SCAS:SCASB:SCASW:SCASD**: Scan String
+- **SENDUIPI**: Send User Interprocessor Interrupt
+- **SENTER**: Enter a Measured Environment
+- **SERIALIZE**: Serialize Instruction Execution
+- **SETCC**: Set Byte on Condition
+- **SETSSBSY**: Mark Shadow Stack Busy
+- **SEXIT**: Exit Measured Environment
+- **SFENCE**: Store Fence
+- **SGDT**: Store Global Descriptor Table Register
+- **SHA1MSG1**: Perform an Intermediate Calculation for the Next Four SHA1 Message Dwords
+- **SHA1MSG2**: Perform a Final Calculation for the Next Four SHA1 Message Dwords
+- **SHA1NEXTE**: Calculate SHA1 State Variable E After Four Rounds
+- **SHA1RNDS4**: Perform Four Rounds of SHA1 Operation
+- **SHA256MSG1**: Perform an Intermediate Calculation for the Next Four SHA256 MessageDwords
+- **SHA256MSG2**: Perform a Final Calculation for the Next Four SHA256 Message Dwords
+- **SHA256RNDS2**: Perform Two Rounds of SHA256 Operation
+- **SHLD**: Double Precision Shift Left
+- **SHRD**: Double Precision Shift Right
+- **SHUFPD**: Packed Interleave Shuffle of Pairs of Double Precision Floating-Point Values
+- **SHUFPS**: Packed Interleave Shuffle of Quadruplets of Single Precision Floating-Point Values
+- **SIDT**: Store Interrupt Descriptor Table Register
+- **SLDT**: Store Local Descriptor Table Register
+- **SMCTRL**: SMX Mode Control
+- **SMSW**: Store Machine Status Word
+- **SQRTPD**: Square Root of Double Precision Floating-Point Values
+- **SQRTPS**: Square Root of Single Precision Floating-Point Values
+- **SQRTSD**: Compute Square Root of Scalar Double Precision Floating-Point Value
+- **SQRTSS**: Compute Square Root of Scalar Single Precision Value
+- **STAC**: Set AC Flag in EFLAGS Register
+- **STC**: Set Carry Flag
+- **STD**: Set Direction Flag
+- **STI**: Set Interrupt Flag
+- **STMXCSR**: Store MXCSR Register State
+- **STOS/STOSB/STOSW/STOSD**: Store String
+- **STOS:STOSB:STOSW:STOSD:STOSQ**: Store String
+- **STR**: Store Task Register
+- **STTILECFG**: Store Tile Configuration
+- **STUI**: Set User Interrupt Flag
+- **SUB**: Subtract
+- **SUBPD**: Subtract Packed Double Precision Floating-Point Values
+- **SUBPS**: Subtract Packed Single Precision Floating-Point Values
+- **SUBSD**: Subtract Scalar Double Precision Floating-Point Value
+- **SUBSS**: Subtract Scalar Single Precision Floating-Point Value
+- **SWAPGS**: Swap GS Base Register
+- **SYSCALL**: Fast System Call
+- **SYSENTER**: Fast System Call
+- **SYSEXIT**: Fast Return from Fast System Call
+- **SYSRET**: Return From Fast System Call
+- **TDPBF16PS**: Dot Product of BF16 Tiles Accumulated into Packed Single Precision Tile
+- **TDPBSSD:TDPBSUD:TDPBUSD:TDPBUUD**: Dot Product of Signed/Unsigned Bytes with DwordAccumulation
+- **TEST**: Logical Compare
+- **TESTUI**: Determine User Interrupt Flag
+- **TILELOADD:TILELOADDT1**: Load Tile
+- **TILERELEASE**: Release Tile
+- **TILESTORED**: Store Tile
+- **TILEZERO**: Zero Tile
+- **TPAUSE**: Timed PAUSE
+- **TZCNT**: Count the Number of Trailing Zero Bits
+- **UCOMISD**: Unordered Compare Scalar Double Precision Floating-Point Values and Set EFLAGS
+- **UCOMISS**: Unordered Compare Scalar Single Precision Floating-Point Values and Set EFLAGS
+- **UD**: Undefined Instruction
+- **UD2**: Undefined Instruction
+- **UIRET**: User-Interrupt Return
+- **UMONITOR**: User Level Set Up Monitor Address
+- **UMWAIT**: User Level Monitor Wait
+- **UNPCKHPD**: Unpack and Interleave High Packed Double Precision Floating-Point Values
+- **UNPCKHPS**: Unpack and Interleave High Packed Single Precision Floating-Point Values
+- **UNPCKLPD**: Unpack and Interleave Low Packed Double Precision Floating-Point Values
+- **UNPCKLPS**: Unpack and Interleave Low Packed Single Precision Floating-Point Values
+- **V4FMADDPS:V4FNMADDPS**: Packed Single Precision Floating-Point Fused Multiply-Add(4-Iterations)
+- **V4FMADDSS:V4FNMADDSS**: Scalar Single Precision Floating-Point Fused Multiply-Add(4-Iterations)
+- **VADDPH**: Add Packed FP16 Values
+- **VADDSH**: Add Scalar FP16 Values
+- **VALIGND:VALIGNQ**: Align Doubleword/Quadword Vectors
+- **VBLENDMPD:VBLENDMPS**: Blend Float64/Float32 Vectors Using an OpMask Control
+- **VBROADCAST**: Load with Broadcast Floating-Point Data
+- **VCMPPH**: Compare Packed FP16 Values
+- **VCMPSH**: Compare Scalar FP16 Values
+- **VCOMISH**: Compare Scalar Ordered FP16 Values and Set EFLAGS
+- **VCOMPRESSPD**: Store Sparse Packed Double Precision Floating-Point Values Into DenseMemory
+- **VCOMPRESSPS**: Store Sparse Packed Single Precision Floating-Point Values Into Dense Memory
+- **VCVTDQ2PH**: Convert Packed Signed Doubleword Integers to Packed FP16 Values
+- **VCVTNE2PS2BF16**: Convert Two Packed Single Data to One Packed BF16 Data
+- **VCVTNEPS2BF16**: Convert Packed Single Data to Packed BF16 Data
+- **VCVTPD2PH**: Convert Packed Double Precision FP Values to Packed FP16 Values
+- **VCVTPD2QQ**: Convert Packed Double Precision Floating-Point Values to Packed QuadwordIntegers
+- **VCVTPD2UDQ**: Convert Packed Double Precision Floating-Point Values to Packed UnsignedDoubleword Integers
+- **VCVTPD2UQQ**: Convert Packed Double Precision Floating-Point Values to Packed UnsignedQuadword Integers
+- **VCVTPH2DQ**: Convert Packed FP16 Values to Signed Doubleword Integers
+- **VCVTPH2PD**: Convert Packed FP16 Values to FP64 Values
+- **VCVTPH2PS:VCVTPH2PSX**: Convert Packed FP16 Values to Single Precision Floating-PointValues
+- **VCVTPH2QQ**: Convert Packed FP16 Values to Signed Quadword Integer Values
+- **VCVTPH2UDQ**: Convert Packed FP16 Values to Unsigned Doubleword Integers
+- **VCVTPH2UQQ**: Convert Packed FP16 Values to Unsigned Quadword Integers
+- **VCVTPH2UW**: Convert Packed FP16 Values to Unsigned Word Integers
+- **VCVTPH2W**: Convert Packed FP16 Values to Signed Word Integers
+- **VCVTPS2PH**: Convert Single-Precision FP Value to 16-bit FP Value
+- **VCVTPS2PHX**: Convert Packed Single Precision Floating-Point Values to Packed FP16 Values
+- **VCVTPS2QQ**: Convert Packed Single Precision Floating-Point Values to Packed SignedQuadword Integer Values
+- **VCVTPS2UDQ**: Convert Packed Single Precision Floating-Point Values to Packed UnsignedDoubleword Integer Values
+- **VCVTPS2UQQ**: Convert Packed Single Precision Floating-Point Values to Packed UnsignedQuadword Integer Values
+- **VCVTQQ2PD**: Convert Packed Quadword Integers to Packed Double Precision Floating-PointValues
+- **VCVTQQ2PH**: Convert Packed Signed Quadword Integers to Packed FP16 Values
+- **VCVTQQ2PS**: Convert Packed Quadword Integers to Packed Single Precision Floating-PointValues
+- **VCVTSD2SH**: Convert Low FP64 Value to an FP16 Value
+- **VCVTSD2USI**: Convert Scalar Double Precision Floating-Point Value to Unsigned DoublewordInteger
+- **VCVTSH2SD**: Convert Low FP16 Value to an FP64 Value
+- **VCVTSH2SI**: Convert Low FP16 Value to Signed Integer
+- **VCVTSH2SS**: Convert Low FP16 Value to FP32 Value
+- **VCVTSH2USI**: Convert Low FP16 Value to Unsigned Integer
+- **VCVTSI2SH**: Convert a Signed Doubleword/Quadword Integer to an FP16 Value
+- **VCVTSS2SH**: Convert Low FP32 Value to an FP16 Value
+- **VCVTSS2USI**: Convert Scalar Single Precision Floating-Point Value to Unsigned DoublewordInteger
+- **VCVTTPD2QQ**: Convert With Truncation Packed Double Precision Floating-Point Values toPacked Quadword Integers
+- **VCVTTPD2UDQ**: Convert With Truncation Packed Double Precision Floating-Point Values toPacked Unsigned Doubleword Integers
+- **VCVTTPD2UQQ**: Convert With Truncation Packed Double Precision Floating-Point Values toPacked Unsigned Quadword Integers
+- **VCVTTPH2DQ**: Convert with Truncation Packed FP16 Values to Signed Doubleword Integers
+- **VCVTTPH2QQ**: Convert with Truncation Packed FP16 Values to Signed Quadword Integers
+- **VCVTTPH2UDQ**: Convert with Truncation Packed FP16 Values to Unsigned DoublewordIntegers
+- **VCVTTPH2UQQ**: Convert with Truncation Packed FP16 Values to Unsigned Quadword Integers
+- **VCVTTPH2UW**: Convert Packed FP16 Values to Unsigned Word Integers
+- **VCVTTPH2W**: Convert Packed FP16 Values to Signed Word Integers
+- **VCVTTPS2QQ**: Convert With Truncation Packed Single Precision Floating-Point Values toPacked Signed Quadword Integer Values
+- **VCVTTPS2UDQ**: Convert With Truncation Packed Single Precision Floating-Point Values toPacked Unsigned Doubleword Integer Values
+- **VCVTTPS2UQQ**: Convert With Truncation Packed Single Precision Floating-Point Values toPacked Unsigned Quadword Integer Values
+- **VCVTTSD2USI**: Convert With Truncation Scalar Double Precision Floating-Point Value toUnsigned Integer
+- **VCVTTSH2SI**: Convert with Truncation Low FP16 Value to a Signed Integer
+- **VCVTTSH2USI**: Convert with Truncation Low FP16 Value to an Unsigned Integer
+- **VCVTTSS2USI**: Convert With Truncation Scalar Single Precision Floating-Point Value toUnsigned Integer
+- **VCVTUDQ2PD**: Convert Packed Unsigned Doubleword Integers to Packed Double PrecisionFloating-Point Values
+- **VCVTUDQ2PH**: Convert Packed Unsigned Doubleword Integers to Packed FP16 Values
+- **VCVTUDQ2PS**: Convert Packed Unsigned Doubleword Integers to Packed Single PrecisionFloating-Point Values
+- **VCVTUQQ2PD**: Convert Packed Unsigned Quadword Integers to Packed Double PrecisionFloating-Point Values
+- **VCVTUQQ2PH**: Convert Packed Unsigned Quadword Integers to Packed FP16 Values
+- **VCVTUQQ2PS**: Convert Packed Unsigned Quadword Integers to Packed Single PrecisionFloating-Point Values
+- **VCVTUSI2SD**: Convert Unsigned Integer to Scalar Double Precision Floating-Point Value
+- **VCVTUSI2SH**: Convert Unsigned Doubleword Integer to an FP16 Value
+- **VCVTUSI2SS**: Convert Unsigned Integer to Scalar Single Precision Floating-Point Value
+- **VCVTUW2PH**: Convert Packed Unsigned Word Integers to FP16 Values
+- **VCVTW2PH**: Convert Packed Signed Word Integers to FP16 Values
+- **VDBPSADBW**: Double Block Packed Sum-Absolute-Differences (SAD) on Unsigned Bytes
+- **VDIVPH**: Divide Packed FP16 Values
+- **VDIVSH**: Divide Scalar FP16 Values
+- **VDPBF16PS**: Dot Product of BF16 Pairs Accumulated Into Packed Single Precision
+- **VERR/VERW**: Verify a Segment for Reading or Writing
+- **VERR:VERW**: Verify a Segment for Reading or Writing
+- **VEXP2PD**: Approximation to the Exponential 2^x of Packed Double Precision Floating-PointValues With Less Than 2^-23 Relative Error
+- **VEXP2PS**: Approximation to the Exponential 2^x of Packed Single Precision Floating-PointValues With Less Than 2^-23 Relative Error
+- **VEXPANDPD**: Load Sparse Packed Double Precision Floating-Point Values From Dense Memory
+- **VEXPANDPS**: Load Sparse Packed Single Precision Floating-Point Values From Dense Memory
+- **VEXTRACTF128:VEXTRACTF32X4:VEXTRACTF64X2:VEXTRACTF32X8:VEXTRACTF64X4**: Extract Packed Floating-Point Values
+- **VEXTRACTI128:VEXTRACTI32X4:VEXTRACTI64X2:VEXTRACTI32X8:VEXTRACTI64X4**: ExtractPacked Integer Values
+- **VFCMADDCPH:VFMADDCPH**: Complex Multiply and Accumulate FP16 Values
+- **VFCMADDCSH:VFMADDCSH**: Complex Multiply and Accumulate Scalar FP16 Values
+- **VFCMULCPH:VFMULCPH**: Complex Multiply FP16 Values
+- **VFCMULCSH:VFMULCSH**: Complex Multiply Scalar FP16 Values
+- **VFIXUPIMMPD**: Fix Up Special Packed Float64 Values
+- **VFIXUPIMMPS**: Fix Up Special Packed Float32 Values
+- **VFIXUPIMMSD**: Fix Up Special Scalar Float64 Value
+- **VFIXUPIMMSS**: Fix Up Special Scalar Float32 Value
+- **VFMADD132PD:VFMADD213PD:VFMADD231PD**: Fused Multiply-Add of Packed DoublePrecision Floating-Point Values
+- **VFMADD132PH:VFNMADD132PH:VFMADD213PH:VFNMADD213PH:VFMADD231PH:VFNMADD231PH**: Fused Multiply-Add of Packed FP16 Values
+- **VFMADD132PS:VFMADD213PS:VFMADD231PS**: Fused Multiply-Add of Packed SinglePrecision Floating-Point Values
+- **VFMADD132SD:VFMADD213SD:VFMADD231SD**: Fused Multiply-Add of Scalar DoublePrecision Floating-Point Values
+- **VFMADD132SH:VFNMADD132SH:VFMADD213SH:VFNMADD213SH:VFMADD231SH:VFNMADD231SH**: Fused Multiply-Add of Scalar FP16 Values
+- **VFMADD132SS:VFMADD213SS:VFMADD231SS**: Fused Multiply-Add of Scalar Single PrecisionFloating-Point Values
+- **VFMADDRND231PD**: Fused Multiply-Add of Packed Double-Precision Floating-Point Valueswith rounding control
+- **VFMADDSUB132PD:VFMADDSUB213PD:VFMADDSUB231PD**: Fused Multiply-AlternatingAdd/Subtract of Packed Double Precision Floating-Point Values
+- **VFMADDSUB132PH:VFMADDSUB213PH:VFMADDSUB231PH**: Fused Multiply-AlternatingAdd/Subtract of Packed FP16 Values
+- **VFMADDSUB132PS:VFMADDSUB213PS:VFMADDSUB231PS**: Fused Multiply-AlternatingAdd/Subtract of Packed Single Precision Floating-Point Values
+- **VFMSUB132PD:VFMSUB213PD:VFMSUB231PD**: Fused Multiply-Subtract of Packed DoublePrecision Floating-Point Values
+- **VFMSUB132PH:VFNMSUB132PH:VFMSUB213PH:VFNMSUB213PH:VFMSUB231PH:VFNMSUB231PH**: Fused Multiply-Subtract of Packed FP16 Values
+- **VFMSUB132PS:VFMSUB213PS:VFMSUB231PS**: Fused Multiply-Subtract of Packed SinglePrecision Floating-Point Values
+- **VFMSUB132SD:VFMSUB213SD:VFMSUB231SD**: Fused Multiply-Subtract of Scalar DoublePrecision Floating-Point Values
+- **VFMSUB132SH:VFNMSUB132SH:VFMSUB213SH:VFNMSUB213SH:VFMSUB231SH:VFNMSUB231SH**: Fused Multiply-Subtract of Scalar FP16 Values
+- **VFMSUB132SS:VFMSUB213SS:VFMSUB231SS**: Fused Multiply-Subtract of Scalar SinglePrecision Floating-Point Values
+- **VFMSUBADD132PD:VFMSUBADD213PD:VFMSUBADD231PD**: Fused Multiply-AlternatingSubtract/Add of Packed Double Precision Floating-Point Values
+- **VFMSUBADD132PH:VFMSUBADD213PH:VFMSUBADD231PH**: Fused Multiply-AlternatingSubtract/Add of Packed FP16 Values
+- **VFMSUBADD132PS:VFMSUBADD213PS:VFMSUBADD231PS**: Fused Multiply-AlternatingSubtract/Add of Packed Single Precision Floating-Point Values
+- **VFNMADD132PD:VFNMADD213PD:VFNMADD231PD**: Fused Negative Multiply-Add of PackedDouble Precision Floating-Point Values
+- **VFNMADD132PS:VFNMADD213PS:VFNMADD231PS**: Fused Negative Multiply-Add of PackedSingle Precision Floating-Point Values
+- **VFNMADD132SD:VFNMADD213SD:VFNMADD231SD**: Fused Negative Multiply-Add of ScalarDouble Precision Floating-Point Values
+- **VFNMADD132SS:VFNMADD213SS:VFNMADD231SS**: Fused Negative Multiply-Add of ScalarSingle Precision Floating-Point Values
+- **VFNMSUB132PD:VFNMSUB213PD:VFNMSUB231PD**: Fused Negative Multiply-Subtract ofPacked Double Precision Floating-Point Values
+- **VFNMSUB132PS:VFNMSUB213PS:VFNMSUB231PS**: Fused Negative Multiply-Subtract ofPacked Single Precision Floating-Point Values
+- **VFNMSUB132SD:VFNMSUB213SD:VFNMSUB231SD**: Fused Negative Multiply-Subtract ofScalar Double Precision Floating-Point Values
+- **VFNMSUB132SS:VFNMSUB213SS:VFNMSUB231SS**: Fused Negative Multiply-Subtract ofScalar Single Precision Floating-Point Values
+- **VFPCLASSPD**: Tests Types of Packed Float64 Values
+- **VFPCLASSPH**: Test Types of Packed FP16 Values
+- **VFPCLASSPS**: Tests Types of Packed Float32 Values
+- **VFPCLASSSD**: Tests Type of a Scalar Float64 Value
+- **VFPCLASSSH**: Test Types of Scalar FP16 Values
+- **VFPCLASSSS**: Tests Type of a Scalar Float32 Value
+- **VGATHERDPD:VGATHERQPD**: Gather Packed Double Precision Floating-Point Values UsingSigned Dword/Qword Indices
+- **VGATHERDPS:VGATHERDPD**: Gather Packed Single, Packed Double with Signed Dword Indices
+- **VGATHERDPS:VGATHERQPS**: Gather Packed Single Precision Floating-Point Values UsingSigned Dword/Qword Indices
+- **VGATHERPF0DPS:VGATHERPF0QPS:VGATHERPF0DPD:VGATHERPF0QPD**: Sparse PrefetchPacked SP/DP Data Values With Signed Dword, Signed Qword Indices Using T0 Hint
+- **VGATHERPF1DPS:VGATHERPF1QPS:VGATHERPF1DPD:VGATHERPF1QPD**: Sparse PrefetchPacked SP/DP Data Values With Signed Dword, Signed Qword Indices Using T1 Hint
+- **VGATHERQPS:VGATHERQPD**: Gather Packed Single, Packed Double with Signed Qword Indices
+- **VGETEXPPD**: Convert Exponents of Packed Double Precision Floating-Point Values to DoublePrecision Floating-Point Values
+- **VGETEXPPH**: Convert Exponents of Packed FP16 Values to FP16 Values
+- **VGETEXPPS**: Convert Exponents of Packed Single Precision Floating-Point Values to SinglePrecision Floating-Point Values
+- **VGETEXPSD**: Convert Exponents of Scalar Double Precision Floating-Point Value to DoublePrecision Floating-Point Value
+- **VGETEXPSH**: Convert Exponents of Scalar FP16 Values to FP16 Values
+- **VGETEXPSS**: Convert Exponents of Scalar Single Precision Floating-Point Value to SinglePrecision Floating-Point Value
+- **VGETMANTPD**: Extract Float64 Vector of Normalized Mantissas From Float64 Vector
+- **VGETMANTPH**: Extract FP16 Vector of Normalized Mantissas from FP16 Vector
+- **VGETMANTPS**: Extract Float32 Vector of Normalized Mantissas From Float32 Vector
+- **VGETMANTSD**: Extract Float64 of Normalized Mantissa From Float64 Scalar
+- **VGETMANTSH**: Extract FP16 of Normalized Mantissa from FP16 Scalar
+- **VGETMANTSS**: Extract Float32 Vector of Normalized Mantissa From Float32 Scalar
+- **VINSERTF128:VINSERTF32X4:VINSERTF64X2:VINSERTF32X8:VINSERTF64X4**: Insert PackedFloating-Point Values
+- **VINSERTI128:VINSERTI32X4:VINSERTI64X2:VINSERTI32X8:VINSERTI64X4**: Insert PackedInteger Values
+- **VMASKMOV**: Conditional SIMD Packed Loads and Stores
+- **VMAXPH**: Return Maximum of Packed FP16 Values
+- **VMAXSH**: Return Maximum of Scalar FP16 Values
+- **VMCALL**: Call to VM Monitor
+- **VMCLEAR**: Clear Virtual-Machine Control Structure
+- **VMFUNC**: Invoke VM function
+- **VMINPH**: Return Minimum of Packed FP16 Values
+- **VMINSH**: Return Minimum Scalar FP16 Value
+- **VMLAUNCH:VMRESUME**: Launch/Resume Virtual Machine
+- **VMOVSH**: Move Scalar FP16 Value
+- **VMOVW**: Move Word
+- **VMPTRLD**: Load Pointer to Virtual-Machine Control Structure
+- **VMPTRST**: Store Pointer to Virtual-Machine Control Structure
+- **VMREAD**: Read Field from Virtual-Machine Control Structure
+- **VMRESUME**: Resume Virtual Machine
+- **VMULPH**: Multiply Packed FP16 Values
+- **VMULSH**: Multiply Scalar FP16 Values
+- **VMWRITE**: Write Field to Virtual-Machine Control Structure
+- **VMXOFF**: Leave VMX Operation
+- **VMXON**: Enter VMX Operation
+- **VP2INTERSECTD:VP2INTERSECTQ**: Compute Intersection Between DWORDS/QUADWORDS to aPair of Mask Registers
+- **VP4DPWSSD**: Dot Product of Signed Words With Dword Accumulation (4-Iterations)
+- **VP4DPWSSDS**: Dot Product of Signed Words With Dword Accumulation and Saturation(4-Iterations)
+- **VPBLENDD**: Blend Packed Dwords
+- **VPBLENDMB:VPBLENDMW**: Blend Byte/Word Vectors Using an Opmask Control
+- **VPBLENDMD:VPBLENDMQ**: Blend Int32/Int64 Vectors Using an OpMask Control
+- **VPBROADCAST**: Load Integer and Broadcast
+- **VPBROADCASTB:VPBROADCASTW:VPBROADCASTD:VPBROADCASTQ**: Load With Broadcast Integer Data From General Purpose Register
+- **VPBROADCASTM**: Broadcast Mask to Vector Register
+- **VPCMPB:VPCMPUB**: Compare Packed Byte Values Into Mask
+- **VPCMPD:VPCMPUD**: Compare Packed Integer Values Into Mask
+- **VPCMPQ:VPCMPUQ**: Compare Packed Integer Values Into Mask
+- **VPCMPW:VPCMPUW**: Compare Packed Word Values Into Mask
+- **VPCOMPRESSB:VCOMPRESSW**: Store Sparse Packed Byte/Word Integer Values Into DenseMemory/Register
+- **VPCOMPRESSD**: Store Sparse Packed Doubleword Integer Values Into Dense Memory/Register
+- **VPCOMPRESSQ**: Store Sparse Packed Quadword Integer Values Into Dense Memory/Register
+- **VPCONFLICTD:VPCONFLICTQ**: Detect Conflicts Within a Vector of Packed Dword/Qword Values Into DenseMemory/ Register
+- **VPDPBUSD**: Multiply and Add Unsigned and Signed Bytes
+- **VPDPBUSDS**: Multiply and Add Unsigned and Signed Bytes With Saturation
+- **VPDPWSSD**: Multiply and Add Signed Word Integers
+- **VPDPWSSDS**: Multiply and Add Signed Word Integers With Saturation
+- **VPERM2F128**: Permute Floating-Point Values
+- **VPERM2I128**: Permute Integer Values
+- **VPERMB**: Permute Packed Bytes Elements
+- **VPERMD:VPERMW**: Permute Packed Doubleword/Word Elements
+- **VPERMI2B**: Full Permute of Bytes From Two Tables Overwriting the Index
+- **VPERMI2W:VPERMI2D:VPERMI2Q:VPERMI2PS:VPERMI2PD**: Full Permute From Two Tables Overwriting the Index
+- **VPERMILPD**: Permute In-Lane of Pairs of Double Precision Floating-Point Values
+- **VPERMILPS**: Permute In-Lane of Quadruples of Single Precision Floating-Point Values
+- **VPERMPD**: Permute Double Precision Floating-Point Elements
+- **VPERMPS**: Permute Single Precision Floating-Point Elements
+- **VPERMQ**: Qwords Element Permutation
+- **VPERMT2B**: Full Permute of Bytes From Two Tables Overwriting a Table
+- **VPERMT2W:VPERMT2D:VPERMT2Q:VPERMT2PS:VPERMT2PD**: Full Permute From Two Tables Overwriting One Table
+- **VPEXPANDB:VPEXPANDW**: Expand Byte/Word Values
+- **VPEXPANDD**: Load Sparse Packed Doubleword Integer Values From Dense Memory/Register
+- **VPEXPANDQ**: Load Sparse Packed Quadword Integer Values From Dense Memory/Register
+- **VPGATHERDD:VPGATHERDQ**: Gather Packed Dword, Packed Qword With Signed Dword Indices
+- **VPGATHERDD:VPGATHERQD**: Gather Packed Dword Values Using Signed Dword/Qword Indices
+- **VPGATHERDQ:VPGATHERQQ**: Gather Packed Qword Values Using Signed Dword/Qword Indices
+- **VPGATHERQD:VPGATHERQQ**: Gather Packed Dword, Packed Qword with Signed Qword Indices
+- **VPLZCNTD:VPLZCNTQ**: Count the Number of Leading Zero Bits for Packed Dword, Packed Qword Values
+- **VPMADD52HUQ**: Packed Multiply of Unsigned 52-Bit Unsigned Integers and Add High 52-BitProducts to 64-Bit Accumulators
+- **VPMADD52LUQ**: Packed Multiply of Unsigned 52-Bit Integers and Add the Low 52-Bit Productsto Qword Accumulators
+- **VPMASKMOV**: Conditional SIMD Integer Packed Loads and Stores
+- **VPMOVB2M:VPMOVW2M:VPMOVD2M:VPMOVQ2M**: Convert a Vector Register to a Mask
+- **VPMOVDB:VPMOVSDB:VPMOVUSDB**: Down Convert DWord to Byte
+- **VPMOVDW:VPMOVSDW:VPMOVUSDW**: Down Convert DWord to Word
+- **VPMOVM2B:VPMOVM2W:VPMOVM2D:VPMOVM2Q**: Convert a Mask Register to a VectorRegister
+- **VPMOVQB:VPMOVSQB:VPMOVUSQB**: Down Convert QWord to Byte
+- **VPMOVQD:VPMOVSQD:VPMOVUSQD**: Down Convert QWord to DWord
+- **VPMOVQW:VPMOVSQW:VPMOVUSQW**: Down Convert QWord to Word
+- **VPMOVWB:VPMOVSWB:VPMOVUSWB**: Down Convert Word to Byte
+- **VPMULTISHIFTQB**: Select Packed Unaligned Bytes From Quadword Sources
+- **VPOPCNT**: Return the Count of Number of Bits Set to 1 in BYTE/WORD/DWORD/QWORD
+- **VPROLD:VPROLVD:VPROLQ:VPROLVQ**: Bit Rotate Left
+- **VPRORD:VPRORVD:VPRORQ:VPRORVQ**: Bit Rotate Right
+- **VPSCATTERDD:VPSCATTERDQ:VPSCATTERQD:VPSCATTERQQ**: Scatter Packed Dword, PackedQword with Signed Dword, Signed Qword Indices
+- **VPSHLD**: Concatenate and Shift Packed Data Left Logical
+- **VPSHLDV**: Concatenate and Variable Shift Packed Data Left Logical
+- **VPSHRD**: Concatenate and Shift Packed Data Right Logical
+- **VPSHRDV**: Concatenate and Variable Shift Packed Data Right Logical
+- **VPSHUFBITQMB**: Shuffle Bits From Quadword Elements Using Byte Indexes Into Mask
+- **VPSLLVW:VPSLLVD:VPSLLVQ**: Variable Bit Shift Left Logical
+- **VPSRAVW:VPSRAVD:VPSRAVQ**: Variable Bit Shift Right Arithmetic
+- **VPSRLVW:VPSRLVD:VPSRLVQ**: Variable Bit Shift Right Logical
+- **VPTERNLOGD:VPTERNLOGQ**: Bitwise Ternary Logic
+- **VPTESTMB:VPTESTMW:VPTESTMD:VPTESTMQ**: Logical AND and Set Mask
+- **VPTESTNMB:VPTESTNMW:VPTESTNMD:VPTESTNMQ**: Logical NAND and Set
+- **VRANGEPD**: Range Restriction Calculation for Packed Pairs of Float64 Values
+- **VRANGEPS**: Range Restriction Calculation for Packed Pairs of Float32 Values
+- **VRANGESD**: Range Restriction Calculation From a Pair of Scalar Float64 Values
+- **VRANGESS**: Range Restriction Calculation From a Pair of Scalar Float32 Values
+- **VRCP14PD**: Compute Approximate Reciprocals of Packed Float64 Values
+- **VRCP14PS**: Compute Approximate Reciprocals of Packed Float32 Values
+- **VRCP14SD**: Compute Approximate Reciprocal of Scalar Float64 Value
+- **VRCP14SS**: Compute Approximate Reciprocal of Scalar Float32 Value
+- **VRCP28PD**: Approximation to the Reciprocal of Packed Double Precision Floating-Point ValuesWith Less Than 2^-28 Relative Error
+- **VRCP28PS**: Approximation to the Reciprocal of Packed Single Precision Floating-Point ValuesWith Less Than 2^-28 Relative Error
+- **VRCP28SD**: Approximation to the Reciprocal of Scalar Double Precision Floating-Point ValueWith Less Than 2^-28 Relative Error
+- **VRCP28SS**: Approximation to the Reciprocal of Scalar Single Precision Floating-Point ValueWith Less Than 2^-28 Relative Error
+- **VRCPPH**: Compute Reciprocals of Packed FP16 Values
+- **VRCPSH**: Compute Reciprocal of Scalar FP16 Value
+- **VREDUCEPD**: Perform Reduction Transformation on Packed Float64 Values
+- **VREDUCEPH**: Perform Reduction Transformation on Packed FP16 Values
+- **VREDUCEPS**: Perform Reduction Transformation on Packed Float32 Values
+- **VREDUCESD**: Perform a Reduction Transformation on a Scalar Float64 Value
+- **VREDUCESH**: Perform Reduction Transformation on Scalar FP16 Value
+- **VREDUCESS**: Perform a Reduction Transformation on a Scalar Float32 Value
+- **VRNDSCALEPD**: Round Packed Float64 Values to Include a Given Number of Fraction Bits
+- **VRNDSCALEPH**: Round Packed FP16 Values to Include a Given Number of Fraction Bits
+- **VRNDSCALEPS**: Round Packed Float32 Values to Include a Given Number of Fraction Bits
+- **VRNDSCALESD**: Round Scalar Float64 Value to Include a Given Number of Fraction Bits
+- **VRNDSCALESH**: Round Scalar FP16 Value to Include a Given Number of Fraction Bits
+- **VRNDSCALESS**: Round Scalar Float32 Value to Include a Given Number of Fraction Bits
+- **VRSQRT14PD**: Compute Approximate Reciprocals of Square Roots of Packed Float64 Values
+- **VRSQRT14PS**: Compute Approximate Reciprocals of Square Roots of Packed Float32 Values
+- **VRSQRT14SD**: Compute Approximate Reciprocal of Square Root of Scalar Float64 Value
+- **VRSQRT14SS**: Compute Approximate Reciprocal of Square Root of Scalar Float32 Value
+- **VRSQRT28PD**: Approximation to the Reciprocal Square Root of Packed Double PrecisionFloating-Point Values With Less Than 2^-28 Relative Error
+- **VRSQRT28PS**: Approximation to the Reciprocal Square Root of Packed Single PrecisionFloating-Point Values With Less Than 2^-28 Relative Error
+- **VRSQRT28SD**: Approximation to the Reciprocal Square Root of Scalar Double PrecisionFloating-Point Value With Less Than 2^-28 Relative Error
+- **VRSQRT28SS**: Approximation to the Reciprocal Square Root of Scalar Single Precision Floating-Point Value With Less Than 2^-28 Relative Error
+- **VRSQRTPH**: Compute Reciprocals of Square Roots of Packed FP16 Values
+- **VRSQRTSH**: Compute Approximate Reciprocal of Square Root of Scalar FP16 Value
+- **VSCALEFPD**: Scale Packed Float64 Values With Float64 Values
+- **VSCALEFPH**: Scale Packed FP16 Values with FP16 Values
+- **VSCALEFPS**: Scale Packed Float32 Values With Float32 Values
+- **VSCALEFSD**: Scale Scalar Float64 Values With Float64 Values
+- **VSCALEFSH**: Scale Scalar FP16 Values with FP16 Values
+- **VSCALEFSS**: Scale Scalar Float32 Value With Float32 Value
+- **VSCATTERDPS:VSCATTERDPD:VSCATTERQPS:VSCATTERQPD**: Scatter Packed Single, PackedDouble with Signed Dword and Qword Indices
+- **VSCATTERPF0DPS:VSCATTERPF0QPS:VSCATTERPF0DPD:VSCATTERPF0QPD**: Sparse PrefetchPacked SP/DP Data Values with Signed Dword, Signed Qword Indices Using T0 Hint With Intentto Write
+- **VSCATTERPF1DPS:VSCATTERPF1QPS:VSCATTERPF1DPD:VSCATTERPF1QPD**: Sparse PrefetchPacked SP/DP Data Values With Signed Dword, Signed Qword Indices Using T1 Hint With Intentto Write
+- **VSHUFF32X4:VSHUFF64X2:VSHUFI32X4:VSHUFI64X2**: Shuffle Packed Values at 128-BitGranularity
+- **VSQRTPH**: Compute Square Root of Packed FP16 Values
+- **VSQRTSH**: Compute Square Root of Scalar FP16 Value
+- **VSUBPH**: Subtract Packed FP16 Values
+- **VSUBSH**: Subtract Scalar FP16 Value
+- **VTESTPD:VTESTPS**: Packed Bit Test
+- **VUCOMISH**: Unordered Compare Scalar FP16 Values and Set EFLAGS
+- **VZEROALL**: Zero XMM, YMM, and ZMM Registers
+- **VZEROUPPER**: Zero Upper Bits of YMM and ZMM Registers
+- **WAIT/FWAIT**: Wait
+- **WAIT:FWAIT**: Wait
+- **WAKEUP**: Wake Up Sleeping Processors in Measured Environment
+- **WBINVD**: Write Back and Invalidate Cache
+- **WBNOINVD**: Write Back and Do Not Invalidate Cache
+- **WRFSBASE:WRGSBASE**: Write FS/GS Segment Base
+- **WRMSR**: Write to Model Specific Register
+- **WRPKRU**: Write Data to User Page Key Register
+- **WRSSD:WRSSQ**: Write to Shadow Stack
+- **WRUSSD:WRUSSQ**: Write to User Shadow Stack
+- **XABORT**: Transactional Abort
+- **XACQUIRE:XRELEASE**: Hardware Lock Elision Prefix Hints
+- **XADD**: Exchange and Add
+- **XBEGIN**: Transactional Begin
+- **XCHG**: Exchange Register/Memory With Register
+- **XEND**: Transactional End
+- **XGETBV**: Get Value of Extended Control Register
+- **XLAT/XLATB**: Table Look-up Translation
+- **XLAT:XLATB**: Table Look-up Translation
+- **XOR**: Logical Exclusive OR
+- **XORPD**: Bitwise Logical XOR of Packed Double Precision Floating-Point Values
+- **XORPS**: Bitwise Logical XOR of Packed Single Precision Floating-Point Values
+- **XRESLDTRK**: Resume Tracking Load Addresses
+- **XRSTOR**: Restore Processor Extended States
+- **XRSTORS**: Restore Processor Extended States Supervisor
+- **XSAVE**: Save Processor Extended States
+- **XSAVEC**: Save Processor Extended States With Compaction
+- **XSAVEOPT**: Save Processor Extended States Optimized
+- **XSAVES**: Save Processor Extended States Supervisor
+- **XSETBV**: Set Extended Control Register
+- **XSUSLDTRK**: Suspend Tracking Load Addresses
+- **XTEST**: Test if in Transactional Execution
