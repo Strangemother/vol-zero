@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>core/terminal | VOL Documentation</title>
+    <link rel="stylesheet" href="../../style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body class="asset-file-doc file-detail file-lang-nim">
+    <main class="page-shell">
+        
+
+        <header class="site-header">
+            <a class="site-title" href="../../">VOL kernel <span class="version">0.1.0</span></a>
+            <a class="github-link" href="https://github.com/Strangemother/vol-zero">GitHub</a>
+        </header>
+        
+<article class="document-page">
+    <div class="content">
+
+        <nav class="pre-header-navigation" aria-label="Page navigation">
+            <a href="../">Parent</a>
+        </nav>
+        <h1>core/terminal</h1>
+
+        
+
+        <section class="imports-includes">
+            
+            <ul class="import-list">
+                
+            </ul>
+            <ul class="include-list">
+                
+            </ul>
+               
+        </section>
+        
+        <section class="metadata">
+            <h2>Declarations</h2>
+            
+            <ul class="declaration-list">
+                
+                <li id="declaration-3">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        init
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">init</span><span class="o">*</span><span class="p">(</span><span class="n">preserve</span><span class="p">:</span><span class="w"> </span><span class="nb">bool</span><span class="p">):</span><span class="w"> </span><span class="nb">bool</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_init".}</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Small framebuffer terminal backed by Limine's Flanterm parameters.</p>
+
+                    </div>
+                </li>
+                
+                <li id="declaration-5">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        init
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">init</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="nb">bool</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        
+                    </div>
+                </li>
+                
+                <li id="declaration-8">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        write
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">write</span><span class="o">*</span><span class="p">(</span><span class="n">message</span><span class="p">:</span><span class="w"> </span><span class="n">cstring</span><span class="p">)</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_write".}</span></div>
+                    </div>
+                    <div class="documentation">
+                        
+                    </div>
+                </li>
+                
+                <li id="declaration-10">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        set_xy
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">set_xy</span><span class="o">*</span><span class="p">(</span><span class="n">column</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span><span class="p">,</span><span class="w"> </span><span class="n">row</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span><span class="p">)</span><span class="w"> </span><span class="sx">{.</span><span class="w"> </span><span class="sx">importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_set_cursor_position".}</span></div>
+                    </div>
+                    <div class="documentation">
+                        
+                    </div>
+                </li>
+                
+                <li id="declaration-13">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        columns
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">columns</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="n">uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_columns".}</span></div>
+                    </div>
+                    <div class="documentation">
+                        
+                    </div>
+                </li>
+                
+                <li id="declaration-15">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        rows
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">rows</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="n">uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_rows".}</span></div>
+                    </div>
+                    <div class="documentation">
+                        
+                    </div>
+                </li>
+                
+                <li id="declaration-17">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        write_line
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">write_line</span><span class="o">*</span><span class="p">(</span><span class="n">message</span><span class="p">:</span><span class="w"> </span><span class="n">cstring</span><span class="p">)</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        
+                    </div>
+                </li>
+                
+            </ul>
+        </section>
+        
+
+        
+        <section class="source-code">
+            <h2>Source</h2>
+            <div class="highlight"><pre><span></span><span class="cm">#[ Small framebuffer terminal backed by Limine's Flanterm parameters. ]#</span>
+
+<span class="k">proc</span><span class="w"> </span><span class="nf">init</span><span class="o">*</span><span class="p">(</span><span class="n">preserve</span><span class="p">:</span><span class="w"> </span><span class="nb">bool</span><span class="p">):</span><span class="w"> </span><span class="nb">bool</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_init".}</span>
+
+<span class="sx">proc</span><span class="w"> </span><span class="sx">init*(): bool</span><span class="w"> </span><span class="sx">=</span>
+<span class="sx">    init(preserve=false)</span>
+
+<span class="sx">proc</span><span class="w"> </span><span class="sx">write*(message</span>:<span class="w"> </span><span class="sx">cstring) {.importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_write".}</span>
+
+<span class="sx">proc</span><span class="w"> </span><span class="sx">set_xy*(column</span>:<span class="w"> </span><span class="sx">uint64</span>,<span class="w"> </span><span class="sx">row</span>:<span class="w"> </span><span class="sx">uint64) {.</span>
+<span class="sx">    importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_set_cursor_position".}</span>
+
+<span class="sx">proc</span><span class="w"> </span><span class="sx">columns*(): uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_columns".}</span>
+
+<span class="sx">proc</span><span class="w"> </span><span class="sx">rows*(): uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_rows".}</span>
+
+<span class="sx">proc</span><span class="w"> </span><span class="sx">write_line*(message</span>:<span class="w"> </span><span class="sx">cstring) =</span>
+<span class="sx">    write(message)</span>
+<span class="sx">    write("\r\n")</span>
+</pre></div>
+
+        </section>
+        
+    </div>
+    <div class="toc-list-container">
+        
+        <ul class="toc-list">
+            
+            <li>
+                <a href="#declaration-3">
+                    
+                    <span class="exported">public</span>
+                    
+                    init
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-5">
+                    
+                    <span class="exported">public</span>
+                    
+                    init
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-8">
+                    
+                    <span class="exported">public</span>
+                    
+                    write
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-10">
+                    
+                    <span class="exported">public</span>
+                    
+                    set_xy
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-13">
+                    
+                    <span class="exported">public</span>
+                    
+                    columns
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-15">
+                    
+                    <span class="exported">public</span>
+                    
+                    rows
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-17">
+                    
+                    <span class="exported">public</span>
+                    
+                    write_line
+                </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+
+</article>
+
+
+
+    </main>
+</body>
+</html>

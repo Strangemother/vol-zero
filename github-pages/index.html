@@ -3,39 +3,62 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="VOL Zero is a minimal Nim and Limine based operating system kernel.">
-    <title>VOL Zero</title>
+    <title>VOL Documentation</title>
     <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <main class="page-shell">
-        <section class="hero" aria-labelledby="project-title">
-            <p class="eyebrow">Virtual Operating Layer</p>
-            <h1 id="project-title">VOL Zero</h1>
-            <p class="intro">
-                A minimal x86-64 operating system kernel built with Nim and the Limine bootloader,
-                exploring graph-based system structure from the ground up.
-            </p>
-            <div class="actions" aria-label="Project links">
-                <a href="https://github.com/Strangemother/vol-zero/tree/main/docs">Read the docs</a>
-                <a href="https://github.com/Strangemother/vol-zero/blob/main/docs/running.md">Run the kernel</a>
-            </div>
-        </section>
+        
+        <header class="site-header">
+            <a class="site-title" href="./">VOL kernel <span class="version">0.1.0</span></a>
+            <a class="github-link" href="https://github.com/Strangemother/vol-zero">GitHub</a>
+        </header>
+        
+<section class="welcome-panel" aria-labelledby="page-title">
+    
+    <div class="documentation">
+        <h1>Vol-Zero OS Documentation</h1>
+<p>Welcome to the official documentation for Vol-Zero OS. This guide provides comprehensive information on the core modules, system architecture, and essential functions for interacting with the operating system.</p>
 
-        <section class="details" aria-label="Project highlights">
-            <article>
-                <h2>Kernel first</h2>
-                <p>Builds a freestanding VOL kernel image for QEMU or VirtualBox.</p>
-            </article>
-            <article>
-                <h2>Hosted path</h2>
-                <p>Includes hosted workflows for exercising shared runtime modules during development.</p>
-            </article>
-            <article>
-                <h2>Tool driven</h2>
-                <p>The project helper wraps common build, run, cleanup, and serial output workflows.</p>
-            </article>
-        </section>
+    </div>
+    
+
+    <section class="metadata">
+        <h2>Source</h2>
+        <ul class="file-list">
+            
+            <li>
+                <a href="core/">core/</a>
+            </li>
+            
+            <li>
+                <a href="ext/">ext/</a>
+            </li>
+            
+            <li>
+                <a href="include/">include/</a>
+            </li>
+            
+            <li>
+                <a href="hosted_main/">hosted_main</a>
+            </li>
+            
+            <li>
+                <a href="main/">main</a>
+            </li>
+            
+            <li>
+                <a href="panicoverride/">panicoverride</a>
+            </li>
+            
+        </ul>
+    </section>
+</section>
+
     </main>
 </body>
 </html>

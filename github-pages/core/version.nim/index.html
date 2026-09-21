@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>core/version | VOL Documentation</title>
+    <link rel="stylesheet" href="../../style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body class="asset-file-doc file-detail file-lang-nim">
+    <main class="page-shell">
+        
+
+        <header class="site-header">
+            <a class="site-title" href="../../">VOL kernel <span class="version">0.1.0</span></a>
+            <a class="github-link" href="https://github.com/Strangemother/vol-zero">GitHub</a>
+        </header>
+        
+<article class="document-page">
+    <div class="content">
+
+        <nav class="pre-header-navigation" aria-label="Page navigation">
+            <a href="../">Parent</a>
+        </nav>
+        <h1>core/version</h1>
+
+        
+        <section class="source-document">
+            <h2>Header</h2>
+            
+            <div class="documentation">
+                <p>The kernel version is supplied by the Nimble build task from <code>../VERSION</code>.</p>
+<p><code>strdefine</code> makes this value available while compiling Nim code and embeds
+the same string in the kernel, so runtime code does not need to read a file.</p>
+
+            </div>
+            
+            
+        </section>
+        
+
+        <section class="imports-includes">
+            
+            <ul class="import-list">
+                
+            </ul>
+            <ul class="include-list">
+                
+            </ul>
+               
+        </section>
+        
+        <section class="metadata">
+            <h2>Declarations</h2>
+            
+            <ul class="declaration-list">
+                
+                <li id="declaration-7">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        kernelVersion
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">const</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">const</span><span class="w"> </span><span class="n">kernelVersion</span><span class="o">*</span><span class="w"> </span><span class="sx">{.strdefine.}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"unknown"</span></div>
+                    </div>
+                    <div class="documentation">
+                        
+                    </div>
+                </li>
+                
+                <li id="declaration-14">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        get_version
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">get_version</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="n">cstring</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Returns the embedded kernel version for runtime consumers such as the serial
+console. The returned <code>cstring</code> points to the read-only version string
+compiled into the kernel; callers must not modify it.</p>
+
+                    </div>
+                </li>
+                
+            </ul>
+        </section>
+        
+
+        
+        <section class="source-code">
+            <h2>Source</h2>
+            <div class="highlight"><pre><span></span><span class="cm">#[</span>
+<span class="cm">  The kernel version is supplied by the Nimble build task from `../VERSION`.</span>
+
+<span class="cm">  `strdefine` makes this value available while compiling Nim code and embeds</span>
+<span class="cm">  the same string in the kernel, so runtime code does not need to read a file.</span>
+<span class="cm">]#</span>
+<span class="k">const</span><span class="w"> </span><span class="n">kernelVersion</span><span class="o">*</span><span class="w"> </span><span class="sx">{.strdefine.}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"unknown"</span>
+
+<span class="cm">#[</span>
+<span class="cm">  Returns the embedded kernel version for runtime consumers such as the serial</span>
+<span class="cm">  console. The returned `cstring` points to the read-only version string</span>
+<span class="cm">  compiled into the kernel; callers must not modify it.</span>
+<span class="cm">]#</span>
+<span class="k">proc</span><span class="w"> </span><span class="nf">get_version</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="n">cstring</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">kernelVersion</span><span class="p">.</span><span class="n">cstring</span>
+</pre></div>
+
+        </section>
+        
+    </div>
+    <div class="toc-list-container">
+        
+        <ul class="toc-list">
+            
+            <li>
+                <a href="#declaration-7">
+                    
+                    <span class="exported">public</span>
+                    
+                    kernelVersion
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-14">
+                    
+                    <span class="exported">public</span>
+                    
+                    get_version
+                </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+
+</article>
+
+
+
+    </main>
+</body>
+</html>

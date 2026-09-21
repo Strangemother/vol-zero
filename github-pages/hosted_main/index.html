@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>hosted_main | VOL Documentation</title>
+    <link rel="stylesheet" href="../style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body class="asset-file-doc file-detail file-lang-nim">
+    <main class="page-shell">
+        
+
+        <header class="site-header">
+            <a class="site-title" href="../">VOL kernel <span class="version">0.1.0</span></a>
+            <a class="github-link" href="https://github.com/Strangemother/vol-zero">GitHub</a>
+        </header>
+        
+<article class="document-page">
+    <div class="content">
+
+        <nav class="pre-header-navigation" aria-label="Page navigation">
+            <a href="../">Parent</a>
+        </nav>
+        <h1>hosted_main</h1>
+
+        
+        <section class="source-document">
+            <h2>Header</h2>
+            
+            <div class="documentation">
+                <p>Hosted development entry point for VOL.</p>
+<p>This file uses the shared memory and version modules without importing
+Limine, serial-port I/O, framebuffer access, or CPU halt instructions. It
+can therefore be compiled as an ordinary Nim application for fast tests.</p>
+
+            </div>
+            
+            
+        </section>
+        
+
+        <section class="imports-includes">
+            
+            <h2>Imports</h2>
+            
+            <ul class="import-list">
+                
+                <li>
+                    <!-- {&#39;name&#39;: &#39;core/memory/test&#39;, &#39;alias&#39;: &#39;mem_test&#39;, &#39;filename&#39;: &#39;core/memory/test.nim&#39;, &#39;line&#39;: 9} -->
+                    <span class="include-type">import</span>
+                    <a href="../core/memory/test.nim/">core/memory/test</a>
+                    <span class="alias">
+                        mem_test
+                    </span>
+                    <!-- <div class="line">line 9</div> -->
+                    
+                </li>
+                
+                <li>
+                    <!-- {&#39;name&#39;: &#39;core/halt&#39;, &#39;alias&#39;: &#39;kernelHalt&#39;, &#39;filename&#39;: &#39;core/halt.nim&#39;, &#39;line&#39;: 12} -->
+                    <span class="include-type">import</span>
+                    <a href="../core/halt.nim/">core/halt</a>
+                    <span class="alias">
+                        kernelHalt
+                    </span>
+                    <!-- <div class="line">line 12</div> -->
+                    
+                </li>
+                
+                <li>
+                    <!-- {&#39;name&#39;: &#39;core/version&#39;, &#39;alias&#39;: &#39;kernelVersion&#39;, &#39;filename&#39;: &#39;core/version.nim&#39;, &#39;line&#39;: 13} -->
+                    <span class="include-type">import</span>
+                    <a href="../core/version.nim/">core/version</a>
+                    <span class="alias">
+                        kernelVersion
+                    </span>
+                    <!-- <div class="line">line 13</div> -->
+                    
+                </li>
+                
+            </ul>
+            <ul class="include-list">
+                
+            </ul>
+               
+        </section>
+        
+        <section class="metadata">
+            <h2>Declarations</h2>
+            
+            <ul class="declaration-list">
+                
+                <li id="declaration-16">
+                    <h3>
+                        
+                        main
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: False</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        
+                    </div>
+                </li>
+                
+            </ul>
+        </section>
+        
+
+        
+        <section class="source-code">
+            <h2>Source</h2>
+            <div class="highlight"><pre><span></span><span class="cm">#[</span>
+<span class="cm">  Hosted development entry point for VOL.</span>
+
+<span class="cm">  This file uses the shared memory and version modules without importing</span>
+<span class="cm">  Limine, serial-port I/O, framebuffer access, or CPU halt instructions. It</span>
+<span class="cm">  can therefore be compiled as an ordinary Nim application for fast tests.</span>
+<span class="cm">]#</span>
+<span class="c"># import core/memory/pure</span>
+<span class="kn">import</span><span class="w"> </span><span class="n">core</span><span class="o">/</span><span class="n">memory</span><span class="o">/</span><span class="n">test</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">mem_test</span>
+<span class="c"># import core/serial</span>
+<span class="c"># import core/display/gradient</span>
+<span class="kn">import</span><span class="w"> </span><span class="n">core</span><span class="o">/</span><span class="n">halt</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">kernelHalt</span>
+<span class="kn">import</span><span class="w"> </span><span class="n">core</span><span class="o">/</span><span class="n">version</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">kernelVersion</span>
+
+
+<span class="k">proc</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">mem_test</span><span class="p">.</span><span class="n">quicktest_memory</span><span class="p">():</span>
+<span class="w">        </span><span class="n">echo</span><span class="w"> </span><span class="s">"Memory routines: OK"</span>
+<span class="w">    </span><span class="k">else</span><span class="p">:</span>
+<span class="w">        </span><span class="n">echo</span><span class="w"> </span><span class="s">"Hosted memory check failed"</span>
+<span class="w">        </span><span class="n">kernelHalt</span><span class="p">.</span><span class="n">halt</span><span class="p">()</span>
+
+<span class="w">    </span><span class="n">echo</span><span class="w"> </span><span class="s">"VOL hosted test"</span>
+<span class="w">    </span><span class="n">echo</span><span class="w"> </span><span class="s">"Kernel version: "</span><span class="p">,</span><span class="w"> </span><span class="n">kernelVersion</span><span class="p">.</span><span class="n">get_version</span><span class="p">()</span>
+
+<span class="w">    </span><span class="n">kernelHalt</span><span class="p">.</span><span class="n">halt</span><span class="p">()</span>
+
+<span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+        </section>
+        
+    </div>
+    <div class="toc-list-container">
+        
+        <ul class="toc-list">
+            
+            <li>
+                <a href="#declaration-16">
+                    
+                    main
+                </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+
+</article>
+
+
+
+    </main>
+</body>
+</html>
