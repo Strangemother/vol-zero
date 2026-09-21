@@ -1,71 +1,30 @@
-# VOL Zero
+# VOL Zero GitHub Pages
 
-VOL is a minimal x86-64 operating system kernel built with Nim and the Limine
-bootloader. The project supports both freestanding kernel builds and a hosted
-build that exercises shared runtime modules as a normal application.
+This folder contains the static GitHub Pages site for VOL Zero.
 
-The repository produces:
+The page is intentionally plain HTML and CSS. It does not deploy through a
+GitHub Actions workflow. Publish it manually when you want the public site to
+change.
 
-1. A minimal x86-64 VOL kernel image.
-2. A hosted VOL application for development and testing.
+## GitHub Pages setup
 
-## Quick start
+In the repository settings, configure GitHub Pages to deploy from:
 
-> One shot tool ` tool c; tool r vbox --serial tcp; tool t` [read more here](tool.md)
+- Source: `Deploy from a branch`
+- Branch: `gh-pages`
+- Folder: `/ (root)`
 
-For the fastest setup, use the convenience tool to build and run the kernel.
+## Publish
 
-```sh
-# install the convenience tool
-pip install -e tools/app
-tool -h
-```
-
-You may need to install the core libs for the os:
+From the repository root, publish this folder to the `gh-pages` branch:
 
 ```sh
-# installs dependencies, builds, and runs QEMU
-tool first-time
+git subtree push --prefix github-pages origin gh-pages
 ```
 
-You can always just _compile and run_:
+That command is the only deploy step. Changes in this folder will not update
+the public page until you run it.
 
-```sh
-# compile and run QEMU
-tool cr
-```
+## Local preview
 
-Or, if you prefer a graphical interface,
-start VirtualBox (also with TCP serial output):
-
-```sh
-# Run VirtualBox with TCP serial output
-tool r vbox --serial tcp
-# tail the serial output
-tool t 
-```
-
-This command runs Oracle VirtualBox with the most recent kernel image.
-
-See [Running the kernel](running.md) for display, UEFI, HDD, and VirtualBox
-options.
-
-## Important information
-
-- The freestanding kernel requires Nim 2.2.12.
-- Run build commands from the repository root unless a page says otherwise.
-- The default output is an ISO for QEMU or VirtualBox. HDD/USB images are also
-  available.
-- The `tool` command wraps the common build, run, cleanup, and hosted workflows.
-
-For platform-specific setup, see [Windows Subsystem for Linux](windows-wsl.md)
-or [Windows development with MSYS2](windows.md).
-
-## Documentation
-
-- [Running the kernel](running.md): run the ISO with QEMU or VirtualBox.
-- [The `tool` command](tool.md): install and use the project helper.
-- [Build dependencies and usage](dev/build.md): dependencies, hosted builds,
-  toolchain selection, Makefile targets, and cleanup.
-- [Kernel versioning](dev/versioning.md): update and consume the canonical version.
-- [License and links](license.md): project license and upstream references.
+Open `index.html` in a browser, or serve the folder with any static file server.
