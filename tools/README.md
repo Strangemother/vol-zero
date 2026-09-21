@@ -54,6 +54,15 @@ options:
 
 ## Static Site Export
 
+Run the Flask documentation site locally:
+
+```sh
+tool site run
+```
+
+By default the site runs at <http://127.0.0.1:9050/>. Use `--host`, `--port`,
+or `--no-debug` to override the defaults.
+
 `tool site export` renders the hosted Flask documentation site as static files
 for GitHub Pages. By default it reads `github-pages/config.json` when that file
 exists.

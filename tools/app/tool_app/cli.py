@@ -122,6 +122,26 @@ def build_parser() -> argparse.ArgumentParser:
     site_export.add_argument("--base-url", help="override the configured Flask docs site URL")
     site_export.add_argument("--output-dir", help="override the configured output directory")
     site_export.add_argument("--max-pages", type=int, help="override the configured crawl page limit")
+    site_run = site_subparsers.add_parser(
+        "run",
+        help="run the Flask documentation site",
+    )
+    site_run.add_argument(
+        "--host",
+        default="127.0.0.1",
+        help="host interface to bind (default: 127.0.0.1)",
+    )
+    site_run.add_argument(
+        "--port",
+        type=int,
+        default=9050,
+        help="port to bind (default: 9050)",
+    )
+    site_run.add_argument(
+        "--no-debug",
+        action="store_true",
+        help="disable Flask debug mode",
+    )
 
     for command, help_text in (("lcr", "cleanup, compile, then run"), ("cr", "compile, then run")):
         parser_for_command = subparsers.add_parser(command, help=help_text)
@@ -180,6 +200,13 @@ def run_target(
     return run_command(display)
 
 
+def run_site(host: str, port: int, debug: bool) -> int:
+    from doc_site.app import main as site_run_main
+
+    site_run_main(host=host, port=port, debug=debug)
+    return 0
+
+
 def main(arguments: list[str] | None = None) -> int:
     arguments = sys.argv[1:] if arguments is None else arguments
     if arguments and arguments[0] in {"compile", "c"}:
@@ -219,7 +246,9 @@ def main(arguments: list[str] | None = None) -> int:
             if parsed.max_pages:
                 site_arguments.extend(["--max-pages", str(parsed.max_pages)])
             return site_export_main(site_arguments)
-        parser.error("site requires a command: export")
+        if parsed.site_command == "run":
+            return run_site(parsed.host, parsed.port, not parsed.no_debug)
+        parser.error("site requires a command: export, run")
     if parsed.command in {"lcr", "cr"}:
         target = parsed.target
     elif parsed.command in {"alcr", "arc", "acr", "car"}:
