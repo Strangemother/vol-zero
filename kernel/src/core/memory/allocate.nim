@@ -62,6 +62,7 @@ pointer.
 ]#
 proc allocate_physical_bytes_raw(size: uint64): uint64 {.importc: "limine_allocate_physical".}
 
+
 #[
 Returns the HHDM offset supplied by Limine.
 
@@ -71,6 +72,7 @@ a different offset on different boots or configurations.
 ]#
 proc hhdm_offset_raw(): uint64 {.importc: "limine_hhdm_offset".}
 
+
 #[
 Reports whether Limine supplied an HHDM response.
 
@@ -79,6 +81,7 @@ The C function returns an integer because that is a simple C ABI
 representation of a boolean value.
 ]#
 proc hhdm_available_raw(): uint64 {.importc: "limine_hhdm_available".}
+
 
 #[
 Allocates a range of usable physical memory.
@@ -101,6 +104,7 @@ call concurrently from multiple CPUs or interrupt handlers.
 proc allocate_physical_bytes*(size: uint64): PhysicalAddress =
     PhysicalAddress(allocate_physical_bytes_raw(size))
 
+
 #[
 Returns the HHDM offset selected by Limine.
 
@@ -118,6 +122,7 @@ a reliable availability test.
 proc hhdm_offset*(): uint64 =
     hhdm_offset_raw()
 
+
 #[
 Reports whether Limine created the HHDM mapping requested by the kernel.
 
@@ -133,6 +138,7 @@ written by Nim code.
 ]#
 proc hhdm_available*(): bool =
     hhdm_available_raw() != 0
+
 
 #[
 Converts a physical address into its HHDM virtual address.
@@ -155,6 +161,7 @@ proc physical_to_virtual*(physical: PhysicalAddress, offset: uint64): VirtualAdd
     if address == 0 or offset > high(uint64) - address:
         return VirtualAddress(0)
     VirtualAddress(address + offset)
+
 
 #[
 Returns a byte-array pointer for a physical allocation through the HHDM.

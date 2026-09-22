@@ -21,7 +21,7 @@ proc read_tsc(): culonglong {.importc: "nim_read_tsc".}
 proc bootloader_tsc_frequency(): uint64 {.importc: "limine_tsc_frequency".}
 
 
-proc bootloader_date_at_boot(): int64 {.importc: "limine_date_at_boot".}
+proc bootloader_boot_date(): int64 {.importc: "limine_date_at_boot".}
 
 #[
 Returns the TSC frequency in Hz.
@@ -36,8 +36,8 @@ Returns the wall-clock Unix timestamp at boot, in seconds.
 This is not monotonic time. 
 Zero means no Limine response was available.
 ]#
-proc date_at_boot*(): int64 =
-    result = bootloader_date_at_boot()
+proc boot_date*(): int64 =
+    result = bootloader_boot_date()
 
 
 var

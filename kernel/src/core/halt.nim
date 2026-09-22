@@ -22,6 +22,6 @@ when defined(freestanding):
         while true:
             asm "hlt"
 else:
-    #[  In hosted mode, we simply call app exit. ]#
+    #[  In hosted mode, we simply call app exit `quit`. ]#
     proc halt*() =
         quit "Hosted halt called"

@@ -40,10 +40,7 @@ template copy_bytes_forward(source, destination: ptr UncheckedArray[uint8], size
         destination[index] = source[index]
 
 
-template copy_bytes_backward(
-    source, destination: ptr UncheckedArray[uint8],
-    size: csize_t
-) =
+template copy_bytes_reverse(source, destination: ptr UncheckedArray[uint8], size: csize_t) =
     var index = int(size)
     while index > 0:
         dec index
@@ -126,7 +123,7 @@ proc memmove*(destination: pointer, source: pointer, size: csize_t): pointer {.m
     if sourceAddress > destinationAddress:
         copy_bytes_forward(sourceBytes, destinationBytes, size)
     elif sourceAddress < destinationAddress:
-        copy_bytes_backward(sourceBytes, destinationBytes, size)
+        copy_bytes_reverse(sourceBytes, destinationBytes, size)
     return destination
 
     

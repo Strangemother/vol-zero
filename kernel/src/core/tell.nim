@@ -47,6 +47,8 @@ macro line*(args: varargs[untyped], newline: untyped = "\r\n"): untyped =
         result.add quote do:
             when typeof(`arg`) is uint64:
                 serial.write_uint64(`arg`)
+            elif typeof(`arg`) is int64:
+                serial.write_int64(`arg`)
             else:
                 serial.write(`arg`)
 

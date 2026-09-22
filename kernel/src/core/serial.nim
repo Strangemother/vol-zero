@@ -107,3 +107,34 @@ proc write_uint64*(value: uint64) =
         digits[index] = char(ord('0') + int(remaining mod 10))
         remaining = remaining div 10
     write(cast[cstring](digits[index].addr))
+
+
+#[
+  Sends a signed 64-bit integer through COM1.
+
+  The procedure converts the integer to its decimal representation and calls
+  `write` to transmit it. Call `init` first.
+
+  The edge case for the most negative 64-bit integer is handled correctly,
+  Where a 
+  
+      low(int64)  = -2^63       = -9223372036854775808
+      high(int64) =  2^63 - 1   =  9223372036854775807
+  
+  Because:
+      
+      uint64: 0 to 2^64 - 1
+      int64:  -2^63 to 2^63 - 1
+
+  Therefore:
+
+        uint64(-(value + 1)) + 1
+
+  Ensures we correctly handle the most negative 64-bit integer.
+]#
+proc write_int64*(value: int64) =
+    if value < 0:
+        write("-")
+        write_uint64(uint64(-(value + 1)) + 1)
+    else:
+        write_uint64(uint64(value))

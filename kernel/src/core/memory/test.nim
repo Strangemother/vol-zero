@@ -1,5 +1,6 @@
 
 include pure
+import allocate as mem_allocate
 
 #[
 Quick memory test for the VOL kernel.
@@ -14,3 +15,16 @@ proc quicktest_memory*(): bool =
 
     let comparison = memcmp(source.addr, destination.addr, csize_t(source.len))
     return comparison == 0
+
+
+proc perform_single_byte_memory_test*(): int =
+    let physical = mem_allocate.allocate_physical_bytes(mem_allocate.pageSize)
+    let bytes = mem_allocate.physical_bytes(physical)
+
+    if bytes == nil: return 1 # allocation or HHDM mapping failed
+    
+    bytes[3] = uint8('X')
+    if bytes[3] == uint8('X'):
+        return 0 # allocation and hhdm mapping succeeded
+    else:
+        return 1 # allocation succeeded but HHDM mapping failed

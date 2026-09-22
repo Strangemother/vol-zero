@@ -33,24 +33,9 @@ proc print_clock_info() =
     tell.line("   Monotonic time:   ", monotonic.delta())
     tell.line("   Monotonic time 2: ", monotonic.delta())
     tell.line("   tsc:              ", monotonic.read_tsc64())
-    tell.line("   Date at boot:     ", uint64(monotonic.date_at_boot()))
+    tell.line("   Date at boot:     ", monotonic.boot_date())
     tell.line("   Frequency:        ", monotonic.tsc_frequency())
-
-
-proc perform_single_byte_memory_test() =
-    tell.line("Performing single byte memory test")
-    let physical = mem_allocate.allocate_physical_bytes(mem_allocate.pageSize)
-    let bytes = mem_allocate.physical_bytes(physical)
-
-    if bytes == nil:
-        tell.line("Memory allocation or HHDM mapping failed")
-    else:
-        bytes[3] = uint8('X')
-        if bytes[3] == uint8('X'):
-            tell.line("Memory allocation and HHDM mapping succeeded")
-        else:
-            tell.line("Memory allocation succeeded but HHDM mapping failed")
-
+    
 
 ## VOL through Limine enters the kernel through the C-compatible symbol kmain.
 proc kmain() {.exportc: "kmain", noreturn.} =
@@ -72,18 +57,22 @@ proc kmain() {.exportc: "kmain", noreturn.} =
     # discard umb
 
     print_allocation_state()
-    perform_single_byte_memory_test()
+    let singleByteTestResult = mem_test.perform_single_byte_memory_test()
+    if singleByteTestResult == 0:
+        tell.line("Single byte memory test: OK")
+    else:
+        tell.line("Single byte memory test: FAILED")
     print_allocation_state()
 
     # if not gradient.renderAll():
         #     kernelHalt.halt()
 
     if terminal.init():
-        terminal.set_xy(0, 10)
+        terminal.set_xy(0, 1)
         terminal.write_line("VOL kernel booted")
         terminal.write("Memory routines: ")
         
-        terminal.set_text_fg(6, true) # bright red
+        terminal.set_text_fg(6, true) # bright cyan
         terminal.write_line("OK")
         terminal.reset_text_fg()
         
