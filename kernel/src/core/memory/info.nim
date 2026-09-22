@@ -22,15 +22,15 @@ information, including usable memory and memory categorized by type.
 
 
 const
-    memoryTypeUsable* = 0
-    memoryTypeReserved* = 1
-    memoryTypeAcpiReclaimable* = 2
-    memoryTypeAcpiNvs* = 3
-    memoryTypeBadMemory* = 4
-    memoryTypeBootloaderReclaimable* = 5
-    memoryTypeExecutableAndModules* = 6
-    memoryTypeFramebuffer* = 7
-    memoryTypeReservedMapped* = 8
+    MEMORYTYPEUSABLE* = 0
+    MEMORYTYPERESERVED* = 1
+    MEMORYTYPEACPIRECLAIMABLE* = 2
+    MEMORYTYPEACPINVS* = 3
+    MEMORYTYPEBADMEMORY* = 4
+    MEMORYTYPEBOOTLOADERRECLAIMABLE* = 5
+    MEMORYTYPEEXECUTABLEANDMODULES* = 6
+    MEMORYTYPEFRAMEBUFFER* = 7
+    MEMORYTYPERESERVEDMAPPED* = 8
 
 
 proc memory_bytes_by_type(memoryType: uint64): uint64 {.importc: "limine_memory_bytes_by_type".}
@@ -39,4 +39,4 @@ proc usable_memory_bytes_sector*(memoryType: int): uint64 =
     memory_bytes_by_type(uint64(memoryType))
 
 proc usable_memory_bytes*(): uint64 =
-    usable_memory_bytes_sector(memoryTypeUsable)
+    usable_memory_bytes_sector(MEMORYTYPEUSABLE)

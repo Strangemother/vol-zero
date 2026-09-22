@@ -81,7 +81,12 @@ proc kmain() {.exportc: "kmain", noreturn.} =
     if terminal.init():
         terminal.set_xy(0, 10)
         terminal.write_line("VOL kernel booted")
-        terminal.write_line("Memory routines: OK")
+        terminal.write("Memory routines: ")
+        
+        terminal.set_text_fg(6, true) # bright red
+        terminal.write_line("OK")
+        terminal.reset_text_fg()
+        
         terminal.write_line("Framebuffer terminal: OK")
 
     kernelHalt.halt()
