@@ -4,9 +4,10 @@
 <section class="welcome-panel" aria-labelledby="page-title">
     {% if documentation %}
     <div class="documentation">
-        {{ md_to_html(documentation) }}
+        {{ md_to_html(documentation)|safe }}
     </div>
     {% else %}
+
     <h1 id="page-title">Documentation workspace</h1>
     {% endif %}
 
