@@ -201,22 +201,7 @@ and halts the CPU if necessary.</p>
                     </div>
                 </li>
                 
-                <li id="declaration-40">
-                    <h3>
-                        
-                        perform_single_byte_memory_test
-                    </h3>
-                    <div class="header">
-                        <!-- <div class="exported">Exported: False</div> -->
-                        <!-- <div class="kind">proc</div> -->
-                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">perform_single_byte_memory_test</span><span class="p">()</span><span class="w"> </span><span class="o">=</span></div>
-                    </div>
-                    <div class="documentation">
-                        
-                    </div>
-                </li>
-                
-                <li id="declaration-56">
+                <li id="declaration-41">
                     <h3>
                         
                         kmain
@@ -274,24 +259,9 @@ and halts the CPU if necessary.</p>
 <span class="w">    </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"   Monotonic time:   "</span><span class="p">,</span><span class="w"> </span><span class="n">monotonic</span><span class="p">.</span><span class="n">delta</span><span class="p">())</span>
 <span class="w">    </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"   Monotonic time 2: "</span><span class="p">,</span><span class="w"> </span><span class="n">monotonic</span><span class="p">.</span><span class="n">delta</span><span class="p">())</span>
 <span class="w">    </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"   tsc:              "</span><span class="p">,</span><span class="w"> </span><span class="n">monotonic</span><span class="p">.</span><span class="n">read_tsc64</span><span class="p">())</span>
-<span class="w">    </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"   Date at boot:     "</span><span class="p">,</span><span class="w"> </span><span class="n">uint64</span><span class="p">(</span><span class="n">monotonic</span><span class="p">.</span><span class="n">date_at_boot</span><span class="p">()))</span>
+<span class="w">    </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"   Date at boot:     "</span><span class="p">,</span><span class="w"> </span><span class="n">monotonic</span><span class="p">.</span><span class="n">boot_date</span><span class="p">())</span>
 <span class="w">    </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"   Frequency:        "</span><span class="p">,</span><span class="w"> </span><span class="n">monotonic</span><span class="p">.</span><span class="n">tsc_frequency</span><span class="p">())</span>
-
-
-<span class="k">proc</span><span class="w"> </span><span class="nf">perform_single_byte_memory_test</span><span class="p">()</span><span class="w"> </span><span class="o">=</span>
-<span class="w">    </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"Performing single byte memory test"</span><span class="p">)</span>
-<span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">physical</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mem_allocate</span><span class="p">.</span><span class="n">allocate_physical_bytes</span><span class="p">(</span><span class="n">mem_allocate</span><span class="p">.</span><span class="n">pageSize</span><span class="p">)</span>
-<span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mem_allocate</span><span class="p">.</span><span class="n">physical_bytes</span><span class="p">(</span><span class="n">physical</span><span class="p">)</span>
-
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kp">nil</span><span class="p">:</span>
-<span class="w">        </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"Memory allocation or HHDM mapping failed"</span><span class="p">)</span>
-<span class="w">    </span><span class="k">else</span><span class="p">:</span>
-<span class="w">        </span><span class="n">bytes</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uint8</span><span class="p">(</span><span class="sc">'X'</span><span class="p">)</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">bytes</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">uint8</span><span class="p">(</span><span class="sc">'X'</span><span class="p">):</span>
-<span class="w">            </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"Memory allocation and HHDM mapping succeeded"</span><span class="p">)</span>
-<span class="w">        </span><span class="k">else</span><span class="p">:</span>
-<span class="w">            </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"Memory allocation succeeded but HHDM mapping failed"</span><span class="p">)</span>
-
+<span class="w">    </span>
 
 <span class="sd">## VOL through Limine enters the kernel through the C-compatible symbol kmain.</span>
 <span class="k">proc</span><span class="w"> </span><span class="nf">kmain</span><span class="p">()</span><span class="w"> </span><span class="sx">{.exportc</span>:<span class="w"> </span><span class="sx">"kmain", noreturn.}</span><span class="w"> </span><span class="o">=</span>
@@ -313,16 +283,25 @@ and halts the CPU if necessary.</p>
 <span class="w">    </span><span class="c"># discard umb</span>
 
 <span class="w">    </span><span class="n">print_allocation_state</span><span class="p">()</span>
-<span class="w">    </span><span class="n">perform_single_byte_memory_test</span><span class="p">()</span>
+<span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">singleByteTestResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mem_test</span><span class="p">.</span><span class="n">perform_single_byte_memory_test</span><span class="p">()</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">singleByteTestResult</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span>
+<span class="w">        </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"Single byte memory test: OK"</span><span class="p">)</span>
+<span class="w">    </span><span class="k">else</span><span class="p">:</span>
+<span class="w">        </span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="s">"Single byte memory test: FAILED"</span><span class="p">)</span>
 <span class="w">    </span><span class="n">print_allocation_state</span><span class="p">()</span>
 
 <span class="w">    </span><span class="c"># if not gradient.renderAll():</span>
 <span class="w">        </span><span class="c">#     kernelHalt.halt()</span>
 
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">terminal</span><span class="p">.</span><span class="n">init</span><span class="p">():</span>
-<span class="w">        </span><span class="n">terminal</span><span class="p">.</span><span class="n">set_xy</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="w">        </span><span class="n">terminal</span><span class="p">.</span><span class="n">set_xy</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
 <span class="w">        </span><span class="n">terminal</span><span class="p">.</span><span class="n">write_line</span><span class="p">(</span><span class="s">"VOL kernel booted"</span><span class="p">)</span>
-<span class="w">        </span><span class="n">terminal</span><span class="p">.</span><span class="n">write_line</span><span class="p">(</span><span class="s">"Memory routines: OK"</span><span class="p">)</span>
+<span class="w">        </span><span class="n">terminal</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"Memory routines: "</span><span class="p">)</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="n">terminal</span><span class="p">.</span><span class="n">set_text_fg</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="kp">true</span><span class="p">)</span><span class="w"> </span><span class="c"># bright cyan</span>
+<span class="w">        </span><span class="n">terminal</span><span class="p">.</span><span class="n">write_line</span><span class="p">(</span><span class="s">"OK"</span><span class="p">)</span>
+<span class="w">        </span><span class="n">terminal</span><span class="p">.</span><span class="n">reset_text_fg</span><span class="p">()</span>
+<span class="w">        </span>
 <span class="w">        </span><span class="n">terminal</span><span class="p">.</span><span class="n">write_line</span><span class="p">(</span><span class="s">"Framebuffer terminal: OK"</span><span class="p">)</span>
 
 <span class="w">    </span><span class="n">kernelHalt</span><span class="p">.</span><span class="n">halt</span><span class="p">()</span>
@@ -350,14 +329,7 @@ and halts the CPU if necessary.</p>
             </li>
             
             <li>
-                <a href="#declaration-40">
-                    
-                    perform_single_byte_memory_test
-                </a>
-            </li>
-            
-            <li>
-                <a href="#declaration-56">
+                <a href="#declaration-41">
                     
                     kmain
                 </a>

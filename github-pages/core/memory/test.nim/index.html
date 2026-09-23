@@ -35,6 +35,17 @@
             
             <ul class="import-list">
                 
+                <li>
+                    <!-- {&#39;name&#39;: &#39;allocate&#39;, &#39;alias&#39;: &#39;mem_allocate&#39;, &#39;filename&#39;: &#39;allocate.nim&#39;, &#39;line&#39;: 3} -->
+                    <span class="include-type">import</span>
+                    <a href="../../../allocate.nim/">allocate</a>
+                    <span class="alias">
+                        mem_allocate
+                    </span>
+                    <!-- <div class="line">line 3</div> -->
+                    
+                </li>
+                
             </ul>
             <ul class="include-list">
                 
@@ -56,7 +67,7 @@
             
             <ul class="declaration-list">
                 
-                <li id="declaration-9">
+                <li id="declaration-10">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -75,6 +86,23 @@
                     </div>
                 </li>
                 
+                <li id="declaration-20">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        perform_single_byte_memory_test
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">perform_single_byte_memory_test</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="nb">int</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        
+                    </div>
+                </li>
+                
             </ul>
         </section>
         
@@ -83,6 +111,7 @@
         <section class="source-code">
             <h2>Source</h2>
             <div class="highlight"><pre><span></span><span class="kn">include</span><span class="w"> </span><span class="n">pure</span>
+<span class="kn">import</span><span class="w"> </span><span class="n">allocate</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">mem_allocate</span>
 
 <span class="cm">#[</span>
 <span class="cm">Quick memory test for the VOL kernel.</span>
@@ -97,6 +126,19 @@
 
 <span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">comparison</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">memcmp</span><span class="p">(</span><span class="n">source</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="n">destination</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="n">csize_t</span><span class="p">(</span><span class="n">source</span><span class="p">.</span><span class="n">len</span><span class="p">))</span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">comparison</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span>
+
+
+<span class="k">proc</span><span class="w"> </span><span class="nf">perform_single_byte_memory_test</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="nb">int</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">physical</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mem_allocate</span><span class="p">.</span><span class="n">allocate_physical_bytes</span><span class="p">(</span><span class="n">mem_allocate</span><span class="p">.</span><span class="n">pageSize</span><span class="p">)</span>
+<span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mem_allocate</span><span class="p">.</span><span class="n">physical_bytes</span><span class="p">(</span><span class="n">physical</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kp">nil</span><span class="p">:</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="c"># allocation or HHDM mapping failed</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="n">bytes</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uint8</span><span class="p">(</span><span class="sc">'X'</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">bytes</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">uint8</span><span class="p">(</span><span class="sc">'X'</span><span class="p">):</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c"># allocation and hhdm mapping succeeded</span>
+<span class="w">    </span><span class="k">else</span><span class="p">:</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="c"># allocation succeeded but HHDM mapping failed</span>
 </pre></div>
 
         </section>
@@ -107,11 +149,20 @@
         <ul class="toc-list">
             
             <li>
-                <a href="#declaration-9">
+                <a href="#declaration-10">
                     
                     <span class="exported">public</span>
                     
                     quicktest_memory
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-20">
+                    
+                    <span class="exported">public</span>
+                    
+                    perform_single_byte_memory_test
                 </a>
             </li>
             

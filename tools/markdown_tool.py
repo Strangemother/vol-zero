@@ -29,10 +29,10 @@ class _HighlightRenderer(mistune.HTMLRenderer):
         return super().block_code(code, info)
 
 
-_MARKDOWN = mistune.create_markdown(renderer=_HighlightRenderer(), escape=True)
+_MARKDOWN = mistune.create_markdown(renderer=_HighlightRenderer(escape=False), escape=False)
 _NIM_MARKDOWN = mistune.create_markdown(
-    renderer=_HighlightRenderer(default_language="nim"),
-    escape=True,
+    renderer=_HighlightRenderer(default_language="nim", escape=False),
+    escape=False,
 )
 
 
@@ -55,7 +55,7 @@ def signature_to_html(signature: str) -> Markup:
 
 
 def to_html(text: str | None, language: str | None = None) -> Markup:
-    """Convert Markdown text to escaped HTML for templates and documents."""
+    """Convert trusted Markdown text, including raw HTML, to HTML."""
 
     if not text:
         return Markup("")

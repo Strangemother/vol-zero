@@ -2,7 +2,7 @@ import sys
 import json
 from pathlib import Path
 
-from flask import Flask, abort, render_template
+from flask import Flask, abort, render_template, send_from_directory
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -111,6 +111,8 @@ def documentation_view(requested_path: str):
 		document_path.relative_to(DOCS_ROOT.resolve())
 	except ValueError:
 		abort(404)
+	if document_path.is_file() and document_path.suffix.lower() != ".md":
+		return send_from_directory(DOCS_ROOT, document_path.relative_to(DOCS_ROOT).as_posix())
 	if not document_path.is_file() or document_path.suffix.lower() != ".md":
 		abort(404)
 
@@ -223,6 +225,14 @@ def parent_url_for(relative_path: Path) -> str:
 
 @app.get("/<path:requested_path>")
 def file_view(requested_path: str):
+	document_asset_path = (DOCS_ROOT / requested_path.strip("/")).resolve()
+	try:
+		document_asset_path.relative_to(DOCS_ROOT.resolve())
+	except ValueError:
+		document_asset_path = None
+	if document_asset_path and document_asset_path.is_file() and document_asset_path.suffix.lower() != ".md":
+		return send_from_directory(DOCS_ROOT, document_asset_path.relative_to(DOCS_ROOT).as_posix())
+
 	source_path = source_path_for(requested_path)
 	try:
 		source_path.relative_to(SOURCE_ROOT.resolve())

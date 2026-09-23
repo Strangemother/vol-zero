@@ -114,19 +114,19 @@ tells the template how many byte positions are valid to access.</p>
                 <li id="declaration-43">
                     <h3>
                         
-                        copy_bytes_backward
+                        copy_bytes_reverse
                     </h3>
                     <div class="header">
                         <!-- <div class="exported">Exported: False</div> -->
                         <!-- <div class="kind">template</div> -->
-                        <div class="sig highlight monospace-font"><span class="k">template</span><span class="w"> </span><span class="nf">copy_bytes_backward</span><span class="p">(</span><span class="w"> </span><span class="n">source</span><span class="p">,</span><span class="w"> </span><span class="n">destination</span><span class="p">:</span><span class="w"> </span><span class="k">ptr</span><span class="w"> </span><span class="n">UncheckedArray</span><span class="o">[</span><span class="n">uint8</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">:</span><span class="w"> </span><span class="n">csize_t</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">=</span></div>
+                        <div class="sig highlight monospace-font"><span class="k">template</span><span class="w"> </span><span class="nf">copy_bytes_reverse</span><span class="p">(</span><span class="n">source</span><span class="p">,</span><span class="w"> </span><span class="n">destination</span><span class="p">:</span><span class="w"> </span><span class="k">ptr</span><span class="w"> </span><span class="n">UncheckedArray</span><span class="o">[</span><span class="n">uint8</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">:</span><span class="w"> </span><span class="n">csize_t</span><span class="p">)</span><span class="w"> </span><span class="o">=</span></div>
                     </div>
                     <div class="documentation">
                         
                     </div>
                 </li>
                 
-                <li id="declaration-71">
+                <li id="declaration-68">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -156,7 +156,7 @@ original <code>destination</code> pointer, matching the C <code>memcpy</code> co
                     </div>
                 </li>
                 
-                <li id="declaration-92">
+                <li id="declaration-89">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -183,7 +183,7 @@ procedure returns the original <code>destination</code> pointer, matching the C
                     </div>
                 </li>
                 
-                <li id="declaration-116">
+                <li id="declaration-113">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -213,7 +213,7 @@ contract.</p>
                     </div>
                 </li>
                 
-                <li id="declaration-150">
+                <li id="declaration-147">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -292,10 +292,7 @@ of at least <code>size</code> bytes; a <code>size</code> of zero returns zero wi
 <span class="w">        </span><span class="n">destination</span><span class="o">[</span><span class="n">index</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">source</span><span class="o">[</span><span class="n">index</span><span class="o">]</span>
 
 
-<span class="k">template</span><span class="w"> </span><span class="nf">copy_bytes_backward</span><span class="p">(</span>
-<span class="w">    </span><span class="n">source</span><span class="p">,</span><span class="w"> </span><span class="n">destination</span><span class="p">:</span><span class="w"> </span><span class="k">ptr</span><span class="w"> </span><span class="n">UncheckedArray</span><span class="o">[</span><span class="n">uint8</span><span class="o">]</span><span class="p">,</span>
-<span class="w">    </span><span class="n">size</span><span class="p">:</span><span class="w"> </span><span class="n">csize_t</span>
-<span class="p">)</span><span class="w"> </span><span class="o">=</span>
+<span class="k">template</span><span class="w"> </span><span class="nf">copy_bytes_reverse</span><span class="p">(</span><span class="n">source</span><span class="p">,</span><span class="w"> </span><span class="n">destination</span><span class="p">:</span><span class="w"> </span><span class="k">ptr</span><span class="w"> </span><span class="n">UncheckedArray</span><span class="o">[</span><span class="n">uint8</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">:</span><span class="w"> </span><span class="n">csize_t</span><span class="p">)</span><span class="w"> </span><span class="o">=</span>
 <span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
 <span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span>
 <span class="w">        </span><span class="n">dec</span><span class="w"> </span><span class="n">index</span>
@@ -378,7 +375,7 @@ of at least <code>size</code> bytes; a <code>size</code> of zero returns zero wi
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">sourceAddress</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">destinationAddress</span><span class="p">:</span>
 <span class="w">        </span><span class="n">copy_bytes_forward</span><span class="p">(</span><span class="n">sourceBytes</span><span class="p">,</span><span class="w"> </span><span class="n">destinationBytes</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">)</span>
 <span class="w">    </span><span class="k">elif</span><span class="w"> </span><span class="n">sourceAddress</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">destinationAddress</span><span class="p">:</span>
-<span class="w">        </span><span class="n">copy_bytes_backward</span><span class="p">(</span><span class="n">sourceBytes</span><span class="p">,</span><span class="w"> </span><span class="n">destinationBytes</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">)</span>
+<span class="w">        </span><span class="n">copy_bytes_reverse</span><span class="p">(</span><span class="n">sourceBytes</span><span class="p">,</span><span class="w"> </span><span class="n">destinationBytes</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">)</span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">destination</span>
 
 <span class="w">    </span>
@@ -439,12 +436,12 @@ of at least <code>size</code> bytes; a <code>size</code> of zero returns zero wi
             <li>
                 <a href="#declaration-43">
                     
-                    copy_bytes_backward
+                    copy_bytes_reverse
                 </a>
             </li>
             
             <li>
-                <a href="#declaration-71">
+                <a href="#declaration-68">
                     
                     <span class="exported">public</span>
                     
@@ -453,7 +450,7 @@ of at least <code>size</code> bytes; a <code>size</code> of zero returns zero wi
             </li>
             
             <li>
-                <a href="#declaration-92">
+                <a href="#declaration-89">
                     
                     <span class="exported">public</span>
                     
@@ -462,7 +459,7 @@ of at least <code>size</code> bytes; a <code>size</code> of zero returns zero wi
             </li>
             
             <li>
-                <a href="#declaration-116">
+                <a href="#declaration-113">
                     
                     <span class="exported">public</span>
                     
@@ -471,7 +468,7 @@ of at least <code>size</code> bytes; a <code>size</code> of zero returns zero wi
             </li>
             
             <li>
-                <a href="#declaration-150">
+                <a href="#declaration-147">
                     
                     <span class="exported">public</span>
                     

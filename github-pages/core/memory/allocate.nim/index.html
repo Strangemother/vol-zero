@@ -135,7 +135,7 @@ pointer.</p>
                     </div>
                 </li>
                 
-                <li id="declaration-72">
+                <li id="declaration-73">
                     <h3>
                         
                         hhdm_offset_raw
@@ -154,7 +154,7 @@ a different offset on different boots or configurations.</p>
                     </div>
                 </li>
                 
-                <li id="declaration-81">
+                <li id="declaration-83">
                     <h3>
                         
                         hhdm_available_raw
@@ -173,7 +173,7 @@ representation of a boolean value.</p>
                     </div>
                 </li>
                 
-                <li id="declaration-101">
+                <li id="declaration-104">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -203,7 +203,7 @@ call concurrently from multiple CPUs or interrupt handlers.</p>
                     </div>
                 </li>
                 
-                <li id="declaration-118">
+                <li id="declaration-122">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -230,7 +230,7 @@ a reliable availability test.</p>
                     </div>
                 </li>
                 
-                <li id="declaration-134">
+                <li id="declaration-139">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -256,7 +256,7 @@ written by Nim code.</p>
                     </div>
                 </li>
                 
-                <li id="declaration-153">
+                <li id="declaration-159">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -284,7 +284,7 @@ the 64-bit address space.</p>
                     </div>
                 </li>
                 
-                <li id="declaration-180">
+                <li id="declaration-187">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -388,6 +388,7 @@ sharing between CPUs until the allocator is made concurrency-safe.</p>
 <span class="sx">]#</span>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">allocate_physical_bytes_raw(size</span>:<span class="w"> </span><span class="sx">uint64): uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_allocate_physical".}</span>
 
+
 <span class="sx">#[</span>
 <span class="sx">Returns</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">HHDM</span><span class="w"> </span><span class="sx">offset</span><span class="w"> </span><span class="sx">supplied</span><span class="w"> </span><span class="sx">by</span><span class="w"> </span><span class="sx">Limine.</span>
 
@@ -397,6 +398,7 @@ sharing between CPUs until the allocator is made concurrency-safe.</p>
 <span class="sx">]#</span>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">hhdm_offset_raw(): uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_hhdm_offset".}</span>
 
+
 <span class="sx">#[</span>
 <span class="sx">Reports</span><span class="w"> </span><span class="sx">whether</span><span class="w"> </span><span class="sx">Limine</span><span class="w"> </span><span class="sx">supplied</span><span class="w"> </span><span class="sx">an</span><span class="w"> </span><span class="sx">HHDM</span><span class="w"> </span><span class="sx">response.</span>
 
@@ -405,6 +407,7 @@ sharing between CPUs until the allocator is made concurrency-safe.</p>
 <span class="sx">representation</span><span class="w"> </span><span class="sx">of</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">boolean</span><span class="w"> </span><span class="sx">value.</span>
 <span class="sx">]#</span>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">hhdm_available_raw(): uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_hhdm_available".}</span>
+
 
 <span class="sx">#[</span>
 <span class="sx">Allocates</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">range</span><span class="w"> </span><span class="sx">of</span><span class="w"> </span><span class="sx">usable</span><span class="w"> </span><span class="sx">physical</span><span class="w"> </span><span class="sx">memory.</span>
@@ -427,6 +430,7 @@ sharing between CPUs until the allocator is made concurrency-safe.</p>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">allocate_physical_bytes*(size</span>:<span class="w"> </span><span class="sx">uint64): PhysicalAddress</span><span class="w"> </span><span class="sx">=</span>
 <span class="sx">    PhysicalAddress(allocate_physical_bytes_raw(size))</span>
 
+
 <span class="sx">#[</span>
 <span class="sx">Returns</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">HHDM</span><span class="w"> </span><span class="sx">offset</span><span class="w"> </span><span class="sx">selected</span><span class="w"> </span><span class="sx">by</span><span class="w"> </span><span class="sx">Limine.</span>
 
@@ -444,6 +448,7 @@ sharing between CPUs until the allocator is made concurrency-safe.</p>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">hhdm_offset*(): uint64</span><span class="w"> </span><span class="sx">=</span>
 <span class="sx">    hhdm_offset_raw()</span>
 
+
 <span class="sx">#[</span>
 <span class="sx">Reports</span><span class="w"> </span><span class="sx">whether</span><span class="w"> </span><span class="sx">Limine</span><span class="w"> </span><span class="sx">created</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">HHDM</span><span class="w"> </span><span class="sx">mapping</span><span class="w"> </span><span class="sx">requested</span><span class="w"> </span><span class="sx">by</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">kernel.</span>
 
@@ -459,6 +464,7 @@ sharing between CPUs until the allocator is made concurrency-safe.</p>
 <span class="sx">]#</span>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">hhdm_available*(): bool</span><span class="w"> </span><span class="sx">=</span>
 <span class="sx">    hhdm_available_raw() != 0</span>
+
 
 <span class="sx">#[</span>
 <span class="sx">Converts</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">physical</span><span class="w"> </span><span class="sx">address</span><span class="w"> </span><span class="sx">into</span><span class="w"> </span><span class="sx">its</span><span class="w"> </span><span class="sx">HHDM</span><span class="w"> </span><span class="sx">virtual</span><span class="w"> </span><span class="sx">address.</span>
@@ -481,6 +487,7 @@ sharing between CPUs until the allocator is made concurrency-safe.</p>
 <span class="sx">    if</span><span class="w"> </span><span class="sx">address</span><span class="w"> </span><span class="sx">== 0</span><span class="w"> </span><span class="sx">or</span><span class="w"> </span><span class="sx">offset</span><span class="w"> </span><span class="sx">&gt; high(uint64) - address</span>:
 <span class="w">        </span><span class="sx">return</span><span class="w"> </span><span class="sx">VirtualAddress(0)</span>
 <span class="sx">    VirtualAddress(address</span><span class="w"> </span><span class="sx">+ offset)</span>
+
 
 <span class="sx">#[</span>
 <span class="sx">Returns</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">byte-array</span><span class="w"> </span><span class="sx">pointer</span><span class="w"> </span><span class="sx">for</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">physical</span><span class="w"> </span><span class="sx">allocation</span><span class="w"> </span><span class="sx">through</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">HHDM.</span>
@@ -545,21 +552,21 @@ sharing between CPUs until the allocator is made concurrency-safe.</p>
             </li>
             
             <li>
-                <a href="#declaration-72">
+                <a href="#declaration-73">
                     
                     hhdm_offset_raw
                 </a>
             </li>
             
             <li>
-                <a href="#declaration-81">
+                <a href="#declaration-83">
                     
                     hhdm_available_raw
                 </a>
             </li>
             
             <li>
-                <a href="#declaration-101">
+                <a href="#declaration-104">
                     
                     <span class="exported">public</span>
                     
@@ -568,7 +575,7 @@ sharing between CPUs until the allocator is made concurrency-safe.</p>
             </li>
             
             <li>
-                <a href="#declaration-118">
+                <a href="#declaration-122">
                     
                     <span class="exported">public</span>
                     
@@ -577,7 +584,7 @@ sharing between CPUs until the allocator is made concurrency-safe.</p>
             </li>
             
             <li>
-                <a href="#declaration-134">
+                <a href="#declaration-139">
                     
                     <span class="exported">public</span>
                     
@@ -586,7 +593,7 @@ sharing between CPUs until the allocator is made concurrency-safe.</p>
             </li>
             
             <li>
-                <a href="#declaration-153">
+                <a href="#declaration-159">
                     
                     <span class="exported">public</span>
                     
@@ -595,7 +602,7 @@ sharing between CPUs until the allocator is made concurrency-safe.</p>
             </li>
             
             <li>
-                <a href="#declaration-180">
+                <a href="#declaration-187">
                     
                     <span class="exported">public</span>
                     
