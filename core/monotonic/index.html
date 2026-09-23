@@ -89,12 +89,12 @@
                 <li id="declaration-24">
                     <h3>
                         
-                        bootloader_date_at_boot
+                        bootloader_boot_date
                     </h3>
                     <div class="header">
                         <!-- <div class="exported">Exported: False</div> -->
                         <!-- <div class="kind">proc</div> -->
-                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">bootloader_date_at_boot</span><span class="p">():</span><span class="w"> </span><span class="nb">int64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_date_at_boot".}</span></div>
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">bootloader_boot_date</span><span class="p">():</span><span class="w"> </span><span class="nb">int64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_date_at_boot".}</span></div>
                     </div>
                     <div class="documentation">
                         
@@ -125,12 +125,12 @@ Returns zero when for no TSC frequency.</p>
                         
                         <span class="exported">public</span>
                         
-                        date_at_boot
+                        boot_date
                     </h3>
                     <div class="header">
                         <!-- <div class="exported">Exported: True</div> -->
                         <!-- <div class="kind">proc</div> -->
-                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">date_at_boot</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="nb">int64</span><span class="w"> </span><span class="o">=</span></div>
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">boot_date</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="nb">int64</span><span class="w"> </span><span class="o">=</span></div>
                     </div>
                     <div class="documentation">
                         <p>Returns the wall-clock Unix timestamp at boot, in seconds.
@@ -223,7 +223,7 @@ Returns zero when for no usable TSC frequency.</p>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">bootloader_tsc_frequency(): uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_tsc_frequency".}</span>
 
 
-<span class="sx">proc</span><span class="w"> </span><span class="sx">bootloader_date_at_boot(): int64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_date_at_boot".}</span>
+<span class="sx">proc</span><span class="w"> </span><span class="sx">bootloader_boot_date(): int64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_date_at_boot".}</span>
 
 <span class="sx">#[</span>
 <span class="sx">Returns</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">TSC</span><span class="w"> </span><span class="sx">frequency</span><span class="w"> </span><span class="sx">in</span><span class="w"> </span><span class="sx">Hz.</span>
@@ -238,8 +238,8 @@ Returns zero when for no usable TSC frequency.</p>
 <span class="sx">This</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">not</span><span class="w"> </span><span class="sx">monotonic</span><span class="w"> </span><span class="sx">time. </span>
 <span class="sx">Zero</span><span class="w"> </span><span class="sx">means</span><span class="w"> </span><span class="sx">no</span><span class="w"> </span><span class="sx">Limine</span><span class="w"> </span><span class="sx">response</span><span class="w"> </span><span class="sx">was</span><span class="w"> </span><span class="sx">available.</span>
 <span class="sx">]#</span>
-<span class="sx">proc</span><span class="w"> </span><span class="sx">date_at_boot*(): int64</span><span class="w"> </span><span class="sx">=</span>
-<span class="sx">    result</span><span class="w"> </span><span class="sx">= bootloader_date_at_boot()</span>
+<span class="sx">proc</span><span class="w"> </span><span class="sx">boot_date*(): int64</span><span class="w"> </span><span class="sx">=</span>
+<span class="sx">    result</span><span class="w"> </span><span class="sx">= bootloader_boot_date()</span>
 
 
 <span class="sx">var</span>
@@ -300,7 +300,7 @@ Returns zero when for no usable TSC frequency.</p>
             <li>
                 <a href="#declaration-24">
                     
-                    bootloader_date_at_boot
+                    bootloader_boot_date
                 </a>
             </li>
             
@@ -318,7 +318,7 @@ Returns zero when for no usable TSC frequency.</p>
                     
                     <span class="exported">public</span>
                     
-                    date_at_boot
+                    boot_date
                 </a>
             </li>
             

@@ -55,7 +55,7 @@
                     <div class="header">
                         <!-- <div class="exported">Exported: True</div> -->
                         <!-- <div class="kind">proc</div> -->
-                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">init</span><span class="o">*</span><span class="p">(</span><span class="n">preserve</span><span class="p">:</span><span class="w"> </span><span class="nb">bool</span><span class="p">):</span><span class="w"> </span><span class="nb">bool</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_init".}</span></div>
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">init</span><span class="o">*</span><span class="p">(</span><span class="n">preserve</span><span class="p">:</span><span class="w"> </span><span class="nb">bool</span><span class="p">):</span><span class="w"> </span><span class="nb">bool</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"flanterm_terminal_init".}</span></div>
                     </div>
                     <div class="documentation">
                         <p>Small framebuffer terminal backed by Limine's Flanterm parameters.</p>
@@ -63,7 +63,7 @@
                     </div>
                 </li>
                 
-                <li id="declaration-5">
+                <li id="declaration-6">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -80,7 +80,7 @@
                     </div>
                 </li>
                 
-                <li id="declaration-8">
+                <li id="declaration-10">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -90,24 +90,7 @@
                     <div class="header">
                         <!-- <div class="exported">Exported: True</div> -->
                         <!-- <div class="kind">proc</div> -->
-                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">write</span><span class="o">*</span><span class="p">(</span><span class="n">message</span><span class="p">:</span><span class="w"> </span><span class="n">cstring</span><span class="p">)</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_write".}</span></div>
-                    </div>
-                    <div class="documentation">
-                        
-                    </div>
-                </li>
-                
-                <li id="declaration-10">
-                    <h3>
-                        
-                        <span class="exported">public</span>
-                        
-                        set_xy
-                    </h3>
-                    <div class="header">
-                        <!-- <div class="exported">Exported: True</div> -->
-                        <!-- <div class="kind">proc</div> -->
-                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">set_xy</span><span class="o">*</span><span class="p">(</span><span class="n">column</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span><span class="p">,</span><span class="w"> </span><span class="n">row</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span><span class="p">)</span><span class="w"> </span><span class="sx">{.</span><span class="w"> </span><span class="sx">importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_set_cursor_position".}</span></div>
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">write</span><span class="o">*</span><span class="p">(</span><span class="n">message</span><span class="p">:</span><span class="w"> </span><span class="n">cstring</span><span class="p">)</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"flanterm_terminal_write".}</span></div>
                     </div>
                     <div class="documentation">
                         
@@ -119,19 +102,118 @@
                         
                         <span class="exported">public</span>
                         
-                        columns
+                        set_xy
                     </h3>
                     <div class="header">
                         <!-- <div class="exported">Exported: True</div> -->
                         <!-- <div class="kind">proc</div> -->
-                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">columns</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="n">uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_columns".}</span></div>
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">set_xy</span><span class="o">*</span><span class="p">(</span><span class="n">column</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span><span class="p">,</span><span class="w"> </span><span class="n">row</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span><span class="p">)</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"flanterm_terminal_set_cursor_position".}</span></div>
                     </div>
                     <div class="documentation">
                         
                     </div>
                 </li>
                 
-                <li id="declaration-15">
+                <li id="declaration-28">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        set_text_fg
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">set_text_fg</span><span class="o">*</span><span class="p">(</span><span class="n">colour</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span><span class="p">,</span><span class="w"> </span><span class="n">bright</span><span class="p">:</span><span class="w"> </span><span class="nb">bool</span><span class="p">)</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"flanterm_terminal_set_text_fg".}</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Set the color of the terminal text. Example usage:</p>
+<div class="highlight"><pre><span></span><span class="n">terminal</span><span class="p">.</span><span class="n">set_text_fg</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kp">true</span><span class="p">)</span><span class="w"> </span><span class="c"># bright red</span>
+<span class="n">terminal</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"Warning"</span><span class="p">)</span>
+<span class="n">terminal</span><span class="p">.</span><span class="n">reset_text_fg</span><span class="p">()</span>
+</pre></div>
+<p>Colors:</p>
+<ul>
+<li><p>The 8 standard ANSI colours</p>
+<p>black, red, green, brown, blue, magenta, cyan, grey</p>
+</li>
+</ul>
+
+                    </div>
+                </li>
+                
+                <li id="declaration-30">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        set_text_bg
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">set_text_bg</span><span class="o">*</span><span class="p">(</span><span class="n">colour</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span><span class="p">,</span><span class="w"> </span><span class="n">bright</span><span class="p">:</span><span class="w"> </span><span class="nb">bool</span><span class="p">)</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"flanterm_terminal_set_text_bg".}</span></div>
+                    </div>
+                    <div class="documentation">
+                        
+                    </div>
+                </li>
+                
+                <li id="declaration-37">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        reset_text_fg
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">reset_text_fg</span><span class="o">*</span><span class="p">()</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"flanterm_terminal_reset_text_fg".}</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Reset the foreground color of the terminal text. Example usage:</p>
+<div class="highlight"><pre><span></span><span class="n">terminal</span><span class="p">.</span><span class="n">reset_text_fg</span><span class="p">()</span>
+</pre></div>
+
+                    </div>
+                </li>
+                
+                <li id="declaration-40">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        reset_text_bg
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">reset_text_bg</span><span class="o">*</span><span class="p">()</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"flanterm_terminal_reset_text_bg".}</span></div>
+                    </div>
+                    <div class="documentation">
+                        
+                    </div>
+                </li>
+                
+                <li id="declaration-43">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        columns
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">columns</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="n">uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"flanterm_terminal_columns".}</span></div>
+                    </div>
+                    <div class="documentation">
+                        
+                    </div>
+                </li>
+                
+                <li id="declaration-46">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -141,14 +223,14 @@
                     <div class="header">
                         <!-- <div class="exported">Exported: True</div> -->
                         <!-- <div class="kind">proc</div> -->
-                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">rows</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="n">uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_rows".}</span></div>
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">rows</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="n">uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"flanterm_terminal_rows".}</span></div>
                     </div>
                     <div class="documentation">
                         
                     </div>
                 </li>
                 
-                <li id="declaration-17">
+                <li id="declaration-49">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -174,19 +256,51 @@
             <h2>Source</h2>
             <div class="highlight"><pre><span></span><span class="cm">#[ Small framebuffer terminal backed by Limine's Flanterm parameters. ]#</span>
 
-<span class="k">proc</span><span class="w"> </span><span class="nf">init</span><span class="o">*</span><span class="p">(</span><span class="n">preserve</span><span class="p">:</span><span class="w"> </span><span class="nb">bool</span><span class="p">):</span><span class="w"> </span><span class="nb">bool</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_init".}</span>
+<span class="k">proc</span><span class="w"> </span><span class="nf">init</span><span class="o">*</span><span class="p">(</span><span class="n">preserve</span><span class="p">:</span><span class="w"> </span><span class="nb">bool</span><span class="p">):</span><span class="w"> </span><span class="nb">bool</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"flanterm_terminal_init".}</span>
+
 
 <span class="sx">proc</span><span class="w"> </span><span class="sx">init*(): bool</span><span class="w"> </span><span class="sx">=</span>
 <span class="sx">    init(preserve=false)</span>
 
-<span class="sx">proc</span><span class="w"> </span><span class="sx">write*(message</span>:<span class="w"> </span><span class="sx">cstring) {.importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_write".}</span>
 
-<span class="sx">proc</span><span class="w"> </span><span class="sx">set_xy*(column</span>:<span class="w"> </span><span class="sx">uint64</span>,<span class="w"> </span><span class="sx">row</span>:<span class="w"> </span><span class="sx">uint64) {.</span>
-<span class="sx">    importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_set_cursor_position".}</span>
+<span class="sx">proc</span><span class="w"> </span><span class="sx">write*(message</span>:<span class="w"> </span><span class="sx">cstring) {.importc</span>:<span class="w"> </span><span class="sx">"flanterm_terminal_write".}</span>
 
-<span class="sx">proc</span><span class="w"> </span><span class="sx">columns*(): uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_columns".}</span>
 
-<span class="sx">proc</span><span class="w"> </span><span class="sx">rows*(): uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_terminal_rows".}</span>
+<span class="sx">proc</span><span class="w"> </span><span class="sx">set_xy*(column</span>:<span class="w"> </span><span class="sx">uint64</span>,<span class="w"> </span><span class="sx">row</span>:<span class="w"> </span><span class="sx">uint64) {.importc</span>:<span class="w"> </span><span class="sx">"flanterm_terminal_set_cursor_position".}</span>
+
+
+<span class="sx">#[ Set</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">color</span><span class="w"> </span><span class="sx">of</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">terminal</span><span class="w"> </span><span class="sx">text. Example</span><span class="w"> </span><span class="sx">usage</span>:
+
+<span class="w">    </span><span class="sx">terminal.set_text_fg(1</span>,<span class="w"> </span><span class="sx">true) # bright</span><span class="w"> </span><span class="sx">red</span>
+<span class="w">    </span><span class="sx">terminal.write("Warning")</span>
+<span class="sx">    terminal.reset_text_fg()</span>
+
+<span class="sx">Colors</span>:
+
+<span class="sx">- The</span><span class="w"> </span><span class="sx">8</span><span class="w"> </span><span class="sx">standard</span><span class="w"> </span><span class="sx">ANSI</span><span class="w"> </span><span class="sx">colours</span><span class="w"> </span>
+<span class="w"> </span>
+<span class="w">    </span><span class="sx">black</span>,<span class="w"> </span><span class="sx">red</span>,<span class="w"> </span><span class="sx">green</span>,<span class="w"> </span><span class="sx">brown</span>,<span class="w"> </span><span class="sx">blue</span>,<span class="w"> </span><span class="sx">magenta</span>,<span class="w"> </span><span class="sx">cyan</span>,<span class="w"> </span><span class="sx">grey</span>
+<span class="sx">]#</span>
+<span class="sx">proc</span><span class="w"> </span><span class="sx">set_text_fg*(colour</span>:<span class="w"> </span><span class="sx">uint64</span>,<span class="w"> </span><span class="sx">bright</span>:<span class="w"> </span><span class="sx">bool) {.importc</span>:<span class="w"> </span><span class="sx">"flanterm_terminal_set_text_fg".}</span>
+
+<span class="sx">proc</span><span class="w"> </span><span class="sx">set_text_bg*(colour</span>:<span class="w"> </span><span class="sx">uint64</span>,<span class="w"> </span><span class="sx">bright</span>:<span class="w"> </span><span class="sx">bool) {.importc</span>:<span class="w"> </span><span class="sx">"flanterm_terminal_set_text_bg".}</span>
+
+
+<span class="sx">#[ Reset</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">foreground</span><span class="w"> </span><span class="sx">color</span><span class="w"> </span><span class="sx">of</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">terminal</span><span class="w"> </span><span class="sx">text. Example</span><span class="w"> </span><span class="sx">usage</span>:
+
+<span class="w">    </span><span class="sx">terminal.reset_text_fg()</span>
+<span class="sx">]#</span>
+<span class="sx">proc</span><span class="w"> </span><span class="sx">reset_text_fg*() {.importc</span>:<span class="w"> </span><span class="sx">"flanterm_terminal_reset_text_fg".}</span>
+
+
+<span class="sx">proc</span><span class="w"> </span><span class="sx">reset_text_bg*() {.importc</span>:<span class="w"> </span><span class="sx">"flanterm_terminal_reset_text_bg".}</span>
+
+
+<span class="sx">proc</span><span class="w"> </span><span class="sx">columns*(): uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"flanterm_terminal_columns".}</span>
+
+
+<span class="sx">proc</span><span class="w"> </span><span class="sx">rows*(): uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"flanterm_terminal_rows".}</span>
+
 
 <span class="sx">proc</span><span class="w"> </span><span class="sx">write_line*(message</span>:<span class="w"> </span><span class="sx">cstring) =</span>
 <span class="sx">    write(message)</span>
@@ -210,7 +324,7 @@
             </li>
             
             <li>
-                <a href="#declaration-5">
+                <a href="#declaration-6">
                     
                     <span class="exported">public</span>
                     
@@ -219,7 +333,7 @@
             </li>
             
             <li>
-                <a href="#declaration-8">
+                <a href="#declaration-10">
                     
                     <span class="exported">public</span>
                     
@@ -228,7 +342,7 @@
             </li>
             
             <li>
-                <a href="#declaration-10">
+                <a href="#declaration-13">
                     
                     <span class="exported">public</span>
                     
@@ -237,7 +351,43 @@
             </li>
             
             <li>
-                <a href="#declaration-13">
+                <a href="#declaration-28">
+                    
+                    <span class="exported">public</span>
+                    
+                    set_text_fg
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-30">
+                    
+                    <span class="exported">public</span>
+                    
+                    set_text_bg
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-37">
+                    
+                    <span class="exported">public</span>
+                    
+                    reset_text_fg
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-40">
+                    
+                    <span class="exported">public</span>
+                    
+                    reset_text_bg
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-43">
                     
                     <span class="exported">public</span>
                     
@@ -246,7 +396,7 @@
             </li>
             
             <li>
-                <a href="#declaration-15">
+                <a href="#declaration-46">
                     
                     <span class="exported">public</span>
                     
@@ -255,7 +405,7 @@
             </li>
             
             <li>
-                <a href="#declaration-17">
+                <a href="#declaration-49">
                     
                     <span class="exported">public</span>
                     

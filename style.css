@@ -464,7 +464,7 @@ ul.super-sheet-list li.declaration {
     /* color: hsl(53 51% 43% / 1); */
 }
 
-p code {
+p code, li code {
     background: #0a0a0a;
     padding: 0.1em 0.3em;
     font-family: inherit;

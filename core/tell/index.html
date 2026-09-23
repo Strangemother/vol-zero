@@ -110,9 +110,9 @@ It handles <em>string</em> and <code>uint64</code> types only and appends a newl
 <div class="highlight"><pre><span></span><span class="n">tell</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="n">allocationState</span><span class="p">.</span><span class="n">entryIndex</span><span class="p">,</span><span class="w"> </span><span class="n">allocationState</span><span class="p">.</span><span class="n">address</span><span class="p">)</span>
 </pre></div>
 <p>With Serial:</p>
-<div class="highlight"><pre><span></span><span class="n">serial</span><span class="p">.</span><span class="n">writeUInt64</span><span class="p">(</span><span class="n">allocationState</span><span class="p">.</span><span class="n">entryIndex</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">serial</span><span class="p">.</span><span class="n">write_uint64</span><span class="p">(</span><span class="n">allocationState</span><span class="p">.</span><span class="n">entryIndex</span><span class="p">)</span>
 <span class="n">serial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">" "</span><span class="p">)</span>
-<span class="n">serial</span><span class="p">.</span><span class="n">writeUInt64</span><span class="p">(</span><span class="n">allocationState</span><span class="p">.</span><span class="n">address</span><span class="p">)</span>
+<span class="n">serial</span><span class="p">.</span><span class="n">write_uint64</span><span class="p">(</span><span class="n">allocationState</span><span class="p">.</span><span class="n">address</span><span class="p">)</span>
 <span class="n">serial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"</span><span class="se">\r\n</span><span class="s">"</span><span class="p">)</span>
 </pre></div>
 <hr />
@@ -160,9 +160,9 @@ It handles <em>string</em> and <code>uint64</code> types only and appends a newl
 <span class="cm">    </span>
 <span class="cm">With Serial:</span>
 
-<span class="cm">    serial.writeUInt64(allocationState.entryIndex)</span>
+<span class="cm">    serial.write_uint64(allocationState.entryIndex)</span>
 <span class="cm">    serial.write(" ")</span>
-<span class="cm">    serial.writeUInt64(allocationState.address)</span>
+<span class="cm">    serial.write_uint64(allocationState.address)</span>
 <span class="cm">    serial.write("\r\n")</span>
 
 <span class="cm">---</span>
@@ -176,7 +176,9 @@ It handles <em>string</em> and <code>uint64</code> types only and appends a newl
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">arg</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">args</span><span class="p">:</span>
 <span class="w">        </span><span class="n">result</span><span class="p">.</span><span class="n">add</span><span class="w"> </span><span class="n">quote</span><span class="w"> </span><span class="k">do</span><span class="p">:</span>
 <span class="w">            </span><span class="k">when</span><span class="w"> </span><span class="n">typeof</span><span class="p">(`</span><span class="n">arg</span><span class="p">`)</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="n">uint64</span><span class="p">:</span>
-<span class="w">                </span><span class="n">serial</span><span class="p">.</span><span class="n">writeUInt64</span><span class="p">(`</span><span class="n">arg</span><span class="p">`)</span>
+<span class="w">                </span><span class="n">serial</span><span class="p">.</span><span class="n">write_uint64</span><span class="p">(`</span><span class="n">arg</span><span class="p">`)</span>
+<span class="w">            </span><span class="k">elif</span><span class="w"> </span><span class="n">typeof</span><span class="p">(`</span><span class="n">arg</span><span class="p">`)</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="nb">int64</span><span class="p">:</span>
+<span class="w">                </span><span class="n">serial</span><span class="p">.</span><span class="n">write_int64</span><span class="p">(`</span><span class="n">arg</span><span class="p">`)</span>
 <span class="w">            </span><span class="k">else</span><span class="p">:</span>
 <span class="w">                </span><span class="n">serial</span><span class="p">.</span><span class="n">write</span><span class="p">(`</span><span class="n">arg</span><span class="p">`)</span>
 

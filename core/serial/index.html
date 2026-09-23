@@ -157,15 +157,48 @@ valid NUL-terminated string.</p>
                         
                         <span class="exported">public</span>
                         
-                        writeUInt64
+                        write_uint64
                     </h3>
                     <div class="header">
                         <!-- <div class="exported">Exported: True</div> -->
                         <!-- <div class="kind">proc</div> -->
-                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">writeUInt64</span><span class="o">*</span><span class="p">(</span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span><span class="p">)</span><span class="w"> </span><span class="o">=</span></div>
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">write_uint64</span><span class="o">*</span><span class="p">(</span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span><span class="p">)</span><span class="w"> </span><span class="o">=</span></div>
                     </div>
                     <div class="documentation">
                         
+                    </div>
+                </li>
+                
+                <li id="declaration-135">
+                    <h3>
+                        
+                        <span class="exported">public</span>
+                        
+                        write_int64
+                    </h3>
+                    <div class="header">
+                        <!-- <div class="exported">Exported: True</div> -->
+                        <!-- <div class="kind">proc</div> -->
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">write_int64</span><span class="o">*</span><span class="p">(</span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="nb">int64</span><span class="p">)</span><span class="w"> </span><span class="o">=</span></div>
+                    </div>
+                    <div class="documentation">
+                        <p>Sends a signed 64-bit integer through COM1.</p>
+<p>The procedure converts the integer to its decimal representation and calls
+<code>write</code> to transmit it. Call <code>init</code> first.</p>
+<p>The edge case for the most negative 64-bit integer is handled correctly,
+Where a</p>
+<div class="highlight"><pre><span></span><span class="w">  </span><span class="n">low</span><span class="p">(</span><span class="nb">int64</span><span class="p">)</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="p">^</span><span class="mi">63</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">9223372036854775808</span>
+<span class="w">  </span><span class="n">high</span><span class="p">(</span><span class="nb">int64</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="mi">2</span><span class="p">^</span><span class="mi">63</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w">   </span><span class="o">=</span><span class="w">  </span><span class="mi">9223372036854775807</span>
+</pre></div>
+<p>Because:</p>
+<div class="highlight"><pre><span></span><span class="w">  </span><span class="n">uint64</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">2</span><span class="p">^</span><span class="mi">64</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">  </span><span class="nb">int64</span><span class="p">:</span><span class="w">  </span><span class="o">-</span><span class="mi">2</span><span class="p">^</span><span class="mi">63</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">2</span><span class="p">^</span><span class="mi">63</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+</pre></div>
+<p>Therefore:</p>
+<div class="highlight"><pre><span></span><span class="w">    </span><span class="n">uint64</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+</pre></div>
+<p>Ensures we correctly handle the most negative 64-bit integer.</p>
+
                     </div>
                 </li>
                 
@@ -273,7 +306,7 @@ valid NUL-terminated string.</p>
 <span class="sx">        inc</span><span class="w"> </span><span class="sx">index</span>
 
 
-<span class="sx">proc</span><span class="w"> </span><span class="sx">writeUInt64*(value</span>:<span class="w"> </span><span class="sx">uint64) =</span>
+<span class="sx">proc</span><span class="w"> </span><span class="sx">write_uint64*(value</span>:<span class="w"> </span><span class="sx">uint64) =</span>
 <span class="sx">    var</span><span class="w"> </span><span class="sx">digits</span>:<span class="w"> </span><span class="sx">array[20</span>,<span class="w"> </span><span class="sx">char]</span>
 <span class="sx">    var</span><span class="w"> </span><span class="sx">remaining</span><span class="w"> </span><span class="sx">= value</span>
 <span class="w">    </span><span class="sx">var</span><span class="w"> </span><span class="sx">index</span><span class="w"> </span><span class="sx">= digits.len</span>
@@ -285,6 +318,37 @@ valid NUL-terminated string.</p>
 <span class="w">        </span><span class="sx">digits[index] = char(ord('0') + int(remaining</span><span class="w"> </span><span class="sx">mod</span><span class="w"> </span><span class="sx">10))</span>
 <span class="sx">        remaining</span><span class="w"> </span><span class="sx">= remaining</span><span class="w"> </span><span class="sx">div</span><span class="w"> </span><span class="sx">10</span>
 <span class="w">    </span><span class="sx">write(cast[cstring](digits[index].addr))</span>
+
+
+<span class="sx">#[</span>
+<span class="sx">  Sends</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">signed</span><span class="w"> </span><span class="sx">64-bit</span><span class="w"> </span><span class="sx">integer</span><span class="w"> </span><span class="sx">through</span><span class="w"> </span><span class="sx">COM1.</span>
+
+<span class="sx">  The</span><span class="w"> </span><span class="sx">procedure</span><span class="w"> </span><span class="sx">converts</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">integer</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">its</span><span class="w"> </span><span class="sx">decimal</span><span class="w"> </span><span class="sx">representation</span><span class="w"> </span><span class="sx">and</span><span class="w"> </span><span class="sx">calls</span>
+<span class="w">  </span><span class="sx">`write` to</span><span class="w"> </span><span class="sx">transmit</span><span class="w"> </span><span class="sx">it. Call</span><span class="w"> </span><span class="sx">`init` first.</span>
+
+<span class="sx">  The</span><span class="w"> </span><span class="sx">edge</span><span class="w"> </span><span class="sx">case</span><span class="w"> </span><span class="sx">for</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">most</span><span class="w"> </span><span class="sx">negative</span><span class="w"> </span><span class="sx">64-bit</span><span class="w"> </span><span class="sx">integer</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">handled</span><span class="w"> </span><span class="sx">correctly</span>,
+<span class="w">  </span><span class="sx">Where</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span>
+<span class="w">  </span>
+<span class="w">      </span><span class="sx">low(int64)  = -2^63</span><span class="w">       </span><span class="sx">= -9223372036854775808</span>
+<span class="w">      </span><span class="sx">high(int64) =  2^63</span><span class="w"> </span><span class="sx">- 1</span><span class="w">   </span><span class="sx">=  9223372036854775807</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="sx">Because</span>:
+<span class="w">      </span>
+<span class="w">      </span><span class="sx">uint64</span>:<span class="w"> </span><span class="sx">0</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">2^64</span><span class="w"> </span><span class="sx">- 1</span>
+<span class="w">      </span><span class="sx">int64</span>:<span class="w">  </span><span class="sx">-2^63</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">2^63</span><span class="w"> </span><span class="sx">- 1</span>
+
+<span class="w">  </span><span class="sx">Therefore</span>:
+
+<span class="w">        </span><span class="sx">uint64(-(value</span><span class="w"> </span><span class="sx">+ 1)) + 1</span>
+
+<span class="w">  </span><span class="sx">Ensures</span><span class="w"> </span><span class="sx">we</span><span class="w"> </span><span class="sx">correctly</span><span class="w"> </span><span class="sx">handle</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">most</span><span class="w"> </span><span class="sx">negative</span><span class="w"> </span><span class="sx">64-bit</span><span class="w"> </span><span class="sx">integer.</span>
+<span class="sx">]#</span>
+<span class="sx">proc</span><span class="w"> </span><span class="sx">write_int64*(value</span>:<span class="w"> </span><span class="sx">int64) =</span>
+<span class="sx">    if</span><span class="w"> </span><span class="sx">value</span><span class="w"> </span><span class="sx">&lt; 0</span>:
+<span class="w">        </span><span class="sx">write("-")</span>
+<span class="sx">        write_uint64(uint64(-(value</span><span class="w"> </span><span class="sx">+ 1)) + 1)</span>
+<span class="sx">    else</span>:
+<span class="w">        </span><span class="sx">write_uint64(uint64(value))</span>
 </pre></div>
 
         </section>
@@ -331,7 +395,16 @@ valid NUL-terminated string.</p>
                     
                     <span class="exported">public</span>
                     
-                    writeUInt64
+                    write_uint64
+                </a>
+            </li>
+            
+            <li>
+                <a href="#declaration-135">
+                    
+                    <span class="exported">public</span>
+                    
+                    write_int64
                 </a>
             </li>
             

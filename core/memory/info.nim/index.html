@@ -58,7 +58,7 @@ information, including usable memory and memory categorized by type.</p>
             
             <ul class="declaration-list">
                 
-                <li id="declaration-36">
+                <li id="declaration-41">
                     <h3>
                         
                         memory_bytes_by_type
@@ -73,7 +73,7 @@ information, including usable memory and memory categorized by type.</p>
                     </div>
                 </li>
                 
-                <li id="declaration-38">
+                <li id="declaration-51">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -83,14 +83,18 @@ information, including usable memory and memory categorized by type.</p>
                     <div class="header">
                         <!-- <div class="exported">Exported: True</div> -->
                         <!-- <div class="kind">proc</div> -->
-                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">usable_memory_bytes_sector</span><span class="o">*</span><span class="p">(</span><span class="n">memoryType</span><span class="p">:</span><span class="w"> </span><span class="nb">int</span><span class="p">):</span><span class="w"> </span><span class="n">uint64</span><span class="w"> </span><span class="o">=</span></div>
+                        <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">usable_memory_bytes_sector</span><span class="o">*</span><span class="p">(</span><span class="n">memoryType</span><span class="p">:</span><span class="w"> </span><span class="n">MEMORYTYPE</span><span class="p">):</span><span class="w"> </span><span class="n">uint64</span><span class="w"> </span><span class="o">=</span></div>
                     </div>
                     <div class="documentation">
-                        
+                        <p>Returns the number of usable memory bytes for the specified memory type.</p>
+<p>This is equivalent to calling</p>
+<div class="highlight"><pre><span></span><span class="n">memory_bytes_by_type</span><span class="p">(</span><span class="w"> </span><span class="n">uint64</span><span class="p">(</span><span class="n">ord</span><span class="p">(</span><span class="n">memoryType</span><span class="p">))</span><span class="w"> </span><span class="p">)</span>
+</pre></div>
+
                     </div>
                 </li>
                 
-                <li id="declaration-41">
+                <li id="declaration-61">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -103,7 +107,11 @@ information, including usable memory and memory categorized by type.</p>
                         <div class="sig highlight monospace-font"><span class="k">proc</span><span class="w"> </span><span class="nf">usable_memory_bytes</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="n">uint64</span><span class="w"> </span><span class="o">=</span></div>
                     </div>
                     <div class="documentation">
-                        
+                        <p>Returns the number of usable memory bytes.
+This is equivalent to calling:</p>
+<div class="highlight"><pre><span></span><span class="n">usable_memory_bytes_sector</span><span class="o">*</span><span class="p">(</span><span class="n">MEMORYTYPE</span><span class="p">.</span><span class="n">USABLE</span><span class="p">)</span>
+</pre></div>
+
                     </div>
                 </li>
                 
@@ -123,39 +131,59 @@ information, including usable memory and memory categorized by type.</p>
 
 <span class="cm">#[</span>
 
-<span class="cm">#define LIMINE_MEMMAP_USABLE                 0</span>
-<span class="cm">#define LIMINE_MEMMAP_RESERVED               1</span>
-<span class="cm">#define LIMINE_MEMMAP_ACPI_RECLAIMABLE       2</span>
-<span class="cm">#define LIMINE_MEMMAP_ACPI_NVS               3</span>
-<span class="cm">#define LIMINE_MEMMAP_BAD_MEMORY             4</span>
-<span class="cm">#define LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE 5</span>
-<span class="cm">#define LIMINE_MEMMAP_EXECUTABLE_AND_MODULES 6</span>
-<span class="cm">#define LIMINE_MEMMAP_FRAMEBUFFER            7</span>
-<span class="cm">#define LIMINE_MEMMAP_RESERVED_MAPPED        8</span>
+<span class="cm">MEMORYTYPE's corresponding values in the Limine bootloader memory map.</span>
+
+<span class="cm">Call to `usable_memory_bytes_sector*(memoryType: MEMORYTYPE): uint64` providing</span>
+<span class="cm">The number of usable memory bytes for the specified memory type.</span>
+
+<span class="cm">Limine memory map types map identically to the MEMORYTYPE enum values.</span>
+
+<span class="cm">    #define LIMINE_MEMMAP_USABLE                 0</span>
+<span class="cm">    #define LIMINE_MEMMAP_RESERVED               1</span>
+<span class="cm">    #define LIMINE_MEMMAP_ACPI_RECLAIMABLE       2</span>
+<span class="cm">    #define LIMINE_MEMMAP_ACPI_NVS               3</span>
+<span class="cm">    #define LIMINE_MEMMAP_BAD_MEMORY             4</span>
+<span class="cm">    #define LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE 5</span>
+<span class="cm">    #define LIMINE_MEMMAP_EXECUTABLE_AND_MODULES 6</span>
+<span class="cm">    #define LIMINE_MEMMAP_FRAMEBUFFER            7</span>
+<span class="cm">    #define LIMINE_MEMMAP_RESERVED_MAPPED        8</span>
 
 <span class="cm">]#</span>
-
-
-
-<span class="k">const</span>
-<span class="w">    </span><span class="n">memoryTypeUsable</span><span class="o">*</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
-<span class="w">    </span><span class="n">memoryTypeReserved</span><span class="o">*</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">    </span><span class="n">memoryTypeAcpiReclaimable</span><span class="o">*</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
-<span class="w">    </span><span class="n">memoryTypeAcpiNvs</span><span class="o">*</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span>
-<span class="w">    </span><span class="n">memoryTypeBadMemory</span><span class="o">*</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span>
-<span class="w">    </span><span class="n">memoryTypeBootloaderReclaimable</span><span class="o">*</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span>
-<span class="w">    </span><span class="n">memoryTypeExecutableAndModules</span><span class="o">*</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span>
-<span class="w">    </span><span class="n">memoryTypeFramebuffer</span><span class="o">*</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span>
-<span class="w">    </span><span class="n">memoryTypeReservedMapped</span><span class="o">*</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="k">type</span>
+<span class="w">    </span><span class="n">MEMORYTYPE</span><span class="o">*</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">enum</span>
+<span class="w">        </span><span class="n">USABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">        </span><span class="n">RESERVED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="n">ACPI_RECLAIMABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">        </span><span class="n">ACPI_NVS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">        </span><span class="n">BAD_MEMORY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span>
+<span class="w">        </span><span class="n">BOOTLOADER_RECLAIMABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">        </span><span class="n">EXECUTABLE_AND_MODULES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span>
+<span class="w">        </span><span class="n">FRAMEBUFFER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span>
+<span class="w">        </span><span class="n">RESERVED_MAPPED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span>
 
 
 <span class="k">proc</span><span class="w"> </span><span class="nf">memory_bytes_by_type</span><span class="p">(</span><span class="n">memoryType</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span><span class="p">):</span><span class="w"> </span><span class="n">uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_memory_bytes_by_type".}</span>
 
-<span class="sx">proc</span><span class="w"> </span><span class="sx">usable_memory_bytes_sector*(memoryType</span>:<span class="w"> </span><span class="sx">int): uint64</span><span class="w"> </span><span class="sx">=</span>
-<span class="sx">    memory_bytes_by_type(uint64(memoryType))</span>
+<span class="sx">#[</span>
+<span class="sx">Returns</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">number</span><span class="w"> </span><span class="sx">of</span><span class="w"> </span><span class="sx">usable</span><span class="w"> </span><span class="sx">memory</span><span class="w"> </span><span class="sx">bytes</span><span class="w"> </span><span class="sx">for</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">specified</span><span class="w"> </span><span class="sx">memory</span><span class="w"> </span><span class="sx">type.</span>
 
+<span class="sx">This</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">equivalent</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">calling</span><span class="w"> </span>
+
+<span class="w">    </span><span class="sx">memory_bytes_by_type( uint64(ord(memoryType)) )</span>
+
+<span class="sx">]#</span>
+<span class="sx">proc</span><span class="w"> </span><span class="sx">usable_memory_bytes_sector*(memoryType</span>:<span class="w"> </span><span class="sx">MEMORYTYPE): uint64</span><span class="w"> </span><span class="sx">=</span>
+<span class="sx">    memory_bytes_by_type(uint64(ord(memoryType)))</span>
+
+
+<span class="sx">#[ </span>
+<span class="sx">Returns</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">number</span><span class="w"> </span><span class="sx">of</span><span class="w"> </span><span class="sx">usable</span><span class="w"> </span><span class="sx">memory</span><span class="w"> </span><span class="sx">bytes.</span>
+<span class="sx">This</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">equivalent</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">calling</span>:
+<span class="w">    </span>
+<span class="w">    </span><span class="sx">usable_memory_bytes_sector*(MEMORYTYPE.USABLE)</span>
+<span class="sx">]#</span>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">usable_memory_bytes*(): uint64</span><span class="w"> </span><span class="sx">=</span>
-<span class="sx">    usable_memory_bytes_sector(memoryTypeUsable)</span>
+<span class="sx">    usable_memory_bytes_sector(MEMORYTYPE.USABLE)</span>
 </pre></div>
 
         </section>
@@ -166,14 +194,14 @@ information, including usable memory and memory categorized by type.</p>
         <ul class="toc-list">
             
             <li>
-                <a href="#declaration-36">
+                <a href="#declaration-41">
                     
                     memory_bytes_by_type
                 </a>
             </li>
             
             <li>
-                <a href="#declaration-38">
+                <a href="#declaration-51">
                     
                     <span class="exported">public</span>
                     
@@ -182,7 +210,7 @@ information, including usable memory and memory categorized by type.</p>
             </li>
             
             <li>
-                <a href="#declaration-41">
+                <a href="#declaration-61">
                     
                     <span class="exported">public</span>
                     
