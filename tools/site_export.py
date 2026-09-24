@@ -57,6 +57,12 @@ def fetch_text(url: str) -> str:
         return response.read().decode(charset)
 
 
+def fetch_bytes(url: str) -> bytes:
+    request = Request(url, headers={"User-Agent": "vol-zero-static-export/1.0"})
+    with urlopen(request, timeout=30) as response:
+        return response.read()
+
+
 def fetch_required_text(url: str) -> str:
     try:
         return fetch_text(url)
@@ -176,6 +182,26 @@ def relative_asset_href(from_path: str, asset_name: str) -> str:
     return asset_name if relative == "." else relative
 
 
+def normalize_asset(raw_url: str, current_path: str, base_url: str, config: ExportConfig) -> str | None:
+    if not raw_url or raw_url.startswith(("#", "data:", "mailto:", "tel:", "javascript:")):
+        return None
+
+    base = urlparse(base_url)
+    page_url = urljoin(base_url, current_path.lstrip("/") or "")
+    absolute = urlparse(urljoin(page_url, raw_url))
+    if absolute.scheme not in {"http", "https"} or absolute.netloc != base.netloc:
+        return None
+
+    clean_url, _fragment = urldefrag(absolute.geturl())
+    clean = urlparse(clean_url)
+    path = clean.path.strip("/")
+    if not path or path.endswith("/") or clean.path == config.stylesheet_path:
+        return None
+    if is_ignored(path, config):
+        return None
+    return path
+
+
 def rewrite_links(html: str, current_path: str, base_url: str, config: ExportConfig) -> str:
     stylesheet_url = urljoin(base_url, config.stylesheet_path)
 
@@ -188,6 +214,13 @@ def rewrite_links(html: str, current_path: str, base_url: str, config: ExportCon
             new_url = relative_asset_href(current_path, config.stylesheet_output)
             return f"{attr}={quote}{new_url}{quote}"
 
+        if attr.lower() == "src":
+            asset_path = normalize_asset(raw_url, current_path, base_url, config)
+            if asset_path is not None:
+                new_url = relative_asset_href(current_path, asset_path)
+                return f"{attr}={quote}{new_url}{quote}"
+            return match.group(0)
+
         if attr.lower() == "href" and ignored_route(raw_url, base_url, config):
             return f"{attr}={quote}#{quote}"
 
@@ -199,6 +232,17 @@ def rewrite_links(html: str, current_path: str, base_url: str, config: ExportCon
         return f"{attr}={quote}{new_url}{quote}"
 
     return LINK_PATTERN.sub(replace, html)
+
+
+def asset_paths_from(html: str, current_path: str, base_url: str, config: ExportConfig) -> list[str]:
+    assets = {
+        asset_path
+        for match in LINK_PATTERN.finditer(html)
+        if match.group("attr").lower() == "src"
+        for asset_path in [normalize_asset(match.group("url"), current_path, base_url, config)]
+        if asset_path is not None
+    }
+    return sorted(assets)
 
 
 def page_routes_from(html: str, base_url: str, config: ExportConfig) -> list[Route]:
@@ -217,6 +261,13 @@ def write_page(route: Route, html: str, base_url: str, config: ExportConfig) -> 
     output_path = output_file_for(route.path, config)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(rewrite_links(html, route.path, base_url, config), encoding="utf-8")
+    return output_path
+
+
+def write_asset(asset_path: str, content: bytes, config: ExportConfig) -> Path:
+    output_path = config.output_root / asset_path
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_bytes(content)
     return output_path
 
 
@@ -300,6 +351,17 @@ def export_site(config: ExportConfig) -> list[Path]:
 
         seen.add(route.path)
         written.append(write_page(route, html, base_url, config))
+
+        for asset_path in asset_paths_from(html, route.path, base_url, config):
+            output_path = config.output_root / asset_path
+            if output_path in written:
+                continue
+            try:
+                content = fetch_bytes(urljoin(base_url, asset_path))
+            except (HTTPError, URLError) as error:
+                print(f"skip asset {asset_path}: {error}")
+                continue
+            written.append(write_asset(asset_path, content, config))
 
         for next_route in page_routes_from(html, base_url, config):
             if next_route.path not in seen:
