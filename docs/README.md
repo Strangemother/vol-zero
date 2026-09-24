@@ -1,4 +1,10 @@
+<div align="center">
+
+<img src="final3.svg" alt="Logo" height="200">
+
 # VOL Zero
+
+</div>
 
 VOL is a minimal x86-64 operating system kernel built with Nim and the Limine
 bootloader. The project supports both freestanding kernel builds and a hosted
