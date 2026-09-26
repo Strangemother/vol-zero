@@ -1,4 +1,4 @@
-from memory import *
+from toys.memory_lab.sim.memory import *
 
 reset()
 address = allocate_physical_bytes(8)

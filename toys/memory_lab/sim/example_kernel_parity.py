@@ -1,4 +1,4 @@
-from memory import *
+from toys.memory_lab.sim.memory import *
 
 configure_memory([
     (0x1000, PAGE_SIZE * 2),

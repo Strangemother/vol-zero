@@ -1,4 +1,4 @@
-from memory import *
+from toys.memory_lab.sim.memory import *
 
 
 def perform_single_byte_memory_test():

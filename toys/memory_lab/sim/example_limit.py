@@ -1,4 +1,4 @@
-from memory import *
+from toys.memory_lab.sim.memory import *
 
 set_memory_limit(2 * PAGE_SIZE)
 first = allocate_physical_bytes(PAGE_SIZE)

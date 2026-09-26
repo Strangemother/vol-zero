@@ -8,7 +8,7 @@ import sys
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from docs.instruction_catalog import (
+from toys.asm_tool.docs.instruction_catalog import (
     C9X_URL,
     FELIX_CLOUTIER_URL,
     collect_instructions,

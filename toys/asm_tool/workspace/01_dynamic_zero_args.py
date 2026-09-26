@@ -1,6 +1,6 @@
 """Unknown ASM attributes become zero-argument mnemonics."""
 
-from lat import ASM, Reader
+from toys.asm_tool.src.lat import ASM, Reader
 
 
 asm = ASM()

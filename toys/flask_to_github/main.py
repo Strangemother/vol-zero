@@ -3,8 +3,8 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from deploy import build_parser as build_deploy_parser, deploy_site
-from export import ExportConfig, SiteExportError, build_parser as build_export_parser, export_site, load_config, path_from_config
+from toys.flask_to_github.deploy import build_parser as build_deploy_parser, deploy_site
+from toys.flask_to_github.export import ExportConfig, SiteExportError, build_parser as build_export_parser, export_site, load_config, path_from_config
 
 
 TOOL_ROOT = Path(__file__).resolve().parent

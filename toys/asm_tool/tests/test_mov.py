@@ -1,6 +1,6 @@
 import pytest
 
-from lat import ASM, Immediate, Reader, Registers
+from toys.asm_tool.src.lat import ASM, Immediate, Reader, Registers
 
 
 def render_mov(build):
@@ -73,7 +73,7 @@ class TestFutureMovAPI:
         assert output == "mov [eax], 10"
 
     def test_typed_memory_only(self):
-        from lat import Memory
+        from toys.asm_tool.src.lat import Memory
 
         output = render_mov(
             lambda asm: asm.mov(Memory("eax"), 10),
@@ -82,7 +82,7 @@ class TestFutureMovAPI:
         assert output == "mov [eax], 10"
 
     def test_typed_memory_and_immediate_operands(self):
-        from lat import Memory
+        from toys.asm_tool.src.lat import Memory
 
         output = render_mov(
             lambda asm: asm.mov(Memory("eax"), Immediate(10)),

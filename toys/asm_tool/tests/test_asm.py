@@ -1,4 +1,4 @@
-from lat import ASM, RawInstruction, Reader, Registers
+from toys.asm_tool.src.lat import ASM, RawInstruction, Reader, Registers
 
 
 class TestInstructionRecording:

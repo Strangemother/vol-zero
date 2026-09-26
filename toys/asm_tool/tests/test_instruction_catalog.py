@@ -1,4 +1,4 @@
-from docs.instruction_catalog import (
+from toys.asm_tool.docs.instruction_catalog import (
     parse_c9x,
     parse_c9x_descriptions,
     parse_felix_cloutier,
@@ -30,7 +30,7 @@ def test_parse_c9x_uses_instruction_pages_and_normalises_names():
 
 
 def test_render_markdown_is_a_flat_list():
-    from docs.instruction_catalog import Instruction
+    from toys.asm_tool.docs.instruction_catalog import Instruction
 
     markdown = render_markdown([Instruction("ADD", "Add values."), Instruction("MOV", "Move data.")])
 

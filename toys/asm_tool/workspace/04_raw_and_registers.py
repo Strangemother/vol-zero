@@ -1,6 +1,6 @@
 """Raw text and lazy register lookup."""
 
-from lat import ASM, RawInstruction, Reader, Registers
+from toys.asm_tool.src.lat import ASM, RawInstruction, Reader, Registers
 
 
 asm = ASM()

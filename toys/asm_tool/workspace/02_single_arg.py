@@ -1,6 +1,6 @@
 """Instructions with one operand."""
 
-from lat import ASM, Reader, Registers
+from toys.asm_tool.src.lat import ASM, Reader, Registers
 
 
 asm = ASM()

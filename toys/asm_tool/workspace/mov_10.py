@@ -1,6 +1,6 @@
 """Instructions with multiple operands preserve their order."""
 
-from lat import ASM, Reader, Registers, Memory
+from toys.asm_tool.src.lat import ASM, Reader, Registers, Memory
 
 
 asm = ASM()
