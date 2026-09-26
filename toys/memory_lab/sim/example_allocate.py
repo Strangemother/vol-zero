@@ -1,4 +1,4 @@
-from toys.memory_lab.sim.memory import *
+from memory import *
 
 reset()
 first = allocate_physical_bytes(1)
