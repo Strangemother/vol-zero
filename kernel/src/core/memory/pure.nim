@@ -77,13 +77,16 @@ proc memcpy*(destination: pointer, source: pointer, size: csize_t): pointer {.me
   
   Only the low eight bits of `value` are written to each byte, because the
   destination is a byte array. `destination` must refer to a writable region
-  of at least `size` bytes. A `size` of zero performs no memory access. The
-  procedure returns the original `destination` pointer, matching the C
-  `memset` contract.
+  of at least `size` bytes. 
+
+  + A `size` of zero performs no memory access. 
+  + The procedure returns the original `destination` pointer, matching the C `memset` contract.
 
    Example:
-       
+
+     # Creates a buffer of 8 bytesand fills it with zeros.
      var buffer: array[8, uint8]
+     # Fills the buffer at address `buffer.addr` with zeros to the length of the buffer.len
      discard memset(buffer.addr, 0, csize_t(buffer.len))
 ]#
 proc memset*(destination: pointer, value: cint, size: csize_t): pointer {.memoryExport.} =
