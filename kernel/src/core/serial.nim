@@ -1,28 +1,28 @@
 #[
-The x86 CPU communicates with legacy devices through I/O ports.
-Nim does not express the compiler constraints needed by
-the `inb` and `outb` instructions, so small C helpers provide that boundary.
+    The x86 CPU communicates with legacy devices through I/O ports.
+    Nim does not express the compiler constraints needed by
+    the `inb` and `outb` instructions, so small C helpers provide that boundary.
 
-The serial port communciates at the standard rate `115200` by default.
+    The serial port communciates at the standard rate `115200` by default.
 
-Example:
+    Example:
 
-    serial.init()
+        serial.init()
 
-    serial.write("Usable memory: ")
-    serial.writeUInt64(mem_info.usableMemoryBytes())
-    serial.write("\r\n")
+        serial.write("Usable memory: ")
+        serial.writeUInt64(mem_info.usableMemoryBytes())
+        serial.write("\r\n")
 ]#
 
 #[
-  The x86 CPU communicates with legacy devices through I/O ports. Nim does not
-  express the compiler constraints needed by the `inb` and `outb` instructions,
-  so these small C helpers provide that boundary.
+    The x86 CPU communicates with legacy devices through I/O ports. Nim does not
+    express the compiler constraints needed by the `inb` and `outb` instructions,
+    so these small C helpers provide that boundary.
 
-  The `"a"` constraint places the byte value in the accumulator register, and
-  `"Nd"` allows the compiler to use either an immediate port number or the DX
-  register. `volatile` prevents the compiler from removing or reordering the
-  hardware access as if it were an ordinary unused calculation.
+    The `"a"` constraint places the byte value in the accumulator register, and
+    `"Nd"` allows the compiler to use either an immediate port number or the DX
+    register. `volatile` prevents the compiler from removing or reordering the
+    hardware access as if it were an ordinary unused calculation.
 ]#
 {.emit: """
 static inline void nim_serial_out(unsigned short port, unsigned char value) {
@@ -37,31 +37,31 @@ static inline unsigned char nim_serial_in(unsigned short port) {
 """.}
 
 #[
-  Declares the C helper that writes one byte to an x86 I/O port.
+    Declares the C helper that writes one byte to an x86 I/O port.
 
-  A procedure is private to this module. Callers should typically
-  call `init` and `write` rather than manipulating UART registers directly.
+    A procedure is private to this module. Callers should typically
+    call `init` and `write` rather than manipulating UART registers directly.
 ]#
 proc serialOut(port: uint16, value: uint8) {.importc: "nim_serial_out".}
 
 #[
-  Declares the C helper that reads one byte from an x86 I/O port.
+    Declares the C helper that reads one byte from an x86 I/O port.
 
-  It is used to inspect the UART status register before writing another byte.
+    It is used to inspect the UART status register before writing another byte.
 ]#
 proc serialIn(port: uint16): uint8 {.importc: "nim_serial_in".}
 
 #[
-  Configures the first PC serial port, COM1, for eight data bits, no parity,
-  one stop bit, and a baud-rate divisor of three.
+    Configures the first PC serial port, COM1, for eight data bits, no parity,
+    one stop bit, and a baud-rate divisor of three.
 
-  The numeric port addresses are COM1's standard registers. Call this before
-  `write` so the UART is configured to transmit reliably.
+    The numeric port addresses are COM1's standard registers. Call this before
+    `write` so the UART is configured to transmit reliably.
 
-  Example:
-      
-    init()
-    write("serial console ready\0")
+    Example:
+        
+        init()
+        write("serial console ready\0")
 ]#
 proc init*() =
     serialOut(0x3f9, 0)
@@ -73,17 +73,17 @@ proc init*() =
     serialOut(0x3fc, 0x0b)
 
 #[
-  Sends a NUL-terminated message through COM1.
+    Sends a NUL-terminated message through COM1.
 
-  A `cstring` is a pointer to characters ending with a NUL byte (`'\0'`). The
-  procedure reads one character at a time, waits until the UART transmitter is
-  ready, and then writes the character to COM1. Call `init` first and provide a
-  valid NUL-terminated string.
+    A `cstring` is a pointer to characters ending with a NUL byte (`'\0'`). The
+    procedure reads one character at a time, waits until the UART transmitter is
+    ready, and then writes the character to COM1. Call `init` first and provide a
+    valid NUL-terminated string.
 
-  Example:
-      
-    init()
-    write("hello from the kernel\0")
+    Example:
+        
+        init()
+        write("hello from the kernel\0")
 ]#
 proc write*(message: cstring) =
     let current = cast[ptr UncheckedArray[char]](message)
@@ -110,27 +110,27 @@ proc write_uint64*(value: uint64) =
 
 
 #[
-  Sends a signed 64-bit integer through COM1.
+    Sends a signed 64-bit integer through COM1.
 
-  The procedure converts the integer to its decimal representation and calls
-  `write` to transmit it. Call `init` first.
+    The procedure converts the integer to its decimal representation and calls
+    `write` to transmit it. Call `init` first.
 
-  The edge case for the most negative 64-bit integer is handled correctly,
-  Where a 
-  
-      low(int64)  = -2^63       = -9223372036854775808
-      high(int64) =  2^63 - 1   =  9223372036854775807
-  
-  Because:
-      
-      uint64: 0 to 2^64 - 1
-      int64:  -2^63 to 2^63 - 1
+    The edge case for the most negative 64-bit integer is handled correctly,
+    Where a 
+    
+        low(int64)  = -2^63       = -9223372036854775808
+        high(int64) =  2^63 - 1   =  9223372036854775807
+    
+    Because:
+        
+        uint64: 0 to 2^64 - 1
+        int64:  -2^63 to 2^63 - 1
 
-  Therefore:
+    Therefore:
 
-        uint64(-(value + 1)) + 1
+          uint64(-(value + 1)) + 1
 
-  Ensures we correctly handle the most negative 64-bit integer.
+    Ensures we correctly handle the most negative 64-bit integer.
 ]#
 proc write_int64*(value: int64) =
     if value < 0:

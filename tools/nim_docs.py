@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import textwrap
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Iterable
@@ -81,7 +82,7 @@ def _clean_documentation(lines: Iterable[str]) -> str:
         cleaned.pop(0)
     while cleaned and not cleaned[-1].strip():
         cleaned.pop()
-    return "\n".join(cleaned)
+    return textwrap.dedent("\n".join(cleaned))
 
 
 def _read_block_comment(lines: list[str], start: int) -> tuple[DocumentationBlock, int]:

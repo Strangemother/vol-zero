@@ -1,5 +1,5 @@
 #[
-Monotonic time module for handling TSC-based time measurements.
+    Monotonic time module for handling TSC-based time measurements.
 ]#
 
 {.emit: """
@@ -24,17 +24,17 @@ proc bootloader_tsc_frequency(): uint64 {.importc: "limine_tsc_frequency".}
 proc bootloader_boot_date(): int64 {.importc: "limine_date_at_boot".}
 
 #[
-Returns the TSC frequency in Hz.
-Returns zero when for no TSC frequency.
+    Returns the TSC frequency in Hz.
+    Returns zero when for no TSC frequency.
 ]#
 proc tsc_frequency*(): uint64 =
     result = bootloader_tsc_frequency()
 
 
 #[
-Returns the wall-clock Unix timestamp at boot, in seconds.
-This is not monotonic time. 
-Zero means no Limine response was available.
+    Returns the wall-clock Unix timestamp at boot, in seconds.
+    This is not monotonic time. 
+    Zero means no Limine response was available.
 ]#
 proc boot_date*(): int64 =
     result = bootloader_boot_date()
@@ -55,8 +55,8 @@ proc record_start*() =
     tsc_started = true
 
 #[
-Returns monotonic elapsed time since boot, in nanoseconds.
-Returns zero when for no usable TSC frequency.
+    Returns monotonic elapsed time since boot, in nanoseconds.
+    Returns zero when for no usable TSC frequency.
 ]#
 proc delta*(): uint64 =
     let frequency = tsc_frequency()

@@ -15,15 +15,15 @@ proc set_xy*(column: uint64, row: uint64) {.importc: "flanterm_terminal_set_curs
 
 #[ Set the color of the terminal text. Example usage:
 
-    terminal.set_text_fg(1, true) # bright red
-    terminal.write("Warning")
-    terminal.reset_text_fg()
+        terminal.set_text_fg(1, true) # bright red
+        terminal.write("Warning")
+        terminal.reset_text_fg()
 
-Colors:
+    Colors:
 
-- The 8 standard ANSI colours 
- 
-    black, red, green, brown, blue, magenta, cyan, grey
+    - The 8 standard ANSI colours 
+    
+        black, red, green, brown, blue, magenta, cyan, grey
 ]#
 proc set_text_fg*(colour: uint64, bright: bool) {.importc: "flanterm_terminal_set_text_fg".}
 

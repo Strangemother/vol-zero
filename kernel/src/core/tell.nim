@@ -1,43 +1,45 @@
-#[ Simplified serial write
+#[ 
+    Simplified serial write
 
-This is a convenience **macro** for writing to the serial output.
-Importantly this assumes the `serial` module has been initialized and is ready for writing.
+    This is a convenience **macro** for writing to the serial output.
+    Importantly this assumes the `serial` module has been initialized and is ready for writing.
 
-Example:
+    Example:
 
-    tell.line("Kernel version: ", kernelVersion.get_version())
+        tell.line("Kernel version: ", kernelVersion.get_version())
 
-Replaces:
+    Replaces:
 
-    serial.write("Kernel version: ")
-    serial.write(kernelVersion.get_version())
-    serial.write("\r\n")
+        serial.write("Kernel version: ")
+        serial.write(kernelVersion.get_version())
+        serial.write("\r\n")
 
-+ Supports multiple arguments to the serial output.
-+ Handles _string_ and `uint64` types only.
-+ appends a newline `\r\n` by default.
+    + Supports multiple arguments to the serial output.
+    + Handles _string_ and `uint64` types only.
+    + appends a newline `\r\n` by default.
 
 ]#
 import std/macros
 import serial
 
-#[ tell a line through the active serial write
+#[ 
+    tell a line through the active serial write
 
-This macro allows writing multiple arguments to the serial output conveniently.
-It handles _string_ and `uint64` types only and appends a newline `\r\n` by default.
+    This macro allows writing multiple arguments to the serial output conveniently.
+    It handles _string_ and `uint64` types only and appends a newline `\r\n` by default.
 
-    tell.line(allocationState.entryIndex, allocationState.address)
-    
-With Serial:
+        tell.line(allocationState.entryIndex, allocationState.address)
+        
+    With Serial:
 
-    serial.write_uint64(allocationState.entryIndex)
-    serial.write(" ")
-    serial.write_uint64(allocationState.address)
-    serial.write("\r\n")
+        serial.write_uint64(allocationState.entryIndex)
+        serial.write(" ")
+        serial.write_uint64(allocationState.address)
+        serial.write("\r\n")
 
----
+    ---
 
-Note this is a compile time macro and will be expanded during compilation. It is not a runtime function.
+    Note this is a compile time macro and will be expanded during compilation. It is not a runtime function.
 
 ]#
 macro line*(args: varargs[untyped], newline: untyped = "\r\n"): untyped =
