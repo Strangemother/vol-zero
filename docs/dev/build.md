@@ -29,8 +29,8 @@ pip install -e tools/app
 tool c
 ```
 
-The build fetches the pinned kernel dependencies and creates a bootable ISO
-under `dist/`. Use [Running the kernel](running.md) for QEMU and VirtualBox
+The build fetches the pinned kernel dependencies under `kernel_deps/` and
+creates a bootable ISO under `dist/`. Use [Running the kernel](running.md) for QEMU and VirtualBox
 instructions, or see [The `tool` command](tool.md) for the available workflows
 and aliases.
 

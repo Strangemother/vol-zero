@@ -16,7 +16,7 @@ const nimFlags = "c --noLinking --noMain --mm:none --os:standalone --cpu:amd64 "
   "-fno-pic -fno-lto -mno-red-zone -mno-sse -mno-sse2 -m64 " &
   "-mabi=sysv -mcmodel=kernel\" " &
   # These headers are needed when Nim emits C that uses freestanding types.
-  "--passC:\"-I src/include -I limine-protocol/include -I freestanding-c-hdrs/include\""
+  "--passC:\"-I src/include -I ../kernel_deps/limine-protocol/include -I ../kernel_deps/freestanding-c-hdrs/include\""
 
 # There is intentionally no passL option: --noLinking leaves the final link
 # to GNUmakefile, which invokes ld with the Limine linker script.

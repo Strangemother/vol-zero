@@ -7,6 +7,10 @@
 # This is the name that our final executable will have.
 # Change as needed.
 override OUTPUT := kernel
+DEPS_DIR := ../kernel_deps
+BUILD_DIR := $(DEPS_DIR)/build
+BIN_DIR := $(BUILD_DIR)/bin
+OBJ_DIR := $(BUILD_DIR)/obj
 
 # Install prefix; /usr/local is a good, standard default pick.
 PREFIX := /usr/local
@@ -55,8 +59,8 @@ LDFLAGS :=
 
 # Ensure the dependencies have been obtained.
 ifneq ($(filter-out clean distclean,$(or $(MAKECMDGOALS),default)),)
-    ifeq ($(wildcard .deps-obtained),)
-        $(error Please run the ./get-deps script first)
+    ifeq ($(wildcard $(DEPS_DIR)/.deps-obtained),)
+        $(error Please run ../kernel/get-deps first)
     endif
 endif
 
@@ -95,9 +99,9 @@ override CFLAGS += \
 # Internal C preprocessor flags that should not be changed by the user.
 override CPPFLAGS := \
     -I src \
-    -I src/ext/flanterm/src \
-    -I limine-protocol/include \
-    -isystem freestanding-c-hdrs/include \
+    -I $(DEPS_DIR)/flanterm/src \
+    -I $(DEPS_DIR)/limine-protocol/include \
+    -isystem $(DEPS_DIR)/freestanding-c-hdrs/include \
     $(CPPFLAGS) \
     -MMD \
     -MP
@@ -129,61 +133,59 @@ endif
 
 # Use "find" to glob all *.c, *.S, and *.asm files in the tree and obtain the
 # object and header dependency file names.
-override SRCFILES := $(shell find -L src cc-runtime/src -type f 2>/dev/null | LC_ALL=C sort)
+override SRCFILES := $(shell { find -L src -type f; cd $(DEPS_DIR) && find -L cc-runtime/src flanterm/src -type f; } 2>/dev/null | LC_ALL=C sort)
 override CFILES := $(filter %.c,$(SRCFILES))
 override NIMFILES := $(filter src/main.nim,$(filter %.nim,$(SRCFILES)))
 override ASFILES := $(filter %.S,$(SRCFILES))
 override NASMFILES := $(filter %.asm,$(SRCFILES))
-override OBJ := $(addprefix obj/,$(CFILES:.c=.c.o) $(NIMFILES:.nim=.nim.o) $(ASFILES:.S=.S.o) $(NASMFILES:.asm=.asm.o))
-override HEADER_DEPS := $(addprefix obj/,$(CFILES:.c=.c.d) $(ASFILES:.S=.S.d) $(NASMFILES:.asm=.asm.d))
+override OBJ := $(addprefix $(OBJ_DIR)/,$(CFILES:.c=.c.o) $(NIMFILES:.nim=.nim.o) $(ASFILES:.S=.S.o) $(NASMFILES:.asm=.asm.o))
+override HEADER_DEPS := $(addprefix $(OBJ_DIR)/,$(CFILES:.c=.c.d) $(ASFILES:.S=.S.d) $(NASMFILES:.asm=.asm.d))
+vpath %.c $(DEPS_DIR)
 
 # Default target. This must come first, before header dependencies.
 .PHONY: all
-all: bin/$(OUTPUT)
+all: $(BIN_DIR)/$(OUTPUT)
 
 # Include header dependencies.
 -include $(HEADER_DEPS)
 
 # Link rules for the final executable.
-bin/$(OUTPUT): GNUmakefile linker-scripts/x86_64.lds $(OBJ)
+$(BIN_DIR)/$(OUTPUT): GNUmakefile linker-scripts/x86_64.lds $(OBJ)
 	$(MKDIR) -p "$(dir $@)"
 	$(LD) $(LDFLAGS) $(OBJ) -o $@
 
 # Compilation rules for *.c files.
-obj/%.c.o: %.c GNUmakefile
+$(OBJ_DIR)/%.c.o: %.c GNUmakefile
 	$(MKDIR) -p "$(dir $@)"
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 # Compilation rules for *.nim files.
-obj/%.nim.o: %.nim GNUmakefile vol_kernel.nimble VERSION
+$(OBJ_DIR)/%.nim.o: %.nim GNUmakefile vol_kernel.nimble VERSION
 	$(MKDIR) -p "$(dir $@)"
-	PATH="$(HOME)/.local/opt/nim-2.2.12/bin:$${PATH}" NIM="$(HOME)/.local/opt/nim-2.2.12/bin/nim" NIM_SOURCE="$<" NIMCACHE="$(CURDIR)/obj/nimcache/$*" NIM_OUTPUT="$@" $(NIMBLE) --nim:"$(HOME)/.local/opt/nim-2.2.12/bin/nim" buildKernel
+	PATH="$(HOME)/.local/opt/nim-2.2.12/bin:$${PATH}" NIM="$(HOME)/.local/opt/nim-2.2.12/bin/nim" NIM_SOURCE="$<" NIMCACHE="$(abspath $(OBJ_DIR)/nimcache/$*)" NIM_OUTPUT="$@" $(NIMBLE) --nim:"$(HOME)/.local/opt/nim-2.2.12/bin/nim" buildKernel
 
 # Compilation rules for *.S files.
-obj/%.S.o: %.S GNUmakefile
+$(OBJ_DIR)/%.S.o: %.S GNUmakefile
 	$(MKDIR) -p "$(dir $@)"
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 # Compilation rules for *.asm (nasm) files.
-obj/%.asm.o: %.asm GNUmakefile
+$(OBJ_DIR)/%.asm.o: %.asm GNUmakefile
 	$(MKDIR) -p "$(dir $@)"
 	nasm $(NASMFLAGS) -MD $(@:.o=.d) -MP $< -o $@
 
 # Remove object files and the final executable.
 .PHONY: clean
 clean:
-	rm -rf bin obj
+	rm -rf "$(BIN_DIR)" "$(OBJ_DIR)"
 
 # Remove everything built and generated including downloaded dependencies.
 .PHONY: distclean
-distclean: clean
-	rm -rf .deps-obtained .cache compile_commands.json freestanding-c-hdrs cc-runtime limine-protocol
+distclean: clean ; rm -rf "$(DEPS_DIR)/.deps-obtained" .cache compile_commands.json "$(DEPS_DIR)/freestanding-c-hdrs" "$(DEPS_DIR)/cc-runtime" "$(DEPS_DIR)/limine-protocol"
 
 # Install the final built executable to its final on-root location.
 .PHONY: install
-install: all
-	install -d "$(DESTDIR)$(PREFIX)/share/$(OUTPUT)"
-	install -m 644 bin/$(OUTPUT) "$(DESTDIR)$(PREFIX)/share/$(OUTPUT)/"
+install: all ; install -d "$(DESTDIR)$(PREFIX)/share/$(OUTPUT)" && install -m 644 "$(BIN_DIR)/$(OUTPUT)" "$(DESTDIR)$(PREFIX)/share/$(OUTPUT)/"
 
 # Try to undo whatever the "install" target did.
 .PHONY: uninstall

@@ -6,6 +6,8 @@ srcdir="$(dirname "$0")"
 test -z "$srcdir" && srcdir=.
 
 cd "$srcdir"
+depsdir="../kernel_deps"
+mkdir -p "$depsdir"
 
 clone_repo_commit() {
     if test -d "$2/.git"; then
@@ -29,28 +31,28 @@ clone_repo_commit() {
     fi
 }
 
-rm -f .deps-obtained
+rm -f "$depsdir/.deps-obtained"
 
 clone_repo_commit \
     https://github.com/osdev0/freestanding-c-hdrs.git \
-    freestanding-c-hdrs \
+    "$depsdir/freestanding-c-hdrs" \
     38fed4e1e3365733ddbfa03b0a28936243ad31e9
 
 clone_repo_commit \
     https://github.com/osdev0/cc-runtime.git \
-    cc-runtime \
+    "$depsdir/cc-runtime" \
     dae79833b57a01b9fd3e359ee31def69f5ae899b
 
 clone_repo_commit \
     https://github.com/Limine-Bootloader/limine-protocol.git \
-    limine-protocol \
+    "$depsdir/limine-protocol" \
     da65184e91f80fcb397270121b1e2515a11e01ee
 
 clone_repo_commit \
     https://github.com/mintsuki/flanterm.git \
-    src/ext/flanterm \
+    "$depsdir/flanterm" \
     3e311fe2ce4f663273c22d1a229745bc53afa930
 
-touch .deps-obtained
+touch "$depsdir/.deps-obtained"
 
 printf "\nDependencies obtained successfully.\n"

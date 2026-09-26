@@ -104,18 +104,18 @@ limine-binary/limine: limine-binary.tar.gz
 		LDFLAGS="$(HOST_LDFLAGS)" \
 		LIBS="$(HOST_LIBS)"
 
-kernel/.deps-obtained:
+kernel_deps/.deps-obtained:
 	sh ./kernel/get-deps
 
 .PHONY: kernel
-kernel: kernel/.deps-obtained
+kernel: kernel_deps/.deps-obtained
 	$(MAKE) -C kernel
 
 $(ISO_IMAGE): limine-binary/limine kernel kernel/VERSION limine.conf
 	mkdir -p $(DIST_DIR)
 	rm -rf iso_root
 	mkdir -p iso_root/boot
-	cp -v kernel/bin/kernel iso_root/boot/
+	cp -v kernel_deps/build/bin/kernel iso_root/boot/
 	mkdir -p iso_root/boot/limine
 	sed 's/@VERSION@/$(KERNEL_VERSION)/g' limine.conf > iso_root/boot/limine/limine.conf
 	cp -v limine-binary/limine-bios.sys limine-binary/limine-bios-cd.bin limine-binary/limine-uefi-cd.bin iso_root/boot/limine/
@@ -138,7 +138,7 @@ $(HDD_IMAGE): limine-binary/limine kernel kernel/VERSION limine.conf
 	./limine-binary/limine bios-install $(HDD_IMAGE)
 	mformat -i $(HDD_IMAGE)@@$(HDD_PART_OFFSET) -T $(HDD_PART_SECTORS) -h $(HDD_HEADS) -s $(HDD_SECTORS_PER_TRACK) ::
 	mmd -i $(HDD_IMAGE)@@$(HDD_PART_OFFSET) ::/EFI ::/EFI/BOOT ::/boot ::/boot/limine
-	mcopy -i $(HDD_IMAGE)@@$(HDD_PART_OFFSET) kernel/bin/kernel ::/boot
+	mcopy -i $(HDD_IMAGE)@@$(HDD_PART_OFFSET) kernel_deps/build/bin/kernel ::/boot
 	sed 's/@VERSION@/$(KERNEL_VERSION)/g' limine.conf > /tmp/limine.conf
 	mcopy -i $(HDD_IMAGE)@@$(HDD_PART_OFFSET) /tmp/limine.conf limine-binary/limine-bios.sys ::/boot/limine
 	rm -f /tmp/limine.conf

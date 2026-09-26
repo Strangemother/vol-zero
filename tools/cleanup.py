@@ -13,8 +13,7 @@ SOFT_GENERATED_PATHS = [
     "template.hdd",
     "dist",
     "iso_root",
-    "kernel/bin",
-    "kernel/obj",
+    "kernel_deps/build",
     "kernel/.cache",
     "kernel/compile_commands.json",
     "__pycache__",
@@ -28,10 +27,10 @@ DOWNLOADED_PATHS = [
     "limine-binary.tar.gz",
     "edk2-ovmf-bins",
     "edk2-ovmf-bins.tar.gz",
-    "kernel/.deps-obtained",
-    "kernel/freestanding-c-hdrs",
-    "kernel/cc-runtime",
-    "kernel/limine-protocol",
+    "kernel_deps/.deps-obtained",
+    "kernel_deps/freestanding-c-hdrs",
+    "kernel_deps/cc-runtime",
+    "kernel_deps/limine-protocol",
 ]
 
 
