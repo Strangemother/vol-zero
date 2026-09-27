@@ -201,7 +201,7 @@ Returns zero when for no usable TSC frequency.</p>
         <section class="source-code">
             <h2>Source</h2>
             <div class="highlight"><pre><span></span><span class="cm">#[</span>
-<span class="cm">Monotonic time module for handling TSC-based time measurements.</span>
+<span class="cm">    Monotonic time module for handling TSC-based time measurements.</span>
 <span class="cm">]#</span>
 
 <span class="sx">{.emit</span>:<span class="w"> </span><span class="sx">"""</span>
@@ -226,17 +226,17 @@ Returns zero when for no usable TSC frequency.</p>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">bootloader_boot_date(): int64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_date_at_boot".}</span>
 
 <span class="sx">#[</span>
-<span class="sx">Returns</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">TSC</span><span class="w"> </span><span class="sx">frequency</span><span class="w"> </span><span class="sx">in</span><span class="w"> </span><span class="sx">Hz.</span>
-<span class="sx">Returns</span><span class="w"> </span><span class="sx">zero</span><span class="w"> </span><span class="sx">when</span><span class="w"> </span><span class="sx">for</span><span class="w"> </span><span class="sx">no</span><span class="w"> </span><span class="sx">TSC</span><span class="w"> </span><span class="sx">frequency.</span>
+<span class="sx">    Returns</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">TSC</span><span class="w"> </span><span class="sx">frequency</span><span class="w"> </span><span class="sx">in</span><span class="w"> </span><span class="sx">Hz.</span>
+<span class="sx">    Returns</span><span class="w"> </span><span class="sx">zero</span><span class="w"> </span><span class="sx">when</span><span class="w"> </span><span class="sx">for</span><span class="w"> </span><span class="sx">no</span><span class="w"> </span><span class="sx">TSC</span><span class="w"> </span><span class="sx">frequency.</span>
 <span class="sx">]#</span>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">tsc_frequency*(): uint64</span><span class="w"> </span><span class="sx">=</span>
 <span class="sx">    result</span><span class="w"> </span><span class="sx">= bootloader_tsc_frequency()</span>
 
 
 <span class="sx">#[</span>
-<span class="sx">Returns</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">wall-clock</span><span class="w"> </span><span class="sx">Unix</span><span class="w"> </span><span class="sx">timestamp</span><span class="w"> </span><span class="sx">at</span><span class="w"> </span><span class="sx">boot</span>,<span class="w"> </span><span class="sx">in</span><span class="w"> </span><span class="sx">seconds.</span>
-<span class="sx">This</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">not</span><span class="w"> </span><span class="sx">monotonic</span><span class="w"> </span><span class="sx">time. </span>
-<span class="sx">Zero</span><span class="w"> </span><span class="sx">means</span><span class="w"> </span><span class="sx">no</span><span class="w"> </span><span class="sx">Limine</span><span class="w"> </span><span class="sx">response</span><span class="w"> </span><span class="sx">was</span><span class="w"> </span><span class="sx">available.</span>
+<span class="sx">    Returns</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">wall-clock</span><span class="w"> </span><span class="sx">Unix</span><span class="w"> </span><span class="sx">timestamp</span><span class="w"> </span><span class="sx">at</span><span class="w"> </span><span class="sx">boot</span>,<span class="w"> </span><span class="sx">in</span><span class="w"> </span><span class="sx">seconds.</span>
+<span class="sx">    This</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">not</span><span class="w"> </span><span class="sx">monotonic</span><span class="w"> </span><span class="sx">time. </span>
+<span class="sx">    Zero</span><span class="w"> </span><span class="sx">means</span><span class="w"> </span><span class="sx">no</span><span class="w"> </span><span class="sx">Limine</span><span class="w"> </span><span class="sx">response</span><span class="w"> </span><span class="sx">was</span><span class="w"> </span><span class="sx">available.</span>
 <span class="sx">]#</span>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">boot_date*(): int64</span><span class="w"> </span><span class="sx">=</span>
 <span class="sx">    result</span><span class="w"> </span><span class="sx">= bootloader_boot_date()</span>
@@ -257,8 +257,8 @@ Returns zero when for no usable TSC frequency.</p>
 <span class="sx">    tsc_started</span><span class="w"> </span><span class="sx">= true</span>
 
 <span class="sx">#[</span>
-<span class="sx">Returns</span><span class="w"> </span><span class="sx">monotonic</span><span class="w"> </span><span class="sx">elapsed</span><span class="w"> </span><span class="sx">time</span><span class="w"> </span><span class="sx">since</span><span class="w"> </span><span class="sx">boot</span>,<span class="w"> </span><span class="sx">in</span><span class="w"> </span><span class="sx">nanoseconds.</span>
-<span class="sx">Returns</span><span class="w"> </span><span class="sx">zero</span><span class="w"> </span><span class="sx">when</span><span class="w"> </span><span class="sx">for</span><span class="w"> </span><span class="sx">no</span><span class="w"> </span><span class="sx">usable</span><span class="w"> </span><span class="sx">TSC</span><span class="w"> </span><span class="sx">frequency.</span>
+<span class="sx">    Returns</span><span class="w"> </span><span class="sx">monotonic</span><span class="w"> </span><span class="sx">elapsed</span><span class="w"> </span><span class="sx">time</span><span class="w"> </span><span class="sx">since</span><span class="w"> </span><span class="sx">boot</span>,<span class="w"> </span><span class="sx">in</span><span class="w"> </span><span class="sx">nanoseconds.</span>
+<span class="sx">    Returns</span><span class="w"> </span><span class="sx">zero</span><span class="w"> </span><span class="sx">when</span><span class="w"> </span><span class="sx">for</span><span class="w"> </span><span class="sx">no</span><span class="w"> </span><span class="sx">usable</span><span class="w"> </span><span class="sx">TSC</span><span class="w"> </span><span class="sx">frequency.</span>
 <span class="sx">]#</span>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">delta*(): uint64</span><span class="w"> </span><span class="sx">=</span>
 <span class="sx">    let</span><span class="w"> </span><span class="sx">frequency</span><span class="w"> </span><span class="sx">= tsc_frequency()</span>

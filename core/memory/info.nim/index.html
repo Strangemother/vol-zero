@@ -123,30 +123,30 @@ This is equivalent to calling:</p>
         <section class="source-code">
             <h2>Source</h2>
             <div class="highlight"><pre><span></span><span class="cm">#[</span>
-<span class="cm">Provides functions and constants for querying memory information.</span>
+<span class="cm">    Provides functions and constants for querying memory information.</span>
 
-<span class="cm">This module interfaces with the Limine bootloader to retrieve memory</span>
-<span class="cm">information, including usable memory and memory categorized by type.</span>
+<span class="cm">    This module interfaces with the Limine bootloader to retrieve memory</span>
+<span class="cm">    information, including usable memory and memory categorized by type.</span>
 <span class="cm">]#</span>
 
 <span class="cm">#[</span>
 
-<span class="cm">MEMORYTYPE's corresponding values in the Limine bootloader memory map.</span>
+<span class="cm">    MEMORYTYPE's corresponding values in the Limine bootloader memory map.</span>
 
-<span class="cm">Call to `usable_memory_bytes_sector*(memoryType: MEMORYTYPE): uint64` providing</span>
-<span class="cm">The number of usable memory bytes for the specified memory type.</span>
+<span class="cm">    Call to `usable_memory_bytes_sector*(memoryType: MEMORYTYPE): uint64` providing</span>
+<span class="cm">    The number of usable memory bytes for the specified memory type.</span>
 
-<span class="cm">Limine memory map types map identically to the MEMORYTYPE enum values.</span>
+<span class="cm">    Limine memory map types map identically to the MEMORYTYPE enum values.</span>
 
-<span class="cm">    #define LIMINE_MEMMAP_USABLE                 0</span>
-<span class="cm">    #define LIMINE_MEMMAP_RESERVED               1</span>
-<span class="cm">    #define LIMINE_MEMMAP_ACPI_RECLAIMABLE       2</span>
-<span class="cm">    #define LIMINE_MEMMAP_ACPI_NVS               3</span>
-<span class="cm">    #define LIMINE_MEMMAP_BAD_MEMORY             4</span>
-<span class="cm">    #define LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE 5</span>
-<span class="cm">    #define LIMINE_MEMMAP_EXECUTABLE_AND_MODULES 6</span>
-<span class="cm">    #define LIMINE_MEMMAP_FRAMEBUFFER            7</span>
-<span class="cm">    #define LIMINE_MEMMAP_RESERVED_MAPPED        8</span>
+<span class="cm">        #define LIMINE_MEMMAP_USABLE                 0</span>
+<span class="cm">        #define LIMINE_MEMMAP_RESERVED               1</span>
+<span class="cm">        #define LIMINE_MEMMAP_ACPI_RECLAIMABLE       2</span>
+<span class="cm">        #define LIMINE_MEMMAP_ACPI_NVS               3</span>
+<span class="cm">        #define LIMINE_MEMMAP_BAD_MEMORY             4</span>
+<span class="cm">        #define LIMINE_MEMMAP_BOOTLOADER_RECLAIMABLE 5</span>
+<span class="cm">        #define LIMINE_MEMMAP_EXECUTABLE_AND_MODULES 6</span>
+<span class="cm">        #define LIMINE_MEMMAP_FRAMEBUFFER            7</span>
+<span class="cm">        #define LIMINE_MEMMAP_RESERVED_MAPPED        8</span>
 
 <span class="cm">]#</span>
 <span class="k">type</span>
@@ -165,11 +165,11 @@ This is equivalent to calling:</p>
 <span class="k">proc</span><span class="w"> </span><span class="nf">memory_bytes_by_type</span><span class="p">(</span><span class="n">memoryType</span><span class="p">:</span><span class="w"> </span><span class="n">uint64</span><span class="p">):</span><span class="w"> </span><span class="n">uint64</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"limine_memory_bytes_by_type".}</span>
 
 <span class="sx">#[</span>
-<span class="sx">Returns</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">number</span><span class="w"> </span><span class="sx">of</span><span class="w"> </span><span class="sx">usable</span><span class="w"> </span><span class="sx">memory</span><span class="w"> </span><span class="sx">bytes</span><span class="w"> </span><span class="sx">for</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">specified</span><span class="w"> </span><span class="sx">memory</span><span class="w"> </span><span class="sx">type.</span>
+<span class="sx">    Returns</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">number</span><span class="w"> </span><span class="sx">of</span><span class="w"> </span><span class="sx">usable</span><span class="w"> </span><span class="sx">memory</span><span class="w"> </span><span class="sx">bytes</span><span class="w"> </span><span class="sx">for</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">specified</span><span class="w"> </span><span class="sx">memory</span><span class="w"> </span><span class="sx">type.</span>
 
-<span class="sx">This</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">equivalent</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">calling</span><span class="w"> </span>
+<span class="sx">    This</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">equivalent</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">calling</span><span class="w"> </span>
 
-<span class="w">    </span><span class="sx">memory_bytes_by_type( uint64(ord(memoryType)) )</span>
+<span class="w">        </span><span class="sx">memory_bytes_by_type( uint64(ord(memoryType)) )</span>
 
 <span class="sx">]#</span>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">usable_memory_bytes_sector*(memoryType</span>:<span class="w"> </span><span class="sx">MEMORYTYPE): uint64</span><span class="w"> </span><span class="sx">=</span>
@@ -177,10 +177,10 @@ This is equivalent to calling:</p>
 
 
 <span class="sx">#[ </span>
-<span class="sx">Returns</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">number</span><span class="w"> </span><span class="sx">of</span><span class="w"> </span><span class="sx">usable</span><span class="w"> </span><span class="sx">memory</span><span class="w"> </span><span class="sx">bytes.</span>
-<span class="sx">This</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">equivalent</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">calling</span>:
-<span class="w">    </span>
-<span class="w">    </span><span class="sx">usable_memory_bytes_sector*(MEMORYTYPE.USABLE)</span>
+<span class="sx">    Returns</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">number</span><span class="w"> </span><span class="sx">of</span><span class="w"> </span><span class="sx">usable</span><span class="w"> </span><span class="sx">memory</span><span class="w"> </span><span class="sx">bytes.</span>
+<span class="sx">    This</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">equivalent</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">calling</span>:
+<span class="w">        </span>
+<span class="w">        </span><span class="sx">usable_memory_bytes_sector*(MEMORYTYPE.USABLE)</span>
 <span class="sx">]#</span>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">usable_memory_bytes*(): uint64</span><span class="w"> </span><span class="sx">=</span>
 <span class="sx">    usable_memory_bytes_sector(MEMORYTYPE.USABLE)</span>

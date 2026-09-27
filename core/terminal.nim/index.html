@@ -128,9 +128,9 @@
                     </div>
                     <div class="documentation">
                         <p>Set the color of the terminal text. Example usage:</p>
-<div class="highlight"><pre><span></span><span class="n">terminal</span><span class="p">.</span><span class="n">set_text_fg</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kp">true</span><span class="p">)</span><span class="w"> </span><span class="c"># bright red</span>
-<span class="n">terminal</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"Warning"</span><span class="p">)</span>
-<span class="n">terminal</span><span class="p">.</span><span class="n">reset_text_fg</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><span class="w">   </span><span class="n">terminal</span><span class="p">.</span><span class="n">set_text_fg</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kp">true</span><span class="p">)</span><span class="w"> </span><span class="c"># bright red</span>
+<span class="w">   </span><span class="n">terminal</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"Warning"</span><span class="p">)</span>
+<span class="w">   </span><span class="n">terminal</span><span class="p">.</span><span class="n">reset_text_fg</span><span class="p">()</span>
 </pre></div>
 <p>Colors:</p>
 <ul>
@@ -173,8 +173,7 @@
                     </div>
                     <div class="documentation">
                         <p>Reset the foreground color of the terminal text. Example usage:</p>
-<div class="highlight"><pre><span></span><span class="n">terminal</span><span class="p">.</span><span class="n">reset_text_fg</span><span class="p">()</span>
-</pre></div>
+<p>terminal.reset_text_fg()</p>
 
                     </div>
                 </li>
@@ -271,15 +270,15 @@
 
 <span class="sx">#[ Set</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">color</span><span class="w"> </span><span class="sx">of</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">terminal</span><span class="w"> </span><span class="sx">text. Example</span><span class="w"> </span><span class="sx">usage</span>:
 
-<span class="w">    </span><span class="sx">terminal.set_text_fg(1</span>,<span class="w"> </span><span class="sx">true) # bright</span><span class="w"> </span><span class="sx">red</span>
-<span class="w">    </span><span class="sx">terminal.write("Warning")</span>
-<span class="sx">    terminal.reset_text_fg()</span>
+<span class="w">        </span><span class="sx">terminal.set_text_fg(1</span>,<span class="w"> </span><span class="sx">true) # bright</span><span class="w"> </span><span class="sx">red</span>
+<span class="w">        </span><span class="sx">terminal.write("Warning")</span>
+<span class="sx">        terminal.reset_text_fg()</span>
 
-<span class="sx">Colors</span>:
+<span class="sx">    Colors</span>:
 
-<span class="sx">- The</span><span class="w"> </span><span class="sx">8</span><span class="w"> </span><span class="sx">standard</span><span class="w"> </span><span class="sx">ANSI</span><span class="w"> </span><span class="sx">colours</span><span class="w"> </span>
-<span class="w"> </span>
-<span class="w">    </span><span class="sx">black</span>,<span class="w"> </span><span class="sx">red</span>,<span class="w"> </span><span class="sx">green</span>,<span class="w"> </span><span class="sx">brown</span>,<span class="w"> </span><span class="sx">blue</span>,<span class="w"> </span><span class="sx">magenta</span>,<span class="w"> </span><span class="sx">cyan</span>,<span class="w"> </span><span class="sx">grey</span>
+<span class="w">    </span><span class="sx">- The</span><span class="w"> </span><span class="sx">8</span><span class="w"> </span><span class="sx">standard</span><span class="w"> </span><span class="sx">ANSI</span><span class="w"> </span><span class="sx">colours</span><span class="w"> </span>
+<span class="w">    </span>
+<span class="w">        </span><span class="sx">black</span>,<span class="w"> </span><span class="sx">red</span>,<span class="w"> </span><span class="sx">green</span>,<span class="w"> </span><span class="sx">brown</span>,<span class="w"> </span><span class="sx">blue</span>,<span class="w"> </span><span class="sx">magenta</span>,<span class="w"> </span><span class="sx">cyan</span>,<span class="w"> </span><span class="sx">grey</span>
 <span class="sx">]#</span>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">set_text_fg*(colour</span>:<span class="w"> </span><span class="sx">uint64</span>,<span class="w"> </span><span class="sx">bright</span>:<span class="w"> </span><span class="sx">bool) {.importc</span>:<span class="w"> </span><span class="sx">"flanterm_terminal_set_text_fg".}</span>
 
