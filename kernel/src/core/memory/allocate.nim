@@ -34,6 +34,7 @@ const
 proc current_state*(): AllocationState
     {.importc: "limine_get_allocation_state".}
 
+
 #[
     Resets the physical allocator back to the beginning of the memory map.
 
@@ -48,6 +49,7 @@ proc current_state*(): AllocationState
     are disposable. This is a whole-arena reset, not an individual deallocator.
 ]#
 proc reset*() {.importc: "limine_allocator_reset".}
+
 
 #[
     Returns a physical address from the C implementation of the Limine-backed
