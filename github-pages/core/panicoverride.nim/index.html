@@ -104,18 +104,18 @@ hosted terminal or file system. <code>message</code> is therefore ignored.</p>
         <section class="source-code">
             <h2>Source</h2>
             <div class="highlight"><pre><span></span><span class="cm">#[</span>
-<span class="cm">Replaces Nim's default panic handler for the freestanding kernel.</span>
+<span class="cm">    Replaces Nim's default panic handler for the freestanding kernel.</span>
 
-<span class="cm">A hosted application can print an error and ask the operating system to</span>
-<span class="cm">terminate. A kernel has no operating system available to do that, so this</span>
-<span class="cm">handler disables interrupts with `cli` and permanently stops the CPU with</span>
-<span class="cm">`hlt`. The `noreturn` pragma tells the compiler that execution never comes</span>
-<span class="cm">back to the caller. `message` is currently accepted for API compatibility,</span>
-<span class="cm">but this implementation does not display it.</span>
+<span class="cm">    A hosted application can print an error and ask the operating system to</span>
+<span class="cm">    terminate. A kernel has no operating system available to do that, so this</span>
+<span class="cm">    handler disables interrupts with `cli` and permanently stops the CPU with</span>
+<span class="cm">    `hlt`. The `noreturn` pragma tells the compiler that execution never comes</span>
+<span class="cm">    back to the caller. `message` is currently accepted for API compatibility,</span>
+<span class="cm">    but this implementation does not display it.</span>
 
-<span class="cm">Example:</span>
-<span class="cm">    </span>
-<span class="cm">    panic("unrecoverable kernel error")</span>
+<span class="cm">    Example:</span>
+<span class="cm">        </span>
+<span class="cm">        panic("unrecoverable kernel error")</span>
 <span class="cm">        </span>
 <span class="cm">]#</span>
 <span class="k">proc</span><span class="w"> </span><span class="nf">panic</span><span class="o">*</span><span class="p">(</span><span class="n">message</span><span class="p">:</span><span class="w"> </span><span class="nb">string</span><span class="p">)</span><span class="w"> </span><span class="sx">{.nimcall</span>,<span class="w"> </span><span class="sx">noreturn.}</span><span class="w"> </span><span class="o">=</span>
@@ -124,15 +124,15 @@ hosted terminal or file system. <code>message</code> is therefore ignored.</p>
 <span class="w">        </span><span class="k">asm</span><span class="w"> </span><span class="s">"hlt"</span>
 
 <span class="cm">#[</span>
-<span class="cm">Provides the raw-output hook expected by some Nim runtime paths.</span>
+<span class="cm">    Provides the raw-output hook expected by some Nim runtime paths.</span>
 
-<span class="cm">This freestanding implementation intentionally does nothing. It keeps code</span>
-<span class="cm">that requests runtime output linkable without introducing a dependency on a</span>
-<span class="cm">hosted terminal or file system. `message` is therefore ignored.</span>
+<span class="cm">    This freestanding implementation intentionally does nothing. It keeps code</span>
+<span class="cm">    that requests runtime output linkable without introducing a dependency on a</span>
+<span class="cm">    hosted terminal or file system. `message` is therefore ignored.</span>
 
-<span class="cm">Example:</span>
-<span class="cm">    </span>
-<span class="cm">    rawoutput("diagnostic text")</span>
+<span class="cm">    Example:</span>
+<span class="cm">        </span>
+<span class="cm">        rawoutput("diagnostic text")</span>
 <span class="cm">]#</span>
 <span class="k">proc</span><span class="w"> </span><span class="nf">rawoutput</span><span class="o">*</span><span class="p">(</span><span class="n">message</span><span class="p">:</span><span class="w"> </span><span class="nb">string</span><span class="p">)</span><span class="w"> </span><span class="sx">{.nimcall.}</span><span class="w"> </span><span class="o">=</span>
 <span class="w">    </span><span class="k">discard</span>

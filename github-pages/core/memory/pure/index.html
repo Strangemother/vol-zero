@@ -58,7 +58,7 @@ Provides implementations of memcpy, memset, memmove, and memcmp.</p>
             
             <ul class="declaration-list">
                 
-                <li id="declaration-24">
+                <li id="declaration-23">
                     <h3>
                         
                         pointer_to_uint
@@ -78,7 +78,7 @@ easier to read while preserving the same low-level behavior.</p>
                     </div>
                 </li>
                 
-                <li id="declaration-28">
+                <li id="declaration-27">
                     <h3>
                         
                         pointer_to_byte_array
@@ -93,7 +93,7 @@ easier to read while preserving the same low-level behavior.</p>
                     </div>
                 </li>
                 
-                <li id="declaration-38">
+                <li id="declaration-37">
                     <h3>
                         
                         copy_bytes_forward
@@ -111,7 +111,7 @@ tells the template how many byte positions are valid to access.</p>
                     </div>
                 </li>
                 
-                <li id="declaration-43">
+                <li id="declaration-42">
                     <h3>
                         
                         copy_bytes_reverse
@@ -126,7 +126,7 @@ tells the template how many byte positions are valid to access.</p>
                     </div>
                 </li>
                 
-                <li id="declaration-68">
+                <li id="declaration-67">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -148,15 +148,15 @@ and <code>source</code> must refer to a readable region of at least <code>size</
 A <code>size</code> of zero performs no memory access. The procedure returns the
 original <code>destination</code> pointer, matching the C <code>memcpy</code> contract.</p>
 <p>Example:</p>
-<div class="highlight"><pre><span></span><span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="n">source</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">uint8</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">]</span>
-<span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="n">destination</span><span class="p">:</span><span class="w"> </span><span class="nb">array</span><span class="o">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">uint8</span><span class="o">]</span>
-<span class="w"> </span><span class="k">discard</span><span class="w"> </span><span class="n">memcpy</span><span class="p">(</span><span class="n">destination</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="n">source</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="n">csize_t</span><span class="p">(</span><span class="n">source</span><span class="p">.</span><span class="n">len</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><span class="kd">var</span><span class="w"> </span><span class="n">source</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">uint8</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">]</span>
+<span class="kd">var</span><span class="w"> </span><span class="n">destination</span><span class="p">:</span><span class="w"> </span><span class="nb">array</span><span class="o">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">uint8</span><span class="o">]</span>
+<span class="k">discard</span><span class="w"> </span><span class="n">memcpy</span><span class="p">(</span><span class="n">destination</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="n">source</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="n">csize_t</span><span class="p">(</span><span class="n">source</span><span class="p">.</span><span class="n">len</span><span class="p">))</span>
 </pre></div>
 
                     </div>
                 </li>
                 
-                <li id="declaration-89">
+                <li id="declaration-91">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -172,18 +172,22 @@ original <code>destination</code> pointer, matching the C <code>memcpy</code> co
                         <p>Fills the first <code>size</code> bytes of <code>destination</code> with <code>value</code>.</p>
 <p>Only the low eight bits of <code>value</code> are written to each byte, because the
 destination is a byte array. <code>destination</code> must refer to a writable region
-of at least <code>size</code> bytes. A <code>size</code> of zero performs no memory access. The
-procedure returns the original <code>destination</code> pointer, matching the C
-<code>memset</code> contract.</p>
+of at least <code>size</code> bytes.</p>
+<ul>
+<li>A <code>size</code> of zero performs no memory access.</li>
+<li>The procedure returns the original <code>destination</code> pointer, matching the C <code>memset</code> contract.</li>
+</ul>
 <p>Example:</p>
-<div class="highlight"><pre><span></span><span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="n">buffer</span><span class="p">:</span><span class="w"> </span><span class="nb">array</span><span class="o">[</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="n">uint8</span><span class="o">]</span>
-<span class="w"> </span><span class="k">discard</span><span class="w"> </span><span class="n">memset</span><span class="p">(</span><span class="n">buffer</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">csize_t</span><span class="p">(</span><span class="n">buffer</span><span class="p">.</span><span class="n">len</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><span class="c"># Creates a buffer of 8 bytesand fills it with zeros.</span>
+<span class="kd">var</span><span class="w"> </span><span class="n">buffer</span><span class="p">:</span><span class="w"> </span><span class="nb">array</span><span class="o">[</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="n">uint8</span><span class="o">]</span>
+<span class="c"># Fills the buffer at address `buffer.addr` with zeros to the length of the buffer.len</span>
+<span class="k">discard</span><span class="w"> </span><span class="n">memset</span><span class="p">(</span><span class="n">buffer</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">csize_t</span><span class="p">(</span><span class="n">buffer</span><span class="p">.</span><span class="n">len</span><span class="p">))</span>
 </pre></div>
 
                     </div>
                 </li>
                 
-                <li id="declaration-113">
+                <li id="declaration-115">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -205,15 +209,15 @@ writable and <code>source</code> readable for the requested range; the procedure
 returns the original <code>destination</code> pointer, matching the C <code>memmove</code>
 contract.</p>
 <p>Example:</p>
-<div class="highlight"><pre><span></span><span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="n">source</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">uint8</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="o">]</span>
-<span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="n">destination</span><span class="p">:</span><span class="w"> </span><span class="nb">array</span><span class="o">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">uint8</span><span class="o">]</span>
-<span class="w"> </span><span class="k">discard</span><span class="w"> </span><span class="n">memmove</span><span class="p">(</span><span class="n">destination</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="n">source</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="n">csize_t</span><span class="p">(</span><span class="n">source</span><span class="p">.</span><span class="n">len</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><span class="kd">var</span><span class="w"> </span><span class="n">source</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">uint8</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="o">]</span>
+<span class="kd">var</span><span class="w"> </span><span class="n">destination</span><span class="p">:</span><span class="w"> </span><span class="nb">array</span><span class="o">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">uint8</span><span class="o">]</span>
+<span class="k">discard</span><span class="w"> </span><span class="n">memmove</span><span class="p">(</span><span class="n">destination</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="n">source</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="n">csize_t</span><span class="p">(</span><span class="n">source</span><span class="p">.</span><span class="n">len</span><span class="p">))</span>
 </pre></div>
 
                     </div>
                 </li>
                 
-                <li id="declaration-147">
+                <li id="declaration-149">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -234,10 +238,10 @@ bytes are equal. Callers should rely on the sign of a nonzero result rather
 than on its exact magnitude. Both pointers must refer to readable regions
 of at least <code>size</code> bytes; a <code>size</code> of zero returns zero without reading.</p>
 <p>Example:</p>
-<div class="highlight"><pre><span></span><span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">uint8</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">]</span>
-<span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">uint8</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">]</span>
-<span class="w"> </span><span class="k">let</span><span class="w"> </span><span class="n">comparison</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">memcmp</span><span class="p">(</span><span class="n">left</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="n">right</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="n">csize_t</span><span class="p">(</span><span class="n">left</span><span class="p">.</span><span class="n">len</span><span class="p">))</span>
-<span class="w"> </span><span class="c"># comparison is negative because 3 is less than 4.</span>
+<div class="highlight"><pre><span></span><span class="kd">var</span><span class="w"> </span><span class="n">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">uint8</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">]</span>
+<span class="kd">var</span><span class="w"> </span><span class="n">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">uint8</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">]</span>
+<span class="k">let</span><span class="w"> </span><span class="n">comparison</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">memcmp</span><span class="p">(</span><span class="n">left</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="n">right</span><span class="p">.</span><span class="k">addr</span><span class="p">,</span><span class="w"> </span><span class="n">csize_t</span><span class="p">(</span><span class="n">left</span><span class="p">.</span><span class="n">len</span><span class="p">))</span>
+<span class="c"># comparison is negative because 3 is less than 4.</span>
 </pre></div>
 
                     </div>
@@ -251,11 +255,10 @@ of at least <code>size</code> bytes; a <code>size</code> of zero returns zero wi
         <section class="source-code">
             <h2>Source</h2>
             <div class="highlight"><pre><span></span><span class="cm">#[</span>
-<span class="cm">  Freestanding memory manipulation routines for the Limine kernel.</span>
-<span class="cm">  Provides implementations of memcpy, memset, memmove, and memcmp.</span>
+<span class="cm">    Freestanding memory manipulation routines for the Limine kernel.</span>
+<span class="cm">    Provides implementations of memcpy, memset, memmove, and memcmp.</span>
 
-<span class="cm">  Note: For VOL. these are reserved for the core machine and potentially a stepper.</span>
-<span class="cm">  </span>
+<span class="cm">    Note: For VOL. these are reserved for the core machine and potentially a stepper.</span>
 <span class="cm">]#</span>
 
 <span class="k">when</span><span class="w"> </span><span class="n">defined</span><span class="p">(</span><span class="n">freestanding</span><span class="p">):</span>
@@ -265,13 +268,13 @@ of at least <code>size</code> bytes; a <code>size</code> of zero returns zero wi
 
 
 <span class="cm">#[</span>
-<span class="cm">  Sugar for converting pointers to unsigned integers.</span>
+<span class="cm">    Sugar for converting pointers to unsigned integers.</span>
 
-<span class="cm">  Converts a raw pointer to an unsigned integer containing its address.</span>
+<span class="cm">    Converts a raw pointer to an unsigned integer containing its address.</span>
 
-<span class="cm">  This is a template rather than a runtime procedure: Nim substitutes the</span>
-<span class="cm">  `cast[uint]` expression at the call site. It makes the purpose of the cast</span>
-<span class="cm">  easier to read while preserving the same low-level behavior.</span>
+<span class="cm">    This is a template rather than a runtime procedure: Nim substitutes the</span>
+<span class="cm">    `cast[uint]` expression at the call site. It makes the purpose of the cast</span>
+<span class="cm">    easier to read while preserving the same low-level behavior.</span>
 <span class="cm">]#</span>
 <span class="k">template</span><span class="w"> </span><span class="nf">pointer_to_uint</span><span class="p">(</span><span class="n">address</span><span class="p">:</span><span class="w"> </span><span class="n">pointer</span><span class="p">):</span><span class="w"> </span><span class="n">uint</span><span class="w"> </span><span class="o">=</span>
 <span class="w">    </span><span class="k">cast</span><span class="o">[</span><span class="n">uint</span><span class="o">]</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
@@ -283,9 +286,9 @@ of at least <code>size</code> bytes; a <code>size</code> of zero returns zero wi
 
 
 <span class="cm">#[</span>
-<span class="cm">  Copies `size` bytes from a source byte array to a destination byte array in</span>
-<span class="cm">  forward order. The pointers do not contain length information, so `size`</span>
-<span class="cm">  tells the template how many byte positions are valid to access.</span>
+<span class="cm">    Copies `size` bytes from a source byte array to a destination byte array in</span>
+<span class="cm">    forward order. The pointers do not contain length information, so `size`</span>
+<span class="cm">    tells the template how many byte positions are valid to access.</span>
 <span class="cm">]#</span>
 <span class="k">template</span><span class="w"> </span><span class="nf">copy_bytes_forward</span><span class="p">(</span><span class="n">source</span><span class="p">,</span><span class="w"> </span><span class="n">destination</span><span class="p">:</span><span class="w"> </span><span class="k">ptr</span><span class="w"> </span><span class="n">UncheckedArray</span><span class="o">[</span><span class="n">uint8</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">:</span><span class="w"> </span><span class="n">csize_t</span><span class="p">)</span><span class="w"> </span><span class="o">=</span>
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">..</span><span class="o">&lt;</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
@@ -300,22 +303,22 @@ of at least <code>size</code> bytes; a <code>size</code> of zero returns zero wi
 
 <span class="w">        </span>
 <span class="cm">#[</span>
-<span class="cm">   Copies `size` bytes from `source` to `destination`.</span>
-<span class="cm">  </span>
-<span class="cm">   The memory regions must not overlap. If they overlap, the copy order used</span>
-<span class="cm">   by `memcpy` can overwrite source bytes before they are read; use `memmove`</span>
-<span class="cm">   when overlapping regions are possible.</span>
-<span class="cm">  </span>
-<span class="cm">   `destination` must refer to a writable region of at least `size` bytes,</span>
-<span class="cm">   and `source` must refer to a readable region of at least `size` bytes.</span>
-<span class="cm">   A `size` of zero performs no memory access. The procedure returns the</span>
-<span class="cm">   original `destination` pointer, matching the C `memcpy` contract.</span>
+<span class="cm">    Copies `size` bytes from `source` to `destination`.</span>
+<span class="cm">    </span>
+<span class="cm">    The memory regions must not overlap. If they overlap, the copy order used</span>
+<span class="cm">    by `memcpy` can overwrite source bytes before they are read; use `memmove`</span>
+<span class="cm">    when overlapping regions are possible.</span>
+<span class="cm">    </span>
+<span class="cm">    `destination` must refer to a writable region of at least `size` bytes,</span>
+<span class="cm">    and `source` must refer to a readable region of at least `size` bytes.</span>
+<span class="cm">    A `size` of zero performs no memory access. The procedure returns the</span>
+<span class="cm">    original `destination` pointer, matching the C `memcpy` contract.</span>
 
-<span class="cm">   Example:</span>
-<span class="cm">       </span>
-<span class="cm">     var source = [uint8(1), 2, 3, 4]</span>
-<span class="cm">     var destination: array[4, uint8]</span>
-<span class="cm">     discard memcpy(destination.addr, source.addr, csize_t(source.len))</span>
+<span class="cm">    Example:</span>
+<span class="cm">        </span>
+<span class="cm">        var source = [uint8(1), 2, 3, 4]</span>
+<span class="cm">        var destination: array[4, uint8]</span>
+<span class="cm">        discard memcpy(destination.addr, source.addr, csize_t(source.len))</span>
 <span class="cm">]#</span>
 <span class="k">proc</span><span class="w"> </span><span class="nf">memcpy</span><span class="o">*</span><span class="p">(</span><span class="n">destination</span><span class="p">:</span><span class="w"> </span><span class="n">pointer</span><span class="p">,</span><span class="w"> </span><span class="n">source</span><span class="p">:</span><span class="w"> </span><span class="n">pointer</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">:</span><span class="w"> </span><span class="n">csize_t</span><span class="p">):</span><span class="w"> </span><span class="n">pointer</span><span class="w"> </span><span class="sx">{.memoryExport.}</span><span class="w"> </span><span class="o">=</span>
 <span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">destinationBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pointer_to_byte_array</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span>
@@ -325,18 +328,21 @@ of at least <code>size</code> bytes; a <code>size</code> of zero returns zero wi
 
 
 <span class="cm">#[</span>
-<span class="cm">  Fills the first `size` bytes of `destination` with `value`.</span>
-<span class="cm">  </span>
-<span class="cm">  Only the low eight bits of `value` are written to each byte, because the</span>
-<span class="cm">  destination is a byte array. `destination` must refer to a writable region</span>
-<span class="cm">  of at least `size` bytes. A `size` of zero performs no memory access. The</span>
-<span class="cm">  procedure returns the original `destination` pointer, matching the C</span>
-<span class="cm">  `memset` contract.</span>
+<span class="cm">    Fills the first `size` bytes of `destination` with `value`.</span>
+<span class="cm">    </span>
+<span class="cm">    Only the low eight bits of `value` are written to each byte, because the</span>
+<span class="cm">    destination is a byte array. `destination` must refer to a writable region</span>
+<span class="cm">    of at least `size` bytes. </span>
 
-<span class="cm">   Example:</span>
-<span class="cm">       </span>
-<span class="cm">     var buffer: array[8, uint8]</span>
-<span class="cm">     discard memset(buffer.addr, 0, csize_t(buffer.len))</span>
+<span class="cm">    + A `size` of zero performs no memory access. </span>
+<span class="cm">    + The procedure returns the original `destination` pointer, matching the C `memset` contract.</span>
+
+<span class="cm">    Example:</span>
+
+<span class="cm">        # Creates a buffer of 8 bytesand fills it with zeros.</span>
+<span class="cm">        var buffer: array[8, uint8]</span>
+<span class="cm">        # Fills the buffer at address `buffer.addr` with zeros to the length of the buffer.len</span>
+<span class="cm">        discard memset(buffer.addr, 0, csize_t(buffer.len))</span>
 <span class="cm">]#</span>
 <span class="k">proc</span><span class="w"> </span><span class="nf">memset</span><span class="o">*</span><span class="p">(</span><span class="n">destination</span><span class="p">:</span><span class="w"> </span><span class="n">pointer</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="n">cint</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">:</span><span class="w"> </span><span class="n">csize_t</span><span class="p">):</span><span class="w"> </span><span class="n">pointer</span><span class="w"> </span><span class="sx">{.memoryExport.}</span><span class="w"> </span><span class="o">=</span>
 <span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">destinationBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pointer_to_byte_array</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span>
@@ -346,21 +352,21 @@ of at least <code>size</code> bytes; a <code>size</code> of zero returns zero wi
 
 <span class="w">    </span>
 <span class="cm">#[</span>
-<span class="cm">  Copies `size` bytes from `source` to `destination`, safely handling overlap.</span>
+<span class="cm">    Copies `size` bytes from `source` to `destination`, safely handling overlap.</span>
 
-<span class="cm">  When the destination begins before the source, bytes are copied from low to</span>
-<span class="cm">  high addresses. When the destination begins after the source, bytes are</span>
-<span class="cm">  copied from high to low addresses so that unread source bytes are preserved.</span>
-<span class="cm">  If both pointers are equal, no copying is necessary. `destination` must be</span>
-<span class="cm">  writable and `source` readable for the requested range; the procedure</span>
-<span class="cm">  returns the original `destination` pointer, matching the C `memmove`</span>
-<span class="cm">  contract.</span>
+<span class="cm">    When the destination begins before the source, bytes are copied from low to</span>
+<span class="cm">    high addresses. When the destination begins after the source, bytes are</span>
+<span class="cm">    copied from high to low addresses so that unread source bytes are preserved.</span>
+<span class="cm">    If both pointers are equal, no copying is necessary. `destination` must be</span>
+<span class="cm">    writable and `source` readable for the requested range; the procedure</span>
+<span class="cm">    returns the original `destination` pointer, matching the C `memmove`</span>
+<span class="cm">    contract.</span>
 
-<span class="cm">   Example:</span>
-<span class="cm">       </span>
-<span class="cm">     var source = [uint8(10), 20, 30, 40]</span>
-<span class="cm">     var destination: array[4, uint8]</span>
-<span class="cm">     discard memmove(destination.addr, source.addr, csize_t(source.len))</span>
+<span class="cm">    Example:</span>
+<span class="cm">        </span>
+<span class="cm">        var source = [uint8(10), 20, 30, 40]</span>
+<span class="cm">        var destination: array[4, uint8]</span>
+<span class="cm">        discard memmove(destination.addr, source.addr, csize_t(source.len))</span>
 <span class="cm">]#</span>
 <span class="k">proc</span><span class="w"> </span><span class="nf">memmove</span><span class="o">*</span><span class="p">(</span><span class="n">destination</span><span class="p">:</span><span class="w"> </span><span class="n">pointer</span><span class="p">,</span><span class="w"> </span><span class="n">source</span><span class="p">:</span><span class="w"> </span><span class="n">pointer</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">:</span><span class="w"> </span><span class="n">csize_t</span><span class="p">):</span><span class="w"> </span><span class="n">pointer</span><span class="w"> </span><span class="sx">{.memoryExport.}</span><span class="w"> </span><span class="o">=</span>
 <span class="w">    </span><span class="c"># destination is a raw pointer, so Nim does not know what data it points to.</span>
@@ -380,21 +386,21 @@ of at least <code>size</code> bytes; a <code>size</code> of zero returns zero wi
 
 <span class="w">    </span>
 <span class="cm">#[</span>
-<span class="cm">  Compares the first `size` bytes at `first` and `second` lexicographically.</span>
+<span class="cm">    Compares the first `size` bytes at `first` and `second` lexicographically.</span>
 
-<span class="cm">  Bytes are compared as unsigned values, from low to high addresses. The</span>
-<span class="cm">  procedure returns a negative value when the first differing byte in `first`</span>
-<span class="cm">  is smaller, a positive value when it is larger, and zero when all `size`</span>
-<span class="cm">  bytes are equal. Callers should rely on the sign of a nonzero result rather</span>
-<span class="cm">  than on its exact magnitude. Both pointers must refer to readable regions</span>
-<span class="cm">  of at least `size` bytes; a `size` of zero returns zero without reading.</span>
+<span class="cm">    Bytes are compared as unsigned values, from low to high addresses. The</span>
+<span class="cm">    procedure returns a negative value when the first differing byte in `first`</span>
+<span class="cm">    is smaller, a positive value when it is larger, and zero when all `size`</span>
+<span class="cm">    bytes are equal. Callers should rely on the sign of a nonzero result rather</span>
+<span class="cm">    than on its exact magnitude. Both pointers must refer to readable regions</span>
+<span class="cm">    of at least `size` bytes; a `size` of zero returns zero without reading.</span>
 
-<span class="cm">   Example:</span>
-<span class="cm">       </span>
-<span class="cm">     var left = [uint8(1), 2, 3]</span>
-<span class="cm">     var right = [uint8(1), 2, 4]</span>
-<span class="cm">     let comparison = memcmp(left.addr, right.addr, csize_t(left.len))</span>
-<span class="cm">     # comparison is negative because 3 is less than 4.</span>
+<span class="cm">    Example:</span>
+<span class="cm">        </span>
+<span class="cm">        var left = [uint8(1), 2, 3]</span>
+<span class="cm">        var right = [uint8(1), 2, 4]</span>
+<span class="cm">        let comparison = memcmp(left.addr, right.addr, csize_t(left.len))</span>
+<span class="cm">        # comparison is negative because 3 is less than 4.</span>
 <span class="cm">]#</span>
 <span class="k">proc</span><span class="w"> </span><span class="nf">memcmp</span><span class="o">*</span><span class="p">(</span><span class="n">first</span><span class="p">:</span><span class="w"> </span><span class="n">pointer</span><span class="p">,</span><span class="w"> </span><span class="n">second</span><span class="p">:</span><span class="w"> </span><span class="n">pointer</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">:</span><span class="w"> </span><span class="n">csize_t</span><span class="p">):</span><span class="w"> </span><span class="n">cint</span><span class="w"> </span><span class="sx">{.memoryExport.}</span><span class="w"> </span><span class="o">=</span>
 <span class="w">    </span><span class="k">let</span><span class="w"> </span><span class="n">firstBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pointer_to_byte_array</span><span class="p">(</span><span class="n">first</span><span class="p">)</span>
@@ -413,35 +419,35 @@ of at least <code>size</code> bytes; a <code>size</code> of zero returns zero wi
         <ul class="toc-list">
             
             <li>
-                <a href="#declaration-24">
+                <a href="#declaration-23">
                     
                     pointer_to_uint
                 </a>
             </li>
             
             <li>
-                <a href="#declaration-28">
+                <a href="#declaration-27">
                     
                     pointer_to_byte_array
                 </a>
             </li>
             
             <li>
-                <a href="#declaration-38">
+                <a href="#declaration-37">
                     
                     copy_bytes_forward
                 </a>
             </li>
             
             <li>
-                <a href="#declaration-43">
+                <a href="#declaration-42">
                     
                     copy_bytes_reverse
                 </a>
             </li>
             
             <li>
-                <a href="#declaration-68">
+                <a href="#declaration-67">
                     
                     <span class="exported">public</span>
                     
@@ -450,7 +456,7 @@ of at least <code>size</code> bytes; a <code>size</code> of zero returns zero wi
             </li>
             
             <li>
-                <a href="#declaration-89">
+                <a href="#declaration-91">
                     
                     <span class="exported">public</span>
                     
@@ -459,7 +465,7 @@ of at least <code>size</code> bytes; a <code>size</code> of zero returns zero wi
             </li>
             
             <li>
-                <a href="#declaration-113">
+                <a href="#declaration-115">
                     
                     <span class="exported">public</span>
                     
@@ -468,7 +474,7 @@ of at least <code>size</code> bytes; a <code>size</code> of zero returns zero wi
             </li>
             
             <li>
-                <a href="#declaration-147">
+                <a href="#declaration-149">
                     
                     <span class="exported">public</span>
                     

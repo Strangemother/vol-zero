@@ -187,15 +187,15 @@ valid NUL-terminated string.</p>
 <code>write</code> to transmit it. Call <code>init</code> first.</p>
 <p>The edge case for the most negative 64-bit integer is handled correctly,
 Where a</p>
-<div class="highlight"><pre><span></span><span class="w">  </span><span class="n">low</span><span class="p">(</span><span class="nb">int64</span><span class="p">)</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="p">^</span><span class="mi">63</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">9223372036854775808</span>
-<span class="w">  </span><span class="n">high</span><span class="p">(</span><span class="nb">int64</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="mi">2</span><span class="p">^</span><span class="mi">63</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w">   </span><span class="o">=</span><span class="w">  </span><span class="mi">9223372036854775807</span>
+<div class="highlight"><pre><span></span><span class="n">low</span><span class="p">(</span><span class="nb">int64</span><span class="p">)</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="p">^</span><span class="mi">63</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">9223372036854775808</span>
+<span class="n">high</span><span class="p">(</span><span class="nb">int64</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="mi">2</span><span class="p">^</span><span class="mi">63</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w">   </span><span class="o">=</span><span class="w">  </span><span class="mi">9223372036854775807</span>
 </pre></div>
 <p>Because:</p>
-<div class="highlight"><pre><span></span><span class="w">  </span><span class="n">uint64</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">2</span><span class="p">^</span><span class="mi">64</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">  </span><span class="nb">int64</span><span class="p">:</span><span class="w">  </span><span class="o">-</span><span class="mi">2</span><span class="p">^</span><span class="mi">63</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">2</span><span class="p">^</span><span class="mi">63</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<div class="highlight"><pre><span></span><span class="n">uint64</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">2</span><span class="p">^</span><span class="mi">64</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+<span class="nb">int64</span><span class="p">:</span><span class="w">  </span><span class="o">-</span><span class="mi">2</span><span class="p">^</span><span class="mi">63</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">2</span><span class="p">^</span><span class="mi">63</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
 </pre></div>
 <p>Therefore:</p>
-<div class="highlight"><pre><span></span><span class="w">    </span><span class="n">uint64</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<div class="highlight"><pre><span></span><span class="w">  </span><span class="n">uint64</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
 </pre></div>
 <p>Ensures we correctly handle the most negative 64-bit integer.</p>
 
@@ -210,30 +210,30 @@ Where a</p>
         <section class="source-code">
             <h2>Source</h2>
             <div class="highlight"><pre><span></span><span class="cm">#[</span>
-<span class="cm">The x86 CPU communicates with legacy devices through I/O ports.</span>
-<span class="cm">Nim does not express the compiler constraints needed by</span>
-<span class="cm">the `inb` and `outb` instructions, so small C helpers provide that boundary.</span>
+<span class="cm">    The x86 CPU communicates with legacy devices through I/O ports.</span>
+<span class="cm">    Nim does not express the compiler constraints needed by</span>
+<span class="cm">    the `inb` and `outb` instructions, so small C helpers provide that boundary.</span>
 
-<span class="cm">The serial port communciates at the standard rate `115200` by default.</span>
+<span class="cm">    The serial port communciates at the standard rate `115200` by default.</span>
 
-<span class="cm">Example:</span>
+<span class="cm">    Example:</span>
 
-<span class="cm">    serial.init()</span>
+<span class="cm">        serial.init()</span>
 
-<span class="cm">    serial.write("Usable memory: ")</span>
-<span class="cm">    serial.writeUInt64(mem_info.usableMemoryBytes())</span>
-<span class="cm">    serial.write("\r\n")</span>
+<span class="cm">        serial.write("Usable memory: ")</span>
+<span class="cm">        serial.writeUInt64(mem_info.usableMemoryBytes())</span>
+<span class="cm">        serial.write("\r\n")</span>
 <span class="cm">]#</span>
 
 <span class="cm">#[</span>
-<span class="cm">  The x86 CPU communicates with legacy devices through I/O ports. Nim does not</span>
-<span class="cm">  express the compiler constraints needed by the `inb` and `outb` instructions,</span>
-<span class="cm">  so these small C helpers provide that boundary.</span>
+<span class="cm">    The x86 CPU communicates with legacy devices through I/O ports. Nim does not</span>
+<span class="cm">    express the compiler constraints needed by the `inb` and `outb` instructions,</span>
+<span class="cm">    so these small C helpers provide that boundary.</span>
 
-<span class="cm">  The `"a"` constraint places the byte value in the accumulator register, and</span>
-<span class="cm">  `"Nd"` allows the compiler to use either an immediate port number or the DX</span>
-<span class="cm">  register. `volatile` prevents the compiler from removing or reordering the</span>
-<span class="cm">  hardware access as if it were an ordinary unused calculation.</span>
+<span class="cm">    The `"a"` constraint places the byte value in the accumulator register, and</span>
+<span class="cm">    `"Nd"` allows the compiler to use either an immediate port number or the DX</span>
+<span class="cm">    register. `volatile` prevents the compiler from removing or reordering the</span>
+<span class="cm">    hardware access as if it were an ordinary unused calculation.</span>
 <span class="cm">]#</span>
 <span class="sx">{.emit</span>:<span class="w"> </span><span class="sx">"""</span>
 <span class="sx">static</span><span class="w"> </span><span class="sx">inline</span><span class="w"> </span><span class="sx">void</span><span class="w"> </span><span class="sx">nim_serial_out(unsigned</span><span class="w"> </span><span class="sx">short</span><span class="w"> </span><span class="sx">port</span>,<span class="w"> </span><span class="sx">unsigned</span><span class="w"> </span><span class="sx">char</span><span class="w"> </span><span class="sx">value) {</span>
@@ -248,31 +248,31 @@ Where a</p>
 <span class="sx">""".}</span>
 
 <span class="sx">#[</span>
-<span class="sx">  Declares</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">C</span><span class="w"> </span><span class="sx">helper</span><span class="w"> </span><span class="sx">that</span><span class="w"> </span><span class="sx">writes</span><span class="w"> </span><span class="sx">one</span><span class="w"> </span><span class="sx">byte</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">an</span><span class="w"> </span><span class="sx">x86</span><span class="w"> </span><span class="sx">I/O</span><span class="w"> </span><span class="sx">port.</span>
+<span class="sx">    Declares</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">C</span><span class="w"> </span><span class="sx">helper</span><span class="w"> </span><span class="sx">that</span><span class="w"> </span><span class="sx">writes</span><span class="w"> </span><span class="sx">one</span><span class="w"> </span><span class="sx">byte</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">an</span><span class="w"> </span><span class="sx">x86</span><span class="w"> </span><span class="sx">I/O</span><span class="w"> </span><span class="sx">port.</span>
 
-<span class="sx">  A</span><span class="w"> </span><span class="sx">procedure</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">private</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">this</span><span class="w"> </span><span class="sx">module. Callers</span><span class="w"> </span><span class="sx">should</span><span class="w"> </span><span class="sx">typically</span>
-<span class="w">  </span><span class="sx">call</span><span class="w"> </span><span class="sx">`init` and</span><span class="w"> </span><span class="sx">`write` rather</span><span class="w"> </span><span class="sx">than</span><span class="w"> </span><span class="sx">manipulating</span><span class="w"> </span><span class="sx">UART</span><span class="w"> </span><span class="sx">registers</span><span class="w"> </span><span class="sx">directly.</span>
+<span class="sx">    A</span><span class="w"> </span><span class="sx">procedure</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">private</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">this</span><span class="w"> </span><span class="sx">module. Callers</span><span class="w"> </span><span class="sx">should</span><span class="w"> </span><span class="sx">typically</span>
+<span class="w">    </span><span class="sx">call</span><span class="w"> </span><span class="sx">`init` and</span><span class="w"> </span><span class="sx">`write` rather</span><span class="w"> </span><span class="sx">than</span><span class="w"> </span><span class="sx">manipulating</span><span class="w"> </span><span class="sx">UART</span><span class="w"> </span><span class="sx">registers</span><span class="w"> </span><span class="sx">directly.</span>
 <span class="sx">]#</span>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">serialOut(port</span>:<span class="w"> </span><span class="sx">uint16</span>,<span class="w"> </span><span class="sx">value</span>:<span class="w"> </span><span class="sx">uint8) {.importc</span>:<span class="w"> </span><span class="sx">"nim_serial_out".}</span>
 
 <span class="sx">#[</span>
-<span class="sx">  Declares</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">C</span><span class="w"> </span><span class="sx">helper</span><span class="w"> </span><span class="sx">that</span><span class="w"> </span><span class="sx">reads</span><span class="w"> </span><span class="sx">one</span><span class="w"> </span><span class="sx">byte</span><span class="w"> </span><span class="sx">from</span><span class="w"> </span><span class="sx">an</span><span class="w"> </span><span class="sx">x86</span><span class="w"> </span><span class="sx">I/O</span><span class="w"> </span><span class="sx">port.</span>
+<span class="sx">    Declares</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">C</span><span class="w"> </span><span class="sx">helper</span><span class="w"> </span><span class="sx">that</span><span class="w"> </span><span class="sx">reads</span><span class="w"> </span><span class="sx">one</span><span class="w"> </span><span class="sx">byte</span><span class="w"> </span><span class="sx">from</span><span class="w"> </span><span class="sx">an</span><span class="w"> </span><span class="sx">x86</span><span class="w"> </span><span class="sx">I/O</span><span class="w"> </span><span class="sx">port.</span>
 
-<span class="sx">  It</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">used</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">inspect</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">UART</span><span class="w"> </span><span class="sx">status</span><span class="w"> </span><span class="sx">register</span><span class="w"> </span><span class="sx">before</span><span class="w"> </span><span class="sx">writing</span><span class="w"> </span><span class="sx">another</span><span class="w"> </span><span class="sx">byte.</span>
+<span class="sx">    It</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">used</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">inspect</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">UART</span><span class="w"> </span><span class="sx">status</span><span class="w"> </span><span class="sx">register</span><span class="w"> </span><span class="sx">before</span><span class="w"> </span><span class="sx">writing</span><span class="w"> </span><span class="sx">another</span><span class="w"> </span><span class="sx">byte.</span>
 <span class="sx">]#</span>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">serialIn(port</span>:<span class="w"> </span><span class="sx">uint16): uint8</span><span class="w"> </span><span class="sx">{.importc</span>:<span class="w"> </span><span class="sx">"nim_serial_in".}</span>
 
 <span class="sx">#[</span>
-<span class="sx">  Configures</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">first</span><span class="w"> </span><span class="sx">PC</span><span class="w"> </span><span class="sx">serial</span><span class="w"> </span><span class="sx">port</span>,<span class="w"> </span><span class="sx">COM1</span>,<span class="w"> </span><span class="sx">for</span><span class="w"> </span><span class="sx">eight</span><span class="w"> </span><span class="sx">data</span><span class="w"> </span><span class="sx">bits</span>,<span class="w"> </span><span class="sx">no</span><span class="w"> </span><span class="sx">parity</span>,
-<span class="w">  </span><span class="sx">one</span><span class="w"> </span><span class="sx">stop</span><span class="w"> </span><span class="sx">bit</span>,<span class="w"> </span><span class="sx">and</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">baud-rate</span><span class="w"> </span><span class="sx">divisor</span><span class="w"> </span><span class="sx">of</span><span class="w"> </span><span class="sx">three.</span>
+<span class="sx">    Configures</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">first</span><span class="w"> </span><span class="sx">PC</span><span class="w"> </span><span class="sx">serial</span><span class="w"> </span><span class="sx">port</span>,<span class="w"> </span><span class="sx">COM1</span>,<span class="w"> </span><span class="sx">for</span><span class="w"> </span><span class="sx">eight</span><span class="w"> </span><span class="sx">data</span><span class="w"> </span><span class="sx">bits</span>,<span class="w"> </span><span class="sx">no</span><span class="w"> </span><span class="sx">parity</span>,
+<span class="w">    </span><span class="sx">one</span><span class="w"> </span><span class="sx">stop</span><span class="w"> </span><span class="sx">bit</span>,<span class="w"> </span><span class="sx">and</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">baud-rate</span><span class="w"> </span><span class="sx">divisor</span><span class="w"> </span><span class="sx">of</span><span class="w"> </span><span class="sx">three.</span>
 
-<span class="sx">  The</span><span class="w"> </span><span class="sx">numeric</span><span class="w"> </span><span class="sx">port</span><span class="w"> </span><span class="sx">addresses</span><span class="w"> </span><span class="sx">are</span><span class="w"> </span><span class="sx">COM1's</span><span class="w"> </span><span class="sx">standard</span><span class="w"> </span><span class="sx">registers. Call</span><span class="w"> </span><span class="sx">this</span><span class="w"> </span><span class="sx">before</span>
-<span class="w">  </span><span class="sx">`write` so</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">UART</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">configured</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">transmit</span><span class="w"> </span><span class="sx">reliably.</span>
+<span class="sx">    The</span><span class="w"> </span><span class="sx">numeric</span><span class="w"> </span><span class="sx">port</span><span class="w"> </span><span class="sx">addresses</span><span class="w"> </span><span class="sx">are</span><span class="w"> </span><span class="sx">COM1's</span><span class="w"> </span><span class="sx">standard</span><span class="w"> </span><span class="sx">registers. Call</span><span class="w"> </span><span class="sx">this</span><span class="w"> </span><span class="sx">before</span>
+<span class="w">    </span><span class="sx">`write` so</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">UART</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">configured</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">transmit</span><span class="w"> </span><span class="sx">reliably.</span>
 
-<span class="sx">  Example</span>:
-<span class="w">      </span>
-<span class="w">    </span><span class="sx">init()</span>
-<span class="sx">    write("serial</span><span class="w"> </span><span class="sx">console</span><span class="w"> </span><span class="sx">ready\0")</span>
+<span class="sx">    Example</span>:
+<span class="w">        </span>
+<span class="w">        </span><span class="sx">init()</span>
+<span class="sx">        write("serial</span><span class="w"> </span><span class="sx">console</span><span class="w"> </span><span class="sx">ready\0")</span>
 <span class="sx">]#</span>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">init*() =</span>
 <span class="sx">    serialOut(0x3f9</span>,<span class="w"> </span><span class="sx">0)</span>
@@ -284,17 +284,17 @@ Where a</p>
 <span class="sx">    serialOut(0x3fc</span>,<span class="w"> </span><span class="sx">0x0b)</span>
 
 <span class="sx">#[</span>
-<span class="sx">  Sends</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">NUL-terminated</span><span class="w"> </span><span class="sx">message</span><span class="w"> </span><span class="sx">through</span><span class="w"> </span><span class="sx">COM1.</span>
+<span class="sx">    Sends</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">NUL-terminated</span><span class="w"> </span><span class="sx">message</span><span class="w"> </span><span class="sx">through</span><span class="w"> </span><span class="sx">COM1.</span>
 
-<span class="sx">  A</span><span class="w"> </span><span class="sx">`cstring` is</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">pointer</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">characters</span><span class="w"> </span><span class="sx">ending</span><span class="w"> </span><span class="sx">with</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">NUL</span><span class="w"> </span><span class="sx">byte</span><span class="w"> </span><span class="sx">(`'\0'`). The</span>
-<span class="w">  </span><span class="sx">procedure</span><span class="w"> </span><span class="sx">reads</span><span class="w"> </span><span class="sx">one</span><span class="w"> </span><span class="sx">character</span><span class="w"> </span><span class="sx">at</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">time</span>,<span class="w"> </span><span class="sx">waits</span><span class="w"> </span><span class="sx">until</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">UART</span><span class="w"> </span><span class="sx">transmitter</span><span class="w"> </span><span class="sx">is</span>
-<span class="w">  </span><span class="sx">ready</span>,<span class="w"> </span><span class="sx">and</span><span class="w"> </span><span class="sx">then</span><span class="w"> </span><span class="sx">writes</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">character</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">COM1. Call</span><span class="w"> </span><span class="sx">`init` first</span><span class="w"> </span><span class="sx">and</span><span class="w"> </span><span class="sx">provide</span><span class="w"> </span><span class="sx">a</span>
-<span class="w">  </span><span class="sx">valid</span><span class="w"> </span><span class="sx">NUL-terminated</span><span class="w"> </span><span class="sx">string.</span>
+<span class="sx">    A</span><span class="w"> </span><span class="sx">`cstring` is</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">pointer</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">characters</span><span class="w"> </span><span class="sx">ending</span><span class="w"> </span><span class="sx">with</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">NUL</span><span class="w"> </span><span class="sx">byte</span><span class="w"> </span><span class="sx">(`'\0'`). The</span>
+<span class="w">    </span><span class="sx">procedure</span><span class="w"> </span><span class="sx">reads</span><span class="w"> </span><span class="sx">one</span><span class="w"> </span><span class="sx">character</span><span class="w"> </span><span class="sx">at</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">time</span>,<span class="w"> </span><span class="sx">waits</span><span class="w"> </span><span class="sx">until</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">UART</span><span class="w"> </span><span class="sx">transmitter</span><span class="w"> </span><span class="sx">is</span>
+<span class="w">    </span><span class="sx">ready</span>,<span class="w"> </span><span class="sx">and</span><span class="w"> </span><span class="sx">then</span><span class="w"> </span><span class="sx">writes</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">character</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">COM1. Call</span><span class="w"> </span><span class="sx">`init` first</span><span class="w"> </span><span class="sx">and</span><span class="w"> </span><span class="sx">provide</span><span class="w"> </span><span class="sx">a</span>
+<span class="w">    </span><span class="sx">valid</span><span class="w"> </span><span class="sx">NUL-terminated</span><span class="w"> </span><span class="sx">string.</span>
 
-<span class="sx">  Example</span>:
-<span class="w">      </span>
-<span class="w">    </span><span class="sx">init()</span>
-<span class="sx">    write("hello</span><span class="w"> </span><span class="sx">from</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">kernel\0")</span>
+<span class="sx">    Example</span>:
+<span class="w">        </span>
+<span class="w">        </span><span class="sx">init()</span>
+<span class="sx">        write("hello</span><span class="w"> </span><span class="sx">from</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">kernel\0")</span>
 <span class="sx">]#</span>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">write*(message</span>:<span class="w"> </span><span class="sx">cstring) =</span>
 <span class="sx">    let</span><span class="w"> </span><span class="sx">current</span><span class="w"> </span><span class="sx">= cast[ptr</span><span class="w"> </span><span class="sx">UncheckedArray[char]](message)</span>
@@ -321,27 +321,27 @@ Where a</p>
 
 
 <span class="sx">#[</span>
-<span class="sx">  Sends</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">signed</span><span class="w"> </span><span class="sx">64-bit</span><span class="w"> </span><span class="sx">integer</span><span class="w"> </span><span class="sx">through</span><span class="w"> </span><span class="sx">COM1.</span>
+<span class="sx">    Sends</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span><span class="sx">signed</span><span class="w"> </span><span class="sx">64-bit</span><span class="w"> </span><span class="sx">integer</span><span class="w"> </span><span class="sx">through</span><span class="w"> </span><span class="sx">COM1.</span>
 
-<span class="sx">  The</span><span class="w"> </span><span class="sx">procedure</span><span class="w"> </span><span class="sx">converts</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">integer</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">its</span><span class="w"> </span><span class="sx">decimal</span><span class="w"> </span><span class="sx">representation</span><span class="w"> </span><span class="sx">and</span><span class="w"> </span><span class="sx">calls</span>
-<span class="w">  </span><span class="sx">`write` to</span><span class="w"> </span><span class="sx">transmit</span><span class="w"> </span><span class="sx">it. Call</span><span class="w"> </span><span class="sx">`init` first.</span>
+<span class="sx">    The</span><span class="w"> </span><span class="sx">procedure</span><span class="w"> </span><span class="sx">converts</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">integer</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">its</span><span class="w"> </span><span class="sx">decimal</span><span class="w"> </span><span class="sx">representation</span><span class="w"> </span><span class="sx">and</span><span class="w"> </span><span class="sx">calls</span>
+<span class="w">    </span><span class="sx">`write` to</span><span class="w"> </span><span class="sx">transmit</span><span class="w"> </span><span class="sx">it. Call</span><span class="w"> </span><span class="sx">`init` first.</span>
 
-<span class="sx">  The</span><span class="w"> </span><span class="sx">edge</span><span class="w"> </span><span class="sx">case</span><span class="w"> </span><span class="sx">for</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">most</span><span class="w"> </span><span class="sx">negative</span><span class="w"> </span><span class="sx">64-bit</span><span class="w"> </span><span class="sx">integer</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">handled</span><span class="w"> </span><span class="sx">correctly</span>,
-<span class="w">  </span><span class="sx">Where</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span>
-<span class="w">  </span>
-<span class="w">      </span><span class="sx">low(int64)  = -2^63</span><span class="w">       </span><span class="sx">= -9223372036854775808</span>
-<span class="w">      </span><span class="sx">high(int64) =  2^63</span><span class="w"> </span><span class="sx">- 1</span><span class="w">   </span><span class="sx">=  9223372036854775807</span>
-<span class="w">  </span>
-<span class="w">  </span><span class="sx">Because</span>:
-<span class="w">      </span>
-<span class="w">      </span><span class="sx">uint64</span>:<span class="w"> </span><span class="sx">0</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">2^64</span><span class="w"> </span><span class="sx">- 1</span>
-<span class="w">      </span><span class="sx">int64</span>:<span class="w">  </span><span class="sx">-2^63</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">2^63</span><span class="w"> </span><span class="sx">- 1</span>
+<span class="sx">    The</span><span class="w"> </span><span class="sx">edge</span><span class="w"> </span><span class="sx">case</span><span class="w"> </span><span class="sx">for</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">most</span><span class="w"> </span><span class="sx">negative</span><span class="w"> </span><span class="sx">64-bit</span><span class="w"> </span><span class="sx">integer</span><span class="w"> </span><span class="sx">is</span><span class="w"> </span><span class="sx">handled</span><span class="w"> </span><span class="sx">correctly</span>,
+<span class="w">    </span><span class="sx">Where</span><span class="w"> </span><span class="sx">a</span><span class="w"> </span>
+<span class="w">    </span>
+<span class="w">        </span><span class="sx">low(int64)  = -2^63</span><span class="w">       </span><span class="sx">= -9223372036854775808</span>
+<span class="w">        </span><span class="sx">high(int64) =  2^63</span><span class="w"> </span><span class="sx">- 1</span><span class="w">   </span><span class="sx">=  9223372036854775807</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sx">Because</span>:
+<span class="w">        </span>
+<span class="w">        </span><span class="sx">uint64</span>:<span class="w"> </span><span class="sx">0</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">2^64</span><span class="w"> </span><span class="sx">- 1</span>
+<span class="w">        </span><span class="sx">int64</span>:<span class="w">  </span><span class="sx">-2^63</span><span class="w"> </span><span class="sx">to</span><span class="w"> </span><span class="sx">2^63</span><span class="w"> </span><span class="sx">- 1</span>
 
-<span class="w">  </span><span class="sx">Therefore</span>:
+<span class="w">    </span><span class="sx">Therefore</span>:
 
-<span class="w">        </span><span class="sx">uint64(-(value</span><span class="w"> </span><span class="sx">+ 1)) + 1</span>
+<span class="w">          </span><span class="sx">uint64(-(value</span><span class="w"> </span><span class="sx">+ 1)) + 1</span>
 
-<span class="w">  </span><span class="sx">Ensures</span><span class="w"> </span><span class="sx">we</span><span class="w"> </span><span class="sx">correctly</span><span class="w"> </span><span class="sx">handle</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">most</span><span class="w"> </span><span class="sx">negative</span><span class="w"> </span><span class="sx">64-bit</span><span class="w"> </span><span class="sx">integer.</span>
+<span class="w">    </span><span class="sx">Ensures</span><span class="w"> </span><span class="sx">we</span><span class="w"> </span><span class="sx">correctly</span><span class="w"> </span><span class="sx">handle</span><span class="w"> </span><span class="sx">the</span><span class="w"> </span><span class="sx">most</span><span class="w"> </span><span class="sx">negative</span><span class="w"> </span><span class="sx">64-bit</span><span class="w"> </span><span class="sx">integer.</span>
 <span class="sx">]#</span>
 <span class="sx">proc</span><span class="w"> </span><span class="sx">write_int64*(value</span>:<span class="w"> </span><span class="sx">int64) =</span>
 <span class="sx">    if</span><span class="w"> </span><span class="sx">value</span><span class="w"> </span><span class="sx">&lt; 0</span>:

@@ -1,7 +1,7 @@
 
 <div align="center">
 
-<img src="./final2.svg" alt="Logo" height="200">
+<img src="./final3.svg" alt="Logo" height="200">
 
 </div>
 

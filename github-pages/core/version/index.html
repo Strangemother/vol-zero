@@ -103,17 +103,17 @@ compiled into the kernel; callers must not modify it.</p>
         <section class="source-code">
             <h2>Source</h2>
             <div class="highlight"><pre><span></span><span class="cm">#[</span>
-<span class="cm">  The kernel version is supplied by the Nimble build task from `../VERSION`.</span>
+<span class="cm">    The kernel version is supplied by the Nimble build task from `../VERSION`.</span>
 
-<span class="cm">  `strdefine` makes this value available while compiling Nim code and embeds</span>
-<span class="cm">  the same string in the kernel, so runtime code does not need to read a file.</span>
+<span class="cm">    `strdefine` makes this value available while compiling Nim code and embeds</span>
+<span class="cm">    the same string in the kernel, so runtime code does not need to read a file.</span>
 <span class="cm">]#</span>
 <span class="k">const</span><span class="w"> </span><span class="n">kernelVersion</span><span class="o">*</span><span class="w"> </span><span class="sx">{.strdefine.}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"unknown"</span>
 
 <span class="cm">#[</span>
-<span class="cm">  Returns the embedded kernel version for runtime consumers such as the serial</span>
-<span class="cm">  console. The returned `cstring` points to the read-only version string</span>
-<span class="cm">  compiled into the kernel; callers must not modify it.</span>
+<span class="cm">    Returns the embedded kernel version for runtime consumers such as the serial</span>
+<span class="cm">    console. The returned `cstring` points to the read-only version string</span>
+<span class="cm">    compiled into the kernel; callers must not modify it.</span>
 <span class="cm">]#</span>
 <span class="k">proc</span><span class="w"> </span><span class="nf">get_version</span><span class="o">*</span><span class="p">():</span><span class="w"> </span><span class="n">cstring</span><span class="w"> </span><span class="o">=</span>
 <span class="w">    </span><span class="n">kernelVersion</span><span class="p">.</span><span class="n">cstring</span>

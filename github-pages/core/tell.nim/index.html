@@ -62,20 +62,20 @@ Importantly this assumes the <code>serial</code> module has been initialized and
             <ul class="import-list">
                 
                 <li>
-                    <!-- {&#39;name&#39;: &#39;std/macros&#39;, &#39;alias&#39;: None, &#39;filename&#39;: &#39;std/macros.nim&#39;, &#39;line&#39;: 21} -->
+                    <!-- {&#39;name&#39;: &#39;std/macros&#39;, &#39;alias&#39;: None, &#39;filename&#39;: &#39;std/macros.nim&#39;, &#39;line&#39;: 22} -->
                     <span class="include-type">import</span>
                     <a href="../../std/macros.nim/">std/macros</a>
                     <span class="alias"></span>
-                    <!-- <div class="line">line 21</div> -->
+                    <!-- <div class="line">line 22</div> -->
                     
                 </li>
                 
                 <li>
-                    <!-- {&#39;name&#39;: &#39;serial&#39;, &#39;alias&#39;: None, &#39;filename&#39;: &#39;serial.nim&#39;, &#39;line&#39;: 22} -->
+                    <!-- {&#39;name&#39;: &#39;serial&#39;, &#39;alias&#39;: None, &#39;filename&#39;: &#39;serial.nim&#39;, &#39;line&#39;: 23} -->
                     <span class="include-type">import</span>
                     <a href="../../serial.nim/">serial</a>
                     <span class="alias"></span>
-                    <!-- <div class="line">line 22</div> -->
+                    <!-- <div class="line">line 23</div> -->
                     
                 </li>
                 
@@ -91,7 +91,7 @@ Importantly this assumes the <code>serial</code> module has been initialized and
             
             <ul class="declaration-list">
                 
-                <li id="declaration-43">
+                <li id="declaration-45">
                     <h3>
                         
                         <span class="exported">public</span>
@@ -128,46 +128,48 @@ It handles <em>string</em> and <code>uint64</code> types only and appends a newl
         
         <section class="source-code">
             <h2>Source</h2>
-            <div class="highlight"><pre><span></span><span class="cm">#[ Simplified serial write</span>
+            <div class="highlight"><pre><span></span><span class="cm">#[ </span>
+<span class="cm">    Simplified serial write</span>
 
-<span class="cm">This is a convenience **macro** for writing to the serial output.</span>
-<span class="cm">Importantly this assumes the `serial` module has been initialized and is ready for writing.</span>
+<span class="cm">    This is a convenience **macro** for writing to the serial output.</span>
+<span class="cm">    Importantly this assumes the `serial` module has been initialized and is ready for writing.</span>
 
-<span class="cm">Example:</span>
+<span class="cm">    Example:</span>
 
-<span class="cm">    tell.line("Kernel version: ", kernelVersion.get_version())</span>
+<span class="cm">        tell.line("Kernel version: ", kernelVersion.get_version())</span>
 
-<span class="cm">Replaces:</span>
+<span class="cm">    Replaces:</span>
 
-<span class="cm">    serial.write("Kernel version: ")</span>
-<span class="cm">    serial.write(kernelVersion.get_version())</span>
-<span class="cm">    serial.write("\r\n")</span>
+<span class="cm">        serial.write("Kernel version: ")</span>
+<span class="cm">        serial.write(kernelVersion.get_version())</span>
+<span class="cm">        serial.write("\r\n")</span>
 
-<span class="cm">+ Supports multiple arguments to the serial output.</span>
-<span class="cm">+ Handles _string_ and `uint64` types only.</span>
-<span class="cm">+ appends a newline `\r\n` by default.</span>
+<span class="cm">    + Supports multiple arguments to the serial output.</span>
+<span class="cm">    + Handles _string_ and `uint64` types only.</span>
+<span class="cm">    + appends a newline `\r\n` by default.</span>
 
 <span class="cm">]#</span>
 <span class="kn">import</span><span class="w"> </span><span class="n">std</span><span class="o">/</span><span class="n">macros</span>
 <span class="kn">import</span><span class="w"> </span><span class="n">serial</span>
 
-<span class="cm">#[ tell a line through the active serial write</span>
+<span class="cm">#[ </span>
+<span class="cm">    tell a line through the active serial write</span>
 
-<span class="cm">This macro allows writing multiple arguments to the serial output conveniently.</span>
-<span class="cm">It handles _string_ and `uint64` types only and appends a newline `\r\n` by default.</span>
+<span class="cm">    This macro allows writing multiple arguments to the serial output conveniently.</span>
+<span class="cm">    It handles _string_ and `uint64` types only and appends a newline `\r\n` by default.</span>
 
-<span class="cm">    tell.line(allocationState.entryIndex, allocationState.address)</span>
-<span class="cm">    </span>
-<span class="cm">With Serial:</span>
+<span class="cm">        tell.line(allocationState.entryIndex, allocationState.address)</span>
+<span class="cm">        </span>
+<span class="cm">    With Serial:</span>
 
-<span class="cm">    serial.write_uint64(allocationState.entryIndex)</span>
-<span class="cm">    serial.write(" ")</span>
-<span class="cm">    serial.write_uint64(allocationState.address)</span>
-<span class="cm">    serial.write("\r\n")</span>
+<span class="cm">        serial.write_uint64(allocationState.entryIndex)</span>
+<span class="cm">        serial.write(" ")</span>
+<span class="cm">        serial.write_uint64(allocationState.address)</span>
+<span class="cm">        serial.write("\r\n")</span>
 
-<span class="cm">---</span>
+<span class="cm">    ---</span>
 
-<span class="cm">Note this is a compile time macro and will be expanded during compilation. It is not a runtime function.</span>
+<span class="cm">    Note this is a compile time macro and will be expanded during compilation. It is not a runtime function.</span>
 
 <span class="cm">]#</span>
 <span class="k">macro</span><span class="w"> </span><span class="nf">line</span><span class="o">*</span><span class="p">(</span><span class="n">args</span><span class="p">:</span><span class="w"> </span><span class="n">varargs</span><span class="o">[</span><span class="n">untyped</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">newline</span><span class="p">:</span><span class="w"> </span><span class="n">untyped</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"</span><span class="se">\r\n</span><span class="s">"</span><span class="p">):</span><span class="w"> </span><span class="n">untyped</span><span class="w"> </span><span class="o">=</span>
@@ -200,7 +202,7 @@ It handles <em>string</em> and <code>uint64</code> types only and appends a newl
         <ul class="toc-list">
             
             <li>
-                <a href="#declaration-43">
+                <a href="#declaration-45">
                     
                     <span class="exported">public</span>
                     
