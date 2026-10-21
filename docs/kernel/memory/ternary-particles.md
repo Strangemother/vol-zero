@@ -31,24 +31,24 @@ One particle:              [ t₀ ][ t₁ ][ t₂ ] [ t₃ ][ t₄ ][ t₅ ]
 
 ## Mathematical definition
 
-For a sequence of \(n\) trits with \(t_i \in \{0,1,2\}\), its unsigned base-three interpretation is
+For a sequence of $n$ trits with $t_i \in \{0,1,2\}$, its unsigned base-three interpretation is
 
-\[
+```math
 V(t_0,\ldots,t_{n-1})=\sum_{i=0}^{n-1}t_i3^{n-1-i},
 \qquad 0\le V<3^n.
-\]
+```
 
 A triplet has
 
-\[
+```math
 \underbrace{3\times3\times3}_{\text{three trits}}=3^3=27
-\]
+```
 
 possible states. Two independent triplets make one default particle:
 
-\[
+```math
 \underbrace{27\times27}_{\text{two triplets}}=3^6=729.
-\]
+```
 
 Consequently, a default particle's unsigned value ranges from **0 through 728**, inclusive. The representation of signed values is not yet specified.
 
@@ -70,7 +70,7 @@ The claim that a short text file occupies one particle concerns its **minimum st
 
 ## Binary encoding and implementation questions
 
-Since \(2^9=512<729\le1024=2^{10}\), storing all possible six-trit values in one fixed-width binary container requires **at least ten physical bits**. One naive ten-bit encoding leaves **295 unused bit patterns**. A practical implementation may choose larger aligned containers or different packing strategies.
+Since $2^9=512<729\le1024=2^{10}$, storing all possible six-trit values in one fixed-width binary container requires **at least ten physical bits**. One naive ten-bit encoding leaves **295 unused bit patterns**. A practical implementation may choose larger aligned containers or different packing strategies.
 
 Before implementation, VOL must specify:
 
